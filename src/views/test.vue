@@ -20,15 +20,9 @@
     
 </template>
 <script>
+import {getAllProvince,getCountrysByCityId,getCitysByProvinceId} from '../axios/api.js'
 
-//import { api } from "@/axios/axios.js";
 
-// function getProvince() {
-//     return api({
-//         url:'getAllProvince',
-//         method:'get'
-//     })
-// }
 
 export default {
     data(){
@@ -42,15 +36,15 @@ export default {
         }
     },
     mounted(){
-      this.$axios.get('http://regions.yangyhao.top/getAllProvince')
-      .then(res =>{
-          console.log(res.data);
-          this.data= res.data;
-      }),
-      this.$axios.get('http://industry.yangyhao.top/getAllCategory')
-      .then(res =>{
-          console.log(res.data);
-          this.jobCategory= res.data;
+      getAllProvince().then(data =>{
+         this.data = data
+         console.log(data)
+      })
+      getCountrysByCityId({cityId:'110100000000'}).then(data=>{
+        console.log(data)
+      })
+      getCitysByProvinceId({provinceId:'110000000000'}).then(data=>{
+        console.log(data)
       })
     },
     methods:{
