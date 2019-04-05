@@ -1,39 +1,24 @@
 import axios from 'axios'
 import qs from "qs";
-import { Message } from 'element-ui';
+import { Message} from 'element-ui';
 
 
 const service =axios.create({
-    baseURL : 'http://192.168.0.104:8888',
+    baseURL : 'http://localhost:8888',
     timeout : 10000,
     withCredentials:true,
 })
 //请求拦截器
 service.interceptors.request.use(
     config =>{
-        //请求为post转为json
-        if(config.method === 'post'){
-            config.data = qs.stringify({...config.data})
-            config.headers = {
-                'Content-Type':'application/json'
-            }
-        }else if (config.method === 'get'){
-            config.params = {...config.params};
-            config.headers = {
-                'Content-Type':'application/x-www-form-urlencoded'
-            }
-        }
-        // config.method === 'post'
-        // ? config.data = qs.stringify({...config.data})
-        // : config.params = {...config.params};
-        // config.headers = {
-        //     'Content-Type':'application/x-www-form-urlencoded'
-        // }
+        //请求为post序列化
+        
+        
         return config;
     },
     error =>{
         Message({
-            Message:error.message,
+            message:error.message,
             type:'error',
             duration:5000 
         })
@@ -49,16 +34,22 @@ service.interceptors.response.use(
             return response.data;
         } else{
             //错误响应
-            Message({
-                Message:response.data.message,
-                type:'error',
-                duration:5000 
-            })
+            // Message({
+            //     message:response.data.message,
+            //     type:'error',
+            //     duration:5000 
+            // })
         }
     },
-    // error=>{
-
-    // }
+    error=>{
+        console.log(error.response)
+        Message({
+            message:error.response.data.message,
+            type:'error',
+            duration:5*1000 
+        })
+        return Promise.reject(error)
+    }
 )
 
 export function get(url,params){
@@ -68,7 +59,6 @@ export function get(url,params){
             url,
             params:params
         }).then(res =>{
-            console.log(params)
             resolve(res)
         }).catch(err =>{
             reject(err)
@@ -76,14 +66,16 @@ export function get(url,params){
     })
 }
 
-export function post(url,params){
+export function formPost(url,data){
     return new Promise((resolve,reject) =>{
         service({
             method:'post',
             url,
-            data:params
+            data:qs.stringify(data),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8;"
+            }
         }).then(res =>{
-            console.log(params)
             resolve(res)
         }).catch(err =>{
             reject(err)
@@ -91,4 +83,21 @@ export function post(url,params){
     })
 }
 
-export default {get,post};
+export function jsonPost(url,data){
+    return new Promise((resolve,reject) =>{
+        service({
+            method:'post',
+            url,
+            data:data,
+            headers:{
+                "Content-Type": "application/json;"
+            }
+        }).then(res =>{
+            resolve(res)
+        }).catch(err =>{
+            reject(err)
+        })
+    })
+}
+
+export default {get,formPost,jsonPost};

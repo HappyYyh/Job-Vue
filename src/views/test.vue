@@ -20,9 +20,7 @@
     
 </template>
 <script>
-import {getAllProvince,getCountrysByCityId,getCitysByProvinceId} from '../axios/api.js'
-
-
+import api from '../axios/api.js'
 
 export default {
     data(){
@@ -36,14 +34,14 @@ export default {
         }
     },
     mounted(){
-      getAllProvince().then(data =>{
-         this.data = data
-         console.log(data)
-      })
-      getCountrysByCityId({cityId:'110100000000'}).then(data=>{
+      // getAllProvince().then(data =>{
+      //    this.data = data
+      //    console.log(data)
+      // })
+      api.getCountrysByCityId({cityId:'110100000000'}).then(data=>{
         console.log(data)
       })
-      getCitysByProvinceId({provinceId:'110000000000'}).then(data=>{
+      api.getCitysByProvinceId({provinceId:'110000000000'}).then(data=>{
         console.log(data)
       })
     },

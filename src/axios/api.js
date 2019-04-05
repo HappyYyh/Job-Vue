@@ -1,7 +1,22 @@
-import {get} from './axios.js'
+import {get,jsonPost} from './axios.js'
 
-export const getAllProvince = ()=>{return get('regions/getAllProvince')}
-export const getCountrysByCityId = (cityId)=>{return get('regions/getCountrysByCityId',cityId)}
-export const getCitysByProvinceId = (provinceId) =>{return get('regions/getCitysByProvinceId',provinceId)}
+/**
+ * 地区
+ */
+const getAllProvince = ()=>{return get('regions/getAllProvince')}
+const getCountrysByCityId = (cityId)=>{return get('regions/getCountrysByCityId',cityId)}
+const getCitysByProvinceId = (provinceId) =>{return get('regions/getCitysByProvinceId',provinceId)}
 
+/**
+ * 用户
+ */
+const sendCheckCode = SendSmsRequest=>{return jsonPost('sendCheckCode',SendSmsRequest)}
+const regist = registRequest=>{return jsonPost('register',registRequest)}
 
+export default {
+    getAllProvince,
+    getCountrysByCityId,
+    getCitysByProvinceId,
+    sendCheckCode,
+    regist,
+}
