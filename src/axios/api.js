@@ -12,6 +12,7 @@ const getCitysByProvinceId = (provinceId) =>{return get('regions/getCitysByProvi
  */
 const sendCheckCode = SendSmsRequest=>{return jsonPost('sendCheckCode',SendSmsRequest)}
 const regist = registRequest=>{return jsonPost('register',registRequest)}
+const login = loginRequest=>{return jsonPost('login',loginRequest)}
 
 export default {
     getAllProvince,
@@ -19,4 +20,5 @@ export default {
     getCitysByProvinceId,
     sendCheckCode,
     regist,
+    login,
 }

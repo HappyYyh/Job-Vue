@@ -104,7 +104,7 @@
                </a>
                <a href="#" class="user-info">
                     <p style="margin-top:7px">
-                        <img src="https://img2.bosszhipin.com/boss/avatar/avatar_5.png?x-oss-process=image/resize,w_100,limit_0" alt="">
+                        <img src="http://image.yangyhao.top/%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F.jpg" alt="">
                         <span class="user-text">
                             荣先生
                             <span class="vline"></span>

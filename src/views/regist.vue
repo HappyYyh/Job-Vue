@@ -47,17 +47,22 @@
 									</el-col>
 								</el-row>
 							</div>
-							<div class="block" style="margin-top:30px">
-								<el-row>
-									<el-col :span="19" :offset="2">
-										<el-slider v-model="value1"></el-slider>
-									</el-col>
-								</el-row>
-							</div>
 							<div  style="margin-top:30px">
 								<el-row>
 									<el-col :span="20" :offset="2">
 										<el-button style="width:100%" @click="regist" type="success">注册</el-button>
+									</el-col>
+								</el-row>
+							</div>
+							<div  style="margin-top:20px">
+								<el-row>
+									<el-col :span="19" :offset="2">
+										<el-checkbox v-model="checked">我已同意用户协议及隐私政策</el-checkbox>
+										<router-link to="login">
+											<div class="right-tip">
+												<span>直接登陆</span>
+											</div>
+										</router-link>
 									</el-col>
 								</el-row>
 							</div>
@@ -81,16 +86,16 @@ export default {
 				email:"",
 				checkCode:"",
 				password:"",
-				value1: 0,
+				//value1: 0,
+				checked: false,
 				time : 0,
 				showSend: true,
 				loading :false,
 			}
 	},
+	mounted(){
+	},
 	methods:{
-			formatTooltip(val) {
-				return val / 100;
-			},
 			role0:function(){
 				this.role = 0;
 				this.isActive0 = true;
@@ -148,8 +153,8 @@ export default {
 				var phoneReg = /^1[3578][01379]\d{8}|1[34578][01256]\d{8}|(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
 				var checkCodeReg = /^\d{6}$/ ;
 				var passwordReg=/^[a-zA-Z0-9_@!?]{6,18}$/
-				if(this.value1 != 100){
-					message = "请拖动滑块到最右侧!"
+				if(this.checked != true){
+					message = "请勾选用户协议!"
 					isAlert = true;
 				}
 				if(password ==='' || !passwordReg.test(password)){
@@ -189,9 +194,14 @@ export default {
 										message: '注册成功!',
 										type: 'success'
 								});
+								this.$router.push("/login");
+						}
+						if (res.success === false && res.code === '505'){
+								this.$router.push("/login");
 						}
 						this.loading = false;
 					})
+					this.loading = false;
 				}
 			}
 					
@@ -227,5 +237,12 @@ export default {
 }
 .choose{
 	background-color: bisque
+}
+.right-tip{
+	float: right;
+}
+.right-tip span{
+	font-size: 14px;
+  color: #18c3b1;
 }
 </style>

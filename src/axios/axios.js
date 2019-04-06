@@ -5,7 +5,7 @@ import { Message} from 'element-ui';
 
 const service =axios.create({
     baseURL : 'http://localhost:8888',
-    timeout : 10000,
+    timeout : 5000,
     withCredentials:true,
 })
 //请求拦截器
@@ -29,17 +29,14 @@ service.interceptors.request.use(
 service.interceptors.response.use( 
     response =>{
         console.log(response.headers)
-        if(response.data.success === true) {
-            //请求成功
-            return response.data;
-        } else{
+        if(response.data.success === false) {
             //错误响应
-            // Message({
-            //     message:response.data.message,
-            //     type:'error',
-            //     duration:5000 
-            // })
+            Message({
+                message:response.data.message,
+                type:'error',
+            })
         }
+        return response.data;
     },
     error=>{
         console.log(error.response)
