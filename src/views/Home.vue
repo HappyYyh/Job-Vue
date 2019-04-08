@@ -19,18 +19,40 @@
         <router-link to="/">
             <a href="#">首页</a>
         </router-link>
-        
     </el-menu-item>
     <el-menu-item index="3">职位</el-menu-item>
     <el-menu-item index="4"><a  target="_blank">公司</a></el-menu-item>
-    <el-menu-item index="5" class="top-bar-btn">
+    <!-- 未登陆 -->
+    <el-menu-item index="5" v-show="!isLogin" class="not-login login-btn">
         <router-link to="login">
             <el-button size="small"  type="primary" round>登陆</el-button> 
         </router-link>
+    </el-menu-item>
+    <el-menu-item index="6" v-show="!isLogin" class="not-login">
         <router-link to="regist">
-             <el-button size="small"  type="primary" round>注册</el-button>
+                <el-button size="small"  type="primary" round>注册</el-button>
         </router-link>
     </el-menu-item>
+    <!-- 求职者 -->
+    <el-menu-item index="5" v-show="role===0" class="seeker seeker-first">消息</el-menu-item>
+    <el-menu-item index="6" v-show="role===0" class="seeker">简历</el-menu-item>
+    <el-submenu index="7" v-show="role===0" class="seeker">
+        <template slot="title">{{userName}}<img :src="userImg" alt="" class="headImg"></template>
+        <el-menu-item index="7-1" v-show="role===0">选项1</el-menu-item>
+        <el-menu-item index="7-2" v-show="role===0">选项2</el-menu-item>
+        <el-menu-item index="7-3" v-show="role===0">选项3</el-menu-item>
+    </el-submenu>
+    <!-- 招聘者 -->
+    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
+    <el-menu-item index="6" v-show="role===1" class="recruiter">简历查看</el-menu-item>
+    <el-menu-item index="6" v-show="role===1" class="recruiter">新增职位</el-menu-item>
+    <el-submenu index="7" v-show="role===1" class="recruiter">
+        <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
+        <el-menu-item index="7-1" v-show="role===1">个人中心</el-menu-item>
+        <el-menu-item index="7-2" v-show="role===1">公司信息</el-menu-item>
+        <el-menu-item index="7-3" v-show="role===1" @click="logout">登出账号</el-menu-item>
+    </el-submenu>
+
     </el-menu>
   </el-header>
   <div class="content">
@@ -49,24 +71,51 @@
 
 </template>
 <script>
+import api from '../axios/api';
   export default {
     data() {
       return {
         isHover:false,
         activeIndex: '1',
         activeIndex2: '2',
-        input5: '',
         select: '',
+        isLogin:false,
+        userName:'',
+        userImg:'',
+        role:'',
+        token:''
       };
     },
     mounted(){
-      
+        let userInfo = localStorage.getItem('userInfo');
+        if(userInfo){
+            var data  = JSON.parse(userInfo);
+            if (new Date().getTime() - data.time > 15*24*60*60*1000) {
+                console.log(userInfo+'已过期');
+                localStorage.removeItem(userInfo);
+            }else{
+                var user = JSON.parse(data.user);
+                //请求头中放入token
+                this.isLogin = true;
+                this.userName = user.nickName;
+                this.userImg = user.headImg;
+                this.role = user.role;
+                this.token = user.token;
+            }
+        }    
+
     },
 
     methods: {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
+      logout(){
+        api.logout({token:this.token}).then(()=>{
+            localStorage.removeItem("userInfo");
+            this.$router.push("/");
+        })
+      }
     }
   }
 </script>
@@ -84,9 +133,34 @@
     margin-left: 150px;
     margin-right: 50px
 }
-.top-bar-btn{
-    float :right;
-    margin-right: 120px; 
+.not-login{
+    padding: 0 5px;
+}
+.login-btn{
+    margin-left: 500px;
+}
+.seeker{
+    padding: 0 10px;
+}
+.recruiter{
+    padding: 0 10px;
+}
+.recruiter-first{
+    margin-left: 400px;
+}
+.headImg{
+    width: 26px;
+    height: 26px;
+    border-radius: 100%;
+    vertical-align: middle;
+    border: none;
+}
+.sub-menu{
+    text-align: center;
+}
+.yes-login span{
+    margin-left: 15px;
+    margin-right: 15px;
 }
 .top-bar-btn a{
     margin: 0 0 5px 5px;

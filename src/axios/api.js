@@ -13,6 +13,7 @@ const getCitysByProvinceId = (provinceId) =>{return get('regions/getCitysByProvi
 const sendCheckCode = SendSmsRequest=>{return jsonPost('sendCheckCode',SendSmsRequest)}
 const regist = registRequest=>{return jsonPost('register',registRequest)}
 const login = loginRequest=>{return jsonPost('login',loginRequest)}
+const logout = (token)=>{return get('logout',token)}
 
 /**
  * 职位分类
@@ -26,5 +27,6 @@ export default {
     sendCheckCode,
     regist,
     login,
+    logout,
     getAllCategory,
 }

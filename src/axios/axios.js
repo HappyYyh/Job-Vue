@@ -1,19 +1,36 @@
 import axios from 'axios'
 import qs from "qs";
+import router from '../router';
 import { Message} from 'element-ui';
 
 
 const service =axios.create({
     baseURL : 'http://localhost:8888',
-    timeout : 5000,
+    timeout : 6000,
     withCredentials:true,
 })
 //请求拦截器
 service.interceptors.request.use(
     config =>{
-        //请求为post序列化
-        
-        
+        let userInfo = localStorage.getItem('userInfo');
+        if(userInfo){
+            var data  = JSON.parse(userInfo);
+            if (new Date().getTime() - data.time > 15*24*60*60*1000) {
+                console.log(userInfo+'已过期');
+                localStorage.removeItem(userInfo);
+                router.replace({
+                    path:'login',
+                    //登陆成功后跳回当前页面
+                    query:{redirect: router.currentRoute.fullPath}
+                })
+            }else{
+                var user = JSON.parse(data.user);
+                //请求头中放入token
+                config.headers={
+                    'token':user.token
+                }
+            }
+        }
         return config;
     },
     error =>{
@@ -28,7 +45,6 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use( 
     response =>{
-        console.log(response.headers)
         if(response.data.success === false) {
             //错误响应
             Message({
@@ -39,12 +55,24 @@ service.interceptors.response.use(
         return response.data;
     },
     error=>{
-        console.log(error.response)
-        Message({
-            message:error.response.data.message,
-            type:'error',
-            duration:5*1000 
-        })
+        if(error.response.status === 401){
+            Message({
+                message:'请重新登陆',
+                type:'warn',
+            })
+            router.replace({
+                path:'login',
+                //登陆成功后跳回当前页面
+                query:{redirect: router.currentRoute.fullPath}
+            })
+        }else{
+            console.log(error.response)
+            Message({
+                message:error.response.data.message,
+                type:'error',
+                duration:5*1000 
+            })
+        }
         return Promise.reject(error)
     }
 )

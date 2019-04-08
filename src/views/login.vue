@@ -242,14 +242,17 @@ export default {
                         this.userInfo = res.data
                         userInfo = this.userInfo
                         //登陆信息存储到本地
-                        localStorage.setItem("userInfo",userInfo);
-                        localStorage.setItem("token",userInfo.token);
+                        var curTime = new Date().getTime();
+                        localStorage.setItem("userInfo",JSON.stringify({user:JSON.stringify(userInfo),time:curTime}));
+                        this.$notify({
+                            title: '成功',
+                            message: '登陆成功',
+                            type: 'success'
+                        });
                         if(userInfo.role === 1){
                             //如果是招聘者
                             if(userInfo.firstLogin === false){
                                 //如果首次登陆
-                                this.$router.push("/recruiterFirstLogin");
-                            }else{
                                 this.$router.push("/");
                             }
                         }else{

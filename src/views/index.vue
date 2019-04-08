@@ -34,7 +34,7 @@
           </div>
           <!-- 右侧图片 -->
           <div class="rightImg">
-              <img src="http://image.yangyhao.top/images/png/15536777233442610.png">
+              <img src="http://image.yangyhao.top/images/jpg/3.jpg">
           </div>
           <!-- 右侧隐藏区域 -->
           <div class="rightWrap" @mouseover="handelOver(index)" @mouseout="handelOut"  v-for="(jobSecond, index) in secondList" :key="index" v-show="index<12 && index === showRight">
