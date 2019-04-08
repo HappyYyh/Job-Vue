@@ -1,41 +1,6 @@
 <template>
 <el-container>
-  <el-header>
-    <!-- 顶部导航栏 -->
-    <el-menu
-    :default-active="activeIndex2"
-    class="el-menu-demo"
-    mode="horizontal"
-    @select="handleSelect"
-    background-color="#545c64"
-    text-color="#fff"
-    active-text-color="#ffd04b">
-    <el-menu-item index="1"><a href="#"><img class="logo" src="@/assets/logo.png"/></a></el-menu-item>
-    <el-menu-item index="2" class="top-bar">首页</el-menu-item>
-    <!-- <el-submenu index="2"> -->
-        <!-- <template slot="title">首页</template> -->
-        <!-- <el-menu-item index="2-1">选项1</el-menu-item>
-        <el-menu-item index="2-2">选项2</el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
-        <el-submenu index="2-4">
-        <template slot="title">选项4</template>
-        <el-menu-item index="2-4-1">选项1</el-menu-item>
-        <el-menu-item index="2-4-2">选项2</el-menu-item>
-        <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
-    </el-submenu> -->
-    <el-menu-item index="3">职位</el-menu-item>
-    <el-menu-item index="4"><a  target="_blank">公司</a></el-menu-item>
-    <el-menu-item index="5" class="top-bar-btn">
-        <router-link to="login">
-            <el-button size="small"  type="primary" round>登陆</el-button> 
-        </router-link>
-        <router-link to="regist">
-             <el-button size="small"  type="primary" round>注册</el-button>
-        </router-link>
-    </el-menu-item>
-    </el-menu>
-  </el-header>
+  
   <el-main>
         <div class="main">
     <!-- 搜索框 -->
@@ -79,7 +44,7 @@
                   <span>{{item.secondName}}</span>
                 </div>
                 <div class="thirdArea">
-                  <span class="thirdName" v-for="jobThird in item.thirdResponseList" :key="jobThird.index">{{jobThird.thirdName}}</span>
+                  <span class="thirdName" v-for="jobThird in item.jobThirdCategoryResponseList" :key="jobThird.index">{{jobThird.thirdName}}</span>
                 </div>
               </div>
             </div>
@@ -136,18 +101,12 @@
         </div>
     </div>
   </el-main>
-  <el-footer>
-      <div class="about"></div>
-      <div class="copyright">
-          <p>
-              <span>Copyright © 2019 "快来吧"职业共享网站</span>
-          </p>
-      </div>
-  </el-footer>
+  
 </el-container>
 
 </template>
 <script>
+import api from '../axios/api';
   export default {
     data() {
       return {
@@ -165,13 +124,13 @@
       };
     },
     mounted(){
-      this.$axios.get('http://industry.yangyhao.top/getAllCategory')
-      .then(res =>{
-          console.log(res.data);
-          this.jobCategory= res.data;
-          this.secondList = res.data.map((item)=>item.secondResponseList);
-          console.log('secondList',this.secondList)
-      })
+      api.getAllCategory()
+            .then(res =>{
+                console.log(res.data);
+                this.jobCategory= res.data;
+                this.secondList = res.data.map((item)=>item.jobSecondCategoryResponseList);
+                console.log('secondList',this.secondList)
+            })
     },
 
     methods: {
@@ -188,23 +147,6 @@
   }
 </script>
 <style lang="scss" scoped>
-//头部
-.el-header{
-    padding: 0;
-}
-// 导航栏
-.el-menu-demo{
-    padding: 0 80px
-}
-.logo{
-    height: 50px;
-    margin-left: 150px;
-    margin-right: 50px
-}
-.top-bar-btn{
-    float :right;
-}
-
 // main
 .main {
     padding: 20px 12% ;
@@ -456,27 +398,5 @@
     line-height: 42px;
     font-size: 12px;
     display: block;
-}
-
-//底部foot
-.el-footer{
-    background: #fff;
-    padding: 20px 0 10px;
-    margin-top: 43px;
-    position: relative;
-    z-index: 22;
-    color: #8d92a1;
-    border-top: solid 1px #f6f6f8;
-}
-.copyright {
-    color: #eeeff3;
-    font-size: 12px;
-    margin-top: 20px;
-    text-align: center;
-}
-.copyright span {
-    color: #8d92a1;
-    display: inline-block;
-    margin-right: 15px;
 }
 </style>

@@ -14,6 +14,11 @@ const sendCheckCode = SendSmsRequest=>{return jsonPost('sendCheckCode',SendSmsRe
 const regist = registRequest=>{return jsonPost('register',registRequest)}
 const login = loginRequest=>{return jsonPost('login',loginRequest)}
 
+/**
+ * 职位分类
+ */
+const getAllCategory = ()=>{return get('jobCategory/getAllCategory')}
+
 export default {
     getAllProvince,
     getCountrysByCityId,
@@ -21,4 +26,5 @@ export default {
     sendCheckCode,
     regist,
     login,
+    getAllCategory,
 }

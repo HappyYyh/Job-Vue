@@ -10,13 +10,31 @@ export default new Router({
   routes: [
     {
       path:'/',
-      name:'index',
-      component: () => import('./views/index.vue')
-    },
-    {
-      path:'/test',
-      name:'test',
-      component: () => import('./views/test.vue')
+      name:'home',
+      component: () => import('./views/home.vue'),
+      redirect:'index',
+      children:[
+        {
+          path:'/index',
+          name:'index',
+          component: () => import('./views/index.vue')
+        },
+        {
+          path:'/test',
+          name:'test',
+          component: () => import('./views/test.vue')
+        },
+        {
+          path:'/recruiter/firstLogin',
+          name:'recruiterFirstLogin',
+          component: () => import('./views/recruiterFirstLogin.vue')
+        },
+        {
+          path:'/company/certificate',
+          name:'certificateCompany',
+          component: () => import('./views/certificateCompany.vue')
+        },
+      ]
     },
     {
       path:'/login',
@@ -28,6 +46,6 @@ export default new Router({
       name:'regist',
       component: () => import('./views/regist.vue')
     },
-   
+    
   ]
 })
