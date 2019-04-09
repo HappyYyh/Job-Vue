@@ -108,6 +108,23 @@ export function formPost(url,data){
     })
 }
 
+export function filePost(url,data){
+    return new Promise((resolve,reject) =>{
+        service({
+            method:'post',
+            url,
+            data,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(res =>{
+            resolve(res)
+        }).catch(err =>{
+            reject(err)
+        })
+    })
+}
+
 export function jsonPost(url,data){
     return new Promise((resolve,reject) =>{
         service({
@@ -125,4 +142,4 @@ export function jsonPost(url,data){
     })
 }
 
-export default {get,formPost,jsonPost};
+export default {get,formPost,filePost,jsonPost};

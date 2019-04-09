@@ -1,11 +1,13 @@
-import {get,jsonPost} from './axios.js'
+import {get,jsonPost, filePost} from './axios.js'
 
 /**
  * 地区
  */
+const getAllRegions = ()=>{return get('regions/getAllRegions')}
 const getAllProvince = ()=>{return get('regions/getAllProvince')}
 const getCountrysByCityId = (cityId)=>{return get('regions/getCountrysByCityId',cityId)}
 const getCitysByProvinceId = (provinceId) =>{return get('regions/getCitysByProvinceId',provinceId)}
+
 
 /**
  * 用户
@@ -16,11 +18,21 @@ const login = loginRequest=>{return jsonPost('login',loginRequest)}
 const logout = (token)=>{return get('logout',token)}
 
 /**
+ * 企业
+ */
+const companyCertificate = CommonCompanyRequest=>{return jsonPost('company/certificate',CommonCompanyRequest)}
+/**
+ * 文件
+ */
+const fileUpload = (file)=>{return filePost('file/upload',file)}
+
+/**
  * 职位分类
  */
 const getAllCategory = ()=>{return get('jobCategory/getAllCategory')}
 
 export default {
+    getAllRegions,
     getAllProvince,
     getCountrysByCityId,
     getCitysByProvinceId,
@@ -28,5 +40,7 @@ export default {
     regist,
     login,
     logout,
+    companyCertificate,
+    fileUpload,
     getAllCategory,
 }

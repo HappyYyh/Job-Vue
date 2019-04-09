@@ -180,6 +180,7 @@ import api from '../axios/api';
     color: #8d92a1;
     border-top: solid 1px #f6f6f8;
     height: 60px;
+    margin-top: 30px;
 }
 .copyright {
     color: #eeeff3;

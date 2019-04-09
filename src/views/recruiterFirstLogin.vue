@@ -1,5 +1,5 @@
-<template>
-    <el-row>
+<template >
+    <el-row >
         <el-col :span="16" :offset="4">
             <div class="main">
                 <el-card class="box-card left">
@@ -11,8 +11,26 @@
             </div>
         </el-col>
     </el-row>
-    
 </template>
+<script>
+export default {
+    data(){
+
+    },
+    mounted(){
+        // console.log(this.role)
+        // if(this.role != 1){
+        //     this.$message({
+        //         showClose: true,
+        //         message: '权限不足,请先登录',
+        //         type: 'error'
+        //     });
+        //     //this.$router.push("/login");
+        // }
+    }
+}
+</script>
+
 <style lang="scss" scoped>
 .main{
     display: block;
