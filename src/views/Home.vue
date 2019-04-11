@@ -49,7 +49,7 @@
     <el-submenu index="7" v-show="role===1" class="recruiter">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
         <el-menu-item index="7-1" v-show="role===1">个人中心</el-menu-item>
-        <el-menu-item index="7-2" v-show="role===1">公司信息</el-menu-item>
+        <el-menu-item index="7-2" v-show="role===1" @click="companyInfo">公司信息</el-menu-item>
         <el-menu-item index="7-3" v-show="role===1" @click="logout">登出账号</el-menu-item>
     </el-submenu>
 
@@ -115,6 +115,9 @@ import api from '../axios/api';
             localStorage.removeItem("userInfo");
             this.$router.push("/");
         })
+      },
+      companyInfo(){
+          this.$router.push("/company/info");
       }
     }
   }

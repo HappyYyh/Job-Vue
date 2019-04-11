@@ -29,6 +29,11 @@ export default new Router({
           name:'certificateCompany',
           component: () => import('./views/company/certificateCompany.vue')
         },
+        {
+          path:'/company/info',
+          name:'info',
+          component: () => import('./views/company/Info.vue')
+        },
       ]
     },
     {

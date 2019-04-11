@@ -251,8 +251,10 @@ export default {
                         });
                         if(userInfo.role === 1){
                             //如果是招聘者
-                            if(userInfo.firstLogin === false){
+                            if(userInfo.firstLogin === true){
                                 //如果首次登陆
+                                this.$router.push("/recruiter/firstLogin");
+                            }else{
                                 this.$router.push("/");
                             }
                         }else{

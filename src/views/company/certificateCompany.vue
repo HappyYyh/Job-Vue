@@ -1,5 +1,7 @@
 <template>
-    <el-row>
+<div>
+  <!-- 公司认证 -->
+  <el-row>
         <el-col :span="20" :offset="2">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
@@ -105,8 +107,7 @@
             </el-card> 
         </el-col>
     </el-row>
-           
-               
+</div>
 </template>
 <script>
 import api from '@/axios/api.js'
@@ -114,6 +115,7 @@ export default {
     data() {
       return {
         form: {
+          recruiterId:'',
           companyName: '',
           img:'',
           introduce:'',
@@ -137,17 +139,69 @@ export default {
         props:{
           label:'name',
           value:'name',
-          children:'children'
+          children:'child'
         },
         selectedOptions: [],
         activeName: '0',
       }
     },
-    mounted(){
+    created () {
       api.getAllRegions().then(res=>{
-        this.options =res.data;
-        //console.log(this.options);
+        let regions =res.data;
+        let options = [];
+        regions.forEach( (province,index) =>{
+          options.push({
+            id:province.provinceId,
+            name:province.provinceName,
+            child:[]
+          })
+          province.regionSecondResponseList.forEach((city,ind)=>{
+            options[index].child.push({
+              id:city.cityId,
+              name:city.cityName,
+              child:[]
+            })
+            city.regionThirdResponseList.forEach((country)=>{
+              options[index].child[ind].child.push({
+                id:country.countryId,
+                name:country.countryName
+              })
+            })
+          })
+        })
+        this.options = options;
       })
+    },
+    mounted(){
+      
+      //转换
+      // api.getAllCategory().then(res=>{
+      //   console.log(res.data)
+      //   let categorys = res.data;
+      //   let props = []
+      //   categorys.forEach((first,index) => {
+      //     props.push({
+      //       value:first.firstName,
+      //       lable:first.firstId,
+      //       children:[]
+      //     })
+      //     first.jobSecondCategoryResponseList.forEach((second,ind)=>{
+      //       props[index].children.push({
+      //         value:second.secondName,
+      //         lable:second.secondId,
+      //         children:[]
+      //       })
+      //       second.jobThirdCategoryResponseList.forEach((third)=>{
+      //         props[index].children[ind].children.push({
+      //           value:third.thirdName,
+      //         })
+      //       })
+      //     })
+          
+      //   });
+      //   console.log(props)
+      // })
+
     },
     methods: {
       handleRemove(file, fileList) {
@@ -175,6 +229,8 @@ export default {
         console.log(this.form.belongPlace)
       },
       onSubmit() {
+        let user = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+        this.form.recruiterId = user.id;
         console.log(this.form)
         api.companyCertificate(this.form)
            .then(res=>{

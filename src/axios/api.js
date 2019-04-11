@@ -21,6 +21,8 @@ const logout = (token)=>{return get('logout',token)}
  * 企业
  */
 const companyCertificate = CommonCompanyRequest=>{return jsonPost('company/certificate',CommonCompanyRequest)}
+const getCompanyInfoByRecruiterId = (recruiterId) =>{return get('company/info',recruiterId)}
+
 /**
  * 文件
  */
@@ -41,6 +43,7 @@ export default {
     login,
     logout,
     companyCertificate,
+    getCompanyInfoByRecruiterId,
     fileUpload,
     getAllCategory,
 }
