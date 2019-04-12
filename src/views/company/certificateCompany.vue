@@ -43,58 +43,17 @@
                       <el-collapse-item title="标签信息" name="1">
                         <el-form-item label="行业分类">
                           <el-radio-group v-model="form.industryCategory">
-                            <el-radio label="0">民营企业</el-radio>
-                            <el-radio label="1">电子商务</el-radio>
-                            <el-radio label="2">游戏</el-radio>
-                            <el-radio label="3">媒体</el-radio>
-                            <el-radio label="4">广告营销</el-radio>
-                            <el-radio label="5">数据服务</el-radio>
-                            <el-radio label="6">医疗健康</el-radio>
-                            <el-radio label="7">生活服务</el-radio>
-                            <el-radio label="8">O2O</el-radio>
-                            <el-radio label="9">旅游</el-radio>
-                            <el-radio label="10">分类信息</el-radio>
-                            <el-radio label="11">音乐/视频/阅读</el-radio>
-                            <el-radio label="12">在线教育</el-radio>
-                            <el-radio label="13">社交网络</el-radio>
-                            <el-radio label="14">人力资源服务</el-radio>
-                            <el-radio label="15">企业服务</el-radio>
-                            <el-radio label="16">信息安全</el-radio>
-                            <el-radio label="17">智能硬件</el-radio>
-                            <el-radio label="18">移动互联网</el-radio>
-                            <el-radio label="19">互联网</el-radio>
-                            <el-radio label="20">计算机软件</el-radio>
-                            <el-radio label="21">通信/网络设备</el-radio>
-                            <el-radio label="22">广告/公关/会展</el-radio>
-                            <el-radio label="23">互联网金融</el-radio>
-                            <el-radio label="24">物流/仓储</el-radio>
-                            <el-radio label="25">贸易/进出口</el-radio>
-                            <el-radio label="26">咨询</el-radio>
-                            <el-radio label="27">工程施工</el-radio>
-                            <el-radio label="28">汽车生产</el-radio>
-                            <el-radio label="29">其他行业</el-radio>
+                           <el-radio :label="item.value" v-for="(item,index) in industryCategory" :key="index">{{item.name}}</el-radio>
                           </el-radio-group>
                         </el-form-item>
                         <el-form-item label="融资状态">
                           <el-radio-group v-model="form.financingStatus">
-                            <el-radio label="0">未融资</el-radio>
-                            <el-radio label="1">天使轮</el-radio>
-                            <el-radio label="2">A轮</el-radio>
-                            <el-radio label="3">B轮</el-radio>
-                            <el-radio label="4">C轮</el-radio>
-                            <el-radio label="5">D轮及以上</el-radio>
-                            <el-radio label="6">上市公司</el-radio>
-                            <el-radio label="7">不需要融资</el-radio>
+                            <el-radio :label="item.value" v-for="(item,index) in financingStatus" :key="index">{{item.name}}</el-radio>
                           </el-radio-group>
                         </el-form-item>
                         <el-form-item label="公司规模">
                           <el-radio-group v-model="form.staffNum">
-                            <el-radio label="0">少于15人</el-radio>
-                            <el-radio label="1">15-50人</el-radio>
-                            <el-radio label="2">50-150人</el-radio>
-                            <el-radio label="3">150-500人</el-radio>
-                            <el-radio label="4">500-2000人</el-radio>
-                            <el-radio label="5">2000人以上</el-radio>
+                           <el-radio :label="item.value" v-for="(item,index) in staffNum" :key="index">{{item.name}}</el-radio>
                           </el-radio-group>
                         </el-form-item>
                       </el-collapse-item>
@@ -114,6 +73,9 @@ import api from '@/axios/api.js'
 export default {
     data() {
       return {
+        industryCategory:'',
+        financingStatus:'',
+        staffNum:'',
         form: {
           recruiterId:'',
           companyName: '',
@@ -173,7 +135,9 @@ export default {
       })
     },
     mounted(){
-      
+      this.industryCategory = this.$store.state.industryCategory
+      this.financingStatus = this.$store.state.financingStatus
+      this.staffNum = this.$store.state.staffNum
       //转换
       // api.getAllCategory().then(res=>{
       //   console.log(res.data)

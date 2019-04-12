@@ -45,14 +45,31 @@
     <!-- 招聘者 -->
     <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
     <el-menu-item index="6" v-show="role===1" class="recruiter">简历查看</el-menu-item>
-    <el-menu-item index="6" v-show="role===1" class="recruiter">新增职位</el-menu-item>
-    <el-submenu index="7" v-show="role===1" class="recruiter">
+    <el-menu-item index="7" v-show="role===1" class="recruiter">新增职位</el-menu-item>
+    <el-submenu index="8" v-show="role===1" class="recruiter">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
-        <el-menu-item index="7-1" v-show="role===1">个人中心</el-menu-item>
-        <el-menu-item index="7-2" v-show="role===1" @click="companyInfo">公司信息</el-menu-item>
-        <el-menu-item index="7-3" v-show="role===1" @click="logout">登出账号</el-menu-item>
+        <el-menu-item index="8-1" v-show="role===1" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
+        <el-menu-item index="8-2" v-show="role===1" @click="companyInfo">公司信息</el-menu-item>
+        <el-menu-item index="8-3" v-show="role===1" @click="logout">登出账号</el-menu-item>
     </el-submenu>
-
+        <!-- 对话框 -->
+        <el-dialog title="个人信息" :visible.sync="dialogMyInfoVisible" :width="dialogWidth">
+            <el-form :model="form">
+                <el-form-item label="昵称" :label-width="formLabelWidth">
+                <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域" :label-width="formLabelWidth">
+                <el-select v-model="form.region" placeholder="请选择活动区域">
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogMyInfoVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogMyInfoVisible = false ;myInfo">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-menu>
   </el-header>
   <div class="content">
@@ -83,7 +100,20 @@ import api from '../axios/api';
         userName:'',
         userImg:'',
         role:'',
-        token:''
+        token:'',
+        dialogMyInfoVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        dialogWidth:"500px",
+        formLabelWidth: '120px'
       };
     },
     mounted(){
@@ -118,6 +148,9 @@ import api from '../axios/api';
       },
       companyInfo(){
           this.$router.push("/company/info");
+      },
+      myInfo(){
+          console.log("信息提交")
       }
     }
   }

@@ -5,7 +5,7 @@
       <el-col :span="20" :offset="2">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-              <span>企业信息</span>
+              <span>企业修改</span>
               <el-button style="float: right; padding: 3px 0" @click="toInfo" type="text">信息预览</el-button>
           </div>
           <el-form ref="form" :rules="rules" :model="form" label-width="80px">
@@ -39,6 +39,12 @@
               </el-form-item>
               <el-form-item label="注册资金" prop="registeredCapital">
                   <el-input v-model.number="form.registeredCapital"><template slot="append">万</template></el-input>
+              </el-form-item>
+              <el-form-item label="招聘情况todo">
+                <el-radio-group v-model="form.isStop">
+                  <el-radio-button label="继续"></el-radio-button>
+                  <el-radio-button label="停止"></el-radio-button>
+                </el-radio-group>
               </el-form-item>
               <el-collapse v-model="activeName" accordion>
                 <el-collapse-item title="标签信息" name="1">
@@ -92,19 +98,13 @@
               <el-collapse v-model="activeName" accordion>
                 <el-collapse-item title="标签信息" name="1">
                   <el-form-item label="行业分类:">
-                    <el-radio-group disabled v-model="Info.industryCategory">
-                      <el-radio :label="item.value" v-for="(item,index) in industryCategory" :key="index">{{item.name}}</el-radio>
-                    </el-radio-group>
+                      <span v-for="(item,index) in industryCategory" :key="index" v-show="Info.industryCategory ===item.value">{{item.name}}</span>
                   </el-form-item>
                   <el-form-item label="融资状态:">
-                    <el-radio-group disabled v-model="Info.financingStatus">
-                      <el-radio :label="item.value" v-for="(item,index) in financingStatus" :key="index">{{item.name}}</el-radio>
-                    </el-radio-group>
+                      <span v-for="(item,index) in financingStatus" :key="index" v-show="Info.financingStatus ===item.value">{{item.name}}</span>
                   </el-form-item>
                   <el-form-item label="公司规模:">
-                    <el-radio-group disabled v-model="Info.staffNum">
-                      <el-radio :label="item.value" v-for="(item,index) in staffNum" :key="index">{{item.name}}</el-radio>
-                    </el-radio-group>
+                      <span v-for="(item,index) in staffNum" :key="index" v-show="Info.staffNum ===item.value">{{item.name}}</span>
                   </el-form-item>
                 </el-collapse-item>
               </el-collapse>
@@ -142,6 +142,7 @@ export default {
           recruiterId:null,
           canUpdate:null,
           isOwner:null,
+          status:null,
         },
         form: {
           id:null,
@@ -149,6 +150,7 @@ export default {
           img:'',
           introduce:'',
           belongPlace:'',
+          isStop:null,
           registeredCapital:'',
           industryCategory:'',
           financingStatus:'',
@@ -180,11 +182,27 @@ export default {
       this.staffNum = this.$store.state.staffNum
     },
     mounted(){
-      let user = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+      let user =  this.$store.state.currentUser;
       let recruiterId = user.id;
       api.getCompanyInfoByRecruiterId({recruiterId})
           .then(res=>{
-            this.Info = res.data;
+            if(res.data === null){
+              this.$message({
+                message: '您尚未绑定公司!',
+                type: 'warning'
+              })
+              this.$router.push("/recruiter/firstLogin")
+            }else{
+              if(res.data.status === 0 ){
+                this.$notify.info({
+                  title: "请耐心等待",
+                  message: '您的绑定申请正在审核中',
+              });
+              }else{
+                  this.Info = res.data;
+              }
+            }
+            
           })
     },
     methods: {

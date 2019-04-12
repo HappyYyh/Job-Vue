@@ -23,7 +23,12 @@ const logout = (token)=>{return get('logout',token)}
 const companyCertificate = CommonCompanyRequest=>{return jsonPost('company/certificate',CommonCompanyRequest)}
 const getCompanyInfoByRecruiterId = (recruiterId) =>{return get('company/info',recruiterId)}
 const companyUpdate = UpdateCompanyRequest=>{return jsonPost('company/update',UpdateCompanyRequest)}
+const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
 
+/**
+ * 招聘者
+ */
+const bindCompany = BindCompanyRequest =>{return jsonPost('recruiter/bindCompany',BindCompanyRequest)}
 /**
  * 文件
  */
@@ -46,6 +51,8 @@ export default {
     companyCertificate,
     getCompanyInfoByRecruiterId,
     companyUpdate,
+    getAllCompanyName,
+    bindCompany,
     fileUpload,
     getAllCategory,
 }

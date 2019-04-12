@@ -244,6 +244,7 @@ export default {
                         //登陆信息存储到本地
                         var curTime = new Date().getTime();
                         localStorage.setItem("userInfo",JSON.stringify({user:JSON.stringify(userInfo),time:curTime}));
+                        this.$store.state.currentUser = userInfo;
                         this.$notify({
                             title: '成功',
                             message: '登陆成功',
