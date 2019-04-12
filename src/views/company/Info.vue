@@ -6,6 +6,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
               <span>企业信息</span>
+              <el-button style="float: right; padding: 3px 0" @click="toInfo" type="text">信息预览</el-button>
           </div>
           <el-form ref="form" :rules="rules" :model="form" label-width="80px">
               <el-form-item label="企业名称" prop="companyName">
@@ -43,65 +44,23 @@
                 <el-collapse-item title="标签信息" name="1">
                   <el-form-item label="行业分类">
                     <el-radio-group v-model="form.industryCategory">
-                      <el-radio label="0">民营企业</el-radio>
-                      <el-radio label="1">电子商务</el-radio>
-                      <el-radio label="2">游戏</el-radio>
-                      <el-radio label="3">媒体</el-radio>
-                      <el-radio label="4">广告营销</el-radio>
-                      <el-radio label="5">数据服务</el-radio>
-                      <el-radio label="6">医疗健康</el-radio>
-                      <el-radio label="7">生活服务</el-radio>
-                      <el-radio label="8">O2O</el-radio>
-                      <el-radio label="9">旅游</el-radio>
-                      <el-radio label="10">分类信息</el-radio>
-                      <el-radio label="11">音乐/视频/阅读</el-radio>
-                      <el-radio label="12">在线教育</el-radio>
-                      <el-radio label="13">社交网络</el-radio>
-                      <el-radio label="14">人力资源服务</el-radio>
-                      <el-radio label="15">企业服务</el-radio>
-                      <el-radio label="16">信息安全</el-radio>
-                      <el-radio label="17">智能硬件</el-radio>
-                      <el-radio label="18">移动互联网</el-radio>
-                      <el-radio label="19">互联网</el-radio>
-                      <el-radio label="20">计算机软件</el-radio>
-                      <el-radio label="21">通信/网络设备</el-radio>
-                      <el-radio label="22">广告/公关/会展</el-radio>
-                      <el-radio label="23">互联网金融</el-radio>
-                      <el-radio label="24">物流/仓储</el-radio>
-                      <el-radio label="25">贸易/进出口</el-radio>
-                      <el-radio label="26">咨询</el-radio>
-                      <el-radio label="27">工程施工</el-radio>
-                      <el-radio label="28">汽车生产</el-radio>
-                      <el-radio label="29">其他行业</el-radio>
+                       <el-radio :label="item.value" v-for="(item,index) in industryCategory" :key="index">{{item.name}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="融资状态">
                     <el-radio-group v-model="form.financingStatus">
-                      <el-radio label="0">未融资</el-radio>
-                      <el-radio label="1">天使轮</el-radio>
-                      <el-radio label="2">A轮</el-radio>
-                      <el-radio label="3">B轮</el-radio>
-                      <el-radio label="4">C轮</el-radio>
-                      <el-radio label="5">D轮及以上</el-radio>
-                      <el-radio label="6">上市公司</el-radio>
-                      <el-radio label="7">不需要融资</el-radio>
+                      <el-radio :label="item.value" v-for="(item,index) in financingStatus" :key="index">{{item.name}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="公司规模">
                     <el-radio-group v-model="form.staffNum">
-                      <el-radio label="0">少于15人</el-radio>
-                      <el-radio label="1">15-50人</el-radio>
-                      <el-radio label="2">50-150人</el-radio>
-                      <el-radio label="3">150-500人</el-radio>
-                      <el-radio label="4">500-2000人</el-radio>
-                      <el-radio label="5">2000人以上</el-radio>
+                      <el-radio :label="item.value" v-for="(item,index) in staffNum" :key="index">{{item.name}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                 </el-collapse-item>
               </el-collapse>
               <el-form-item>
-                  <el-button type="primary" @click="onSubmit">立即认证</el-button>
-                  <el-button @click="resetForm('form')">重置</el-button>
+                  <el-button type="primary" @click="onSubmit">修改</el-button>
               </el-form-item>
           </el-form>
         </el-card> 
@@ -134,58 +93,17 @@
                 <el-collapse-item title="标签信息" name="1">
                   <el-form-item label="行业分类:">
                     <el-radio-group disabled v-model="Info.industryCategory">
-                      <el-radio label="0">民营企业</el-radio>
-                      <el-radio label="1">电子商务</el-radio>
-                      <el-radio label="2">游戏</el-radio>
-                      <el-radio label="3">媒体</el-radio>
-                      <el-radio label="4">广告营销</el-radio>
-                      <el-radio label="5">数据服务</el-radio>
-                      <el-radio label="6">医疗健康</el-radio>
-                      <el-radio label="7">生活服务</el-radio>
-                      <el-radio label="8">O2O</el-radio>
-                      <el-radio label="9">旅游</el-radio>
-                      <el-radio label="10">分类信息</el-radio>
-                      <el-radio label="11">音乐/视频/阅读</el-radio>
-                      <el-radio label="12">在线教育</el-radio>
-                      <el-radio label="13">社交网络</el-radio>
-                      <el-radio label="14">人力资源服务</el-radio>
-                      <el-radio label="15">企业服务</el-radio>
-                      <el-radio label="16">信息安全</el-radio>
-                      <el-radio label="17">智能硬件</el-radio>
-                      <el-radio label="18">移动互联网</el-radio>
-                      <el-radio label="19">互联网</el-radio>
-                      <el-radio label="20">计算机软件</el-radio>
-                      <el-radio label="21">通信/网络设备</el-radio>
-                      <el-radio label="22">广告/公关/会展</el-radio>
-                      <el-radio label="23">互联网金融</el-radio>
-                      <el-radio label="24">物流/仓储</el-radio>
-                      <el-radio label="25">贸易/进出口</el-radio>
-                      <el-radio label="26">咨询</el-radio>
-                      <el-radio label="27">工程施工</el-radio>
-                      <el-radio label="28">汽车生产</el-radio>
-                      <el-radio label="29">其他行业</el-radio>
+                      <el-radio :label="item.value" v-for="(item,index) in industryCategory" :key="index">{{item.name}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="融资状态:">
                     <el-radio-group disabled v-model="Info.financingStatus">
-                      <el-radio label="0">未融资</el-radio>
-                      <el-radio label="1">天使轮</el-radio>
-                      <el-radio label="2">A轮</el-radio>
-                      <el-radio label="3">B轮</el-radio>
-                      <el-radio label="4">C轮</el-radio>
-                      <el-radio label="5">D轮及以上</el-radio>
-                      <el-radio label="6">上市公司</el-radio>
-                      <el-radio label="7">不需要融资</el-radio>
+                      <el-radio :label="item.value" v-for="(item,index) in financingStatus" :key="index">{{item.name}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="公司规模:">
                     <el-radio-group disabled v-model="Info.staffNum">
-                      <el-radio label="0">少于15人</el-radio>
-                      <el-radio label="1">15-50人</el-radio>
-                      <el-radio label="2">50-150人</el-radio>
-                      <el-radio label="3">150-500人</el-radio>
-                      <el-radio label="4">500-2000人</el-radio>
-                      <el-radio label="5">2000人以上</el-radio>
+                      <el-radio :label="item.value" v-for="(item,index) in staffNum" :key="index">{{item.name}}</el-radio>
                     </el-radio-group>
                   </el-form-item>
                 </el-collapse-item>
@@ -205,19 +123,28 @@ import api from '@/axios/api.js'
 export default {
     data() {
       return {
+        industryCategory:'',
+        financingStatus:'',
+        staffNum:'',
         canUpdate:false,
         showInfo:true,
         Info:{
+          id:null,
           belongPlace: '',
           companyName: '',
-          financingStatus: null,
+          financingStatus: '',
           img: '',
-          industryCategory: null,
+          industryCategory: '',
           introduce: '',
           registeredCapital: '',
-          staffNum: null
+          staffNum: '',
+          isStop:null,
+          recruiterId:null,
+          canUpdate:null,
+          isOwner:null,
         },
         form: {
+          id:null,
           companyName: '',
           img:'',
           introduce:'',
@@ -248,31 +175,9 @@ export default {
       }
     },
     created () {
-      // api.getAllRegions().then(res=>{
-      //   let regions =res.data;
-      //   let options = [];
-      //   regions.forEach( (province,index) =>{
-      //     options.push({
-      //       id:province.provinceId,
-      //       name:province.provinceName,
-      //       child:[]
-      //     })
-      //     province.regionSecondResponseList.forEach((city,ind)=>{
-      //       options[index].child.push({
-      //         id:city.cityId,
-      //         name:city.cityName,
-      //         child:[]
-      //       })
-      //       city.regionThirdResponseList.forEach((country)=>{
-      //         options[index].child[ind].child.push({
-      //           id:country.countryId,
-      //           name:country.countryName
-      //         })
-      //       })
-      //     })
-      //   })
-      //   this.options = options;
-      // })
+      this.industryCategory = this.$store.state.industryCategory
+      this.financingStatus = this.$store.state.financingStatus
+      this.staffNum = this.$store.state.staffNum
     },
     mounted(){
       let user = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
@@ -283,14 +188,43 @@ export default {
           })
     },
     methods: {
+      toInfo(){
+        this.canUpdate = false;
+        this.showInfo = true;
+      },
       toUpdate(){
-        //获取后端权限
-        this.canUpdate =true;
+        this.canUpdate =this.Info.canUpdate;
         if(this.canUpdate){
           this.showInfo=false;
           this.form = this.Info;
-          this.fileList[0].url = this.Info.img
-          console.log(this.fileList)
+          this.fileList[0].url = this.Info.img;
+          this.selectedOptions = this.form.belongPlace.split("-");
+          console.log(this.form)
+          api.getAllRegions().then(res=>{
+            let regions =res.data;
+            let options = [];
+            regions.forEach( (province,index) =>{
+              options.push({
+                id:province.provinceId,
+                name:province.provinceName,
+                child:[]
+              })
+              province.regionSecondResponseList.forEach((city,ind)=>{
+                options[index].child.push({
+                  id:city.cityId,
+                  name:city.cityName,
+                  child:[]
+                })
+                city.regionThirdResponseList.forEach((country)=>{
+                  options[index].child[ind].child.push({
+                    id:country.countryId,
+                    name:country.countryName
+                  })
+                })
+              })
+            })
+            this.options = options;
+        })
         }else{
           this.$message({
           message: '对不起，您尚未拥有权限修改公司信息，请联系公司认证者获取权限!',
@@ -324,17 +258,19 @@ export default {
       },
       onSubmit() {
         console.log(this.form)
-        api.companyCertificate(this.form)
+        api.companyUpdate(this.form)
            .then(res=>{
              if(res.success){
                this.$notify({
                   title: '成功',
-                  message: '企业认证成功',
+                  message: '企业信息修改成功',
                   type: 'success'
               });
+                this.canUpdate = false;
+                this.showInfo = true;
              }else{
                this.$notify.error({
-                  title: '认证失败',
+                  title: '修改失败',
                   message: res.message,
               });
              }

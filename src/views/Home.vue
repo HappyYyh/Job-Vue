@@ -24,12 +24,12 @@
     <el-menu-item index="4"><a  target="_blank">公司</a></el-menu-item>
     <!-- 未登陆 -->
     <el-menu-item index="5" v-show="!isLogin" class="not-login login-btn">
-        <router-link to="login">
+        <router-link to="/login">
             <el-button size="small"  type="primary" round>登陆</el-button> 
         </router-link>
     </el-menu-item>
     <el-menu-item index="6" v-show="!isLogin" class="not-login">
-        <router-link to="regist">
+        <router-link to="/regist">
                 <el-button size="small"  type="primary" round>注册</el-button>
         </router-link>
     </el-menu-item>
@@ -113,7 +113,7 @@ import api from '../axios/api';
       logout(){
         api.logout({token:this.token}).then(()=>{
             localStorage.removeItem("userInfo");
-            this.$router.push("/");
+            window.location.href="/";
         })
       },
       companyInfo(){
