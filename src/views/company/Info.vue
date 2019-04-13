@@ -3,7 +3,7 @@
   <!-- 公司信息修改 -->
   <el-row v-show="canUpdate">
       <el-col :span="20" :offset="2">
-        <el-card class="box-card">
+        <el-card class="box-card-update">
           <div slot="header" class="clearfix">
               <span>企业修改</span>
               <el-button style="float: right; padding: 3px 0" @click="toInfo" type="text">信息预览</el-button>
@@ -74,8 +74,9 @@
   </el-row>
   <!-- 公司信息显示 -->
   <el-row v-show="showInfo">
-      <el-col :span="20" :offset="2">
-        <el-card class="box-card">
+      <el-col :span="22" :offset="2">
+        <!-- 公司基本信息 -->
+        <el-card class="" v-bind:class="{defaultLeft:!canReview, reviewLeft:canReview }">
           <div slot="header" class="clearfix">
               <span>企业信息</span>
           </div>
@@ -113,7 +114,47 @@
               </el-form-item>
           </el-form>
         </el-card> 
+        <!-- 招聘者信息 -->
+        <el-card class="" v-bind:class="{ defaultRight:!canReview,reviewRight:canReview}">
+          <div slot="header" class="clearfix">
+            <span>绑定审核</span>
+            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+          </div>
+              <el-table :data="recruiterList" border style="width: 100%">
+                <el-table-column fixed prop="nickName" label="昵称"  width="80"/>
+                <el-table-column prop="phone" label="手机号" width="120"/>
+                <el-table-column prop="email" label="邮箱" width="170"/>
+                <el-table-column prop="position" label="岗位" width="80"/>
+                <el-table-column label="绑定状态" width="80">
+                  <template slot-scope="scope">
+                    {{scope.row.status ===0?'否':'是'}}
+                  </template>
+                </el-table-column>
+               <el-table-column  label="修改权限" width="80">
+                  <template slot-scope="scope">
+                    {{scope.row.canUpdate ===0?'无':'有'}}
+                  </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="100">
+                  <template slot-scope="scope">
+                    <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
+                    <el-button type="text" v-show="scope.row.status ===0" size="small">绑定</el-button>
+                    <div v-show="scope.row.status ===1">
+                        <el-button type="text" v-show="scope.row.canUpdate===0" size="small">修改权限</el-button>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page.sync="currentPage"
+                :page-size="pageSize"
+                layout="prev, pager, next,total"
+                :total="total">
+              </el-pagination>
+        </el-card>
       </el-col>
+      
   </el-row>
 
 </div>
@@ -156,6 +197,15 @@ export default {
           financingStatus:'',
           staffNum:'',
         },
+        recruiterList:[{
+          phone:"",
+          email:"",
+          nickName:"",
+          position:"",
+          recruiterId:"",
+          canUpdate:"",
+          status:"",
+        }],
         rules: {
           companyName: [
             { required: true, message: '请输入公司名称', trigger: 'blur' },
@@ -174,6 +224,10 @@ export default {
         },
         selectedOptions: [],
         activeName: '0',
+        canReview:false,//能否显示审核模块
+        pageSize:10,//每页的数据条数
+        currentPage:1,//默认开始页面
+        total:null,//总记录数
       }
     },
     created () {
@@ -182,8 +236,10 @@ export default {
       this.staffNum = this.$store.state.staffNum
     },
     mounted(){
-      let user =  this.$store.state.currentUser;
-      let recruiterId = user.id;
+      //查询公司信息
+      let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user)
+      let recruiterId = userInfo.id
+      console.log(recruiterId)
       api.getCompanyInfoByRecruiterId({recruiterId})
           .then(res=>{
             if(res.data === null){
@@ -200,10 +256,22 @@ export default {
               });
               }else{
                   this.Info = res.data;
+                  if(res.data.isOwner === 1){
+                    this.canReview = true;
+                    api.getRecruiters({
+                        pageNo:this.currentPage,
+                        pageSize:this.pageSize,
+                        companyId:res.data.id
+                    }).then(response=>{
+                        console.log("招聘者信息",response)
+                        this.recruiterList = response.data.list
+                        this.total = response.data.total
+                      })
+                  }
               }
             }
-            
-          })
+          });
+      
     },
     methods: {
       toInfo(){
@@ -296,18 +364,48 @@ export default {
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      handleCurrentChange(val) {
+        api.getRecruiters({
+            pageNo:val,
+            pageSize:this.pageSize,
+            companyId:this.Info.id
+        }).then(response=>{
+            console.log("招聘者信息",response)
+            this.recruiterList = response.data.list
+            this.total = response.data.total
+          })
       }
     }
 }
 </script>
 <style lang="scss" scoped>
-.box-card {
-    width: 80%;
-    margin-left: 10%;
+.defaultLeft {
+    width: 72%;
+    margin-left: 8.7%;
+}
+.defaultRight{
+    display: none
+}
+.reviewLeft{
+    width: 55%;
+    float: left;
+}
+.reviewRight{
+    width: 40%;
+    float: right;
+    margin-left: 4.5%
+}
+.box-card-update{
+  width: 80%;
+  margin-left: 10%;
 }
 .company-img{
     width: 130px;
     height: 130px;
+}
+.el-pagination{
+  float: right;
 }
 </style>
            

@@ -28,8 +28,16 @@
                     </el-form>
                 </el-card>
                 <el-card class="box-card right">
-                    <span>没有公司？立即认证</span>
-                    <el-button style="float: right; padding: 3px 0" type="text">绑定</el-button>
+                    <div slot="header" class="clearfix">
+                        <span>没有公司?</span>
+                    </div>
+                    <div style="margin-top:30px">
+                        <span>立即成为公司的认证者吧！</span>
+                        <router-link to="/company/certificate">
+                            <el-button style="padding: 3px 0" type="text">立即认证</el-button>  
+                        </router-link>
+                    </div>
+                   
                 </el-card>
             </div>
         </el-col>
@@ -79,8 +87,9 @@ export default {
         this.form.companyId = item.id;
       },
       onSubmit(){
+          let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user)
           //var user = JSON.parse(JSON.parse(localStorage.getItem('userInfo').data))
-          this.form.recruiterId = this.$store.state.currentUser.id;
+          this.form.recruiterId = userInfo.id;
           console.log(this.form);
           api.bindCompany(this.form)
              .then(res=>{

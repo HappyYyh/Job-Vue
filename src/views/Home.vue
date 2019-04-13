@@ -113,7 +113,7 @@ import api from '../axios/api';
           desc: ''
         },
         dialogWidth:"500px",
-        formLabelWidth: '120px'
+        formLabelWidth: '120px',
       };
     },
     mounted(){
@@ -133,7 +133,6 @@ import api from '../axios/api';
                 this.token = user.token;
             }
         }    
-
     },
 
     methods: {
