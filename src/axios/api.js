@@ -30,6 +30,8 @@ const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
  */
 const bindCompany = BindCompanyRequest =>{return jsonPost('recruiter/bindCompany',BindCompanyRequest)}
 const getRecruiters = RecruiterListRequest =>{return jsonPost('recruiter/getRecruiters',RecruiterListRequest)}
+const updateRecruiterInfo = CommonRecruiterRequest =>{return jsonPost('recruiter/updateRecruiterInfo',CommonRecruiterRequest)}
+
 /**
  * 文件
  */
@@ -55,6 +57,7 @@ export default {
     getAllCompanyName,
     bindCompany,
     getRecruiters,
+    updateRecruiterInfo,
     fileUpload,
     getAllCategory,
 }

@@ -138,9 +138,9 @@
                 <el-table-column fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
                     <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
-                    <el-button type="text" v-show="scope.row.status ===0" size="small">绑定</el-button>
+                    <el-button type="text" @click="agreeBind(scope.row.recruiterId)" v-show="scope.row.status ===0" size="small">绑定</el-button>
                     <div v-show="scope.row.status ===1">
-                        <el-button type="text" v-show="scope.row.canUpdate===0" size="small">修改权限</el-button>
+                        <el-button type="text" @click="givePre(scope.row.recruiterId)" v-show="scope.row.canUpdate===0" size="small">给予权限</el-button>
                     </div>
                   </template>
                 </el-table-column>
@@ -225,7 +225,7 @@ export default {
         selectedOptions: [],
         activeName: '0',
         canReview:false,//能否显示审核模块
-        pageSize:10,//每页的数据条数
+        pageSize:1,//每页的数据条数
         currentPage:1,//默认开始页面
         total:null,//总记录数
       }
@@ -258,15 +258,7 @@ export default {
                   this.Info = res.data;
                   if(res.data.isOwner === 1){
                     this.canReview = true;
-                    api.getRecruiters({
-                        pageNo:this.currentPage,
-                        pageSize:this.pageSize,
-                        companyId:res.data.id
-                    }).then(response=>{
-                        console.log("招聘者信息",response)
-                        this.recruiterList = response.data.list
-                        this.total = response.data.total
-                      })
+                    this.queryRecruiterList(this.currentPage)
                   }
               }
             }
@@ -366,15 +358,46 @@ export default {
         this.$refs[formName].resetFields();
       },
       handleCurrentChange(val) {
+        this.queryRecruiterList(val)
+      },
+      queryRecruiterList(pageNo){
         api.getRecruiters({
-            pageNo:val,
+            pageNo:pageNo,
             pageSize:this.pageSize,
             companyId:this.Info.id
         }).then(response=>{
-            console.log("招聘者信息",response)
+            console.log("当前页码数",this.currentPage)
             this.recruiterList = response.data.list
             this.total = response.data.total
           })
+      },
+      agreeBind(recruiterId){
+        api.updateRecruiterInfo({
+          companyId:this.Info.id,
+          recruiterId,
+          updateType:0
+        // eslint-disable-next-line no-unused-vars
+        }).then(res=>{
+          this.$notify.success({
+              title: '成功',
+              message: '绑定成功',
+          })
+          this.queryRecruiterList(this.currentPage)
+        })
+      },
+      givePre(recruiterId){
+        api.updateRecruiterInfo({
+          companyId:this.Info.id,
+          recruiterId,
+          updateType:1
+        // eslint-disable-next-line no-unused-vars
+        }).then(res=>{
+          this.$notify.success({
+              title: '成功',
+              message: '绑定成功',
+          })
+          this.queryRecruiterList(this.currentPage)
+        })
       }
     }
 }
