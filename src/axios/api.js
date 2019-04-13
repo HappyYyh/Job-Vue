@@ -16,6 +16,7 @@ const sendCheckCode = SendSmsRequest=>{return jsonPost('sendCheckCode',SendSmsRe
 const regist = registRequest=>{return jsonPost('register',registRequest)}
 const login = loginRequest=>{return jsonPost('login',loginRequest)}
 const logout = (token)=>{return get('logout',token)}
+const userUpdate = (updateUserRequest)=>{return jsonPost('user/updateInfo',updateUserRequest)}
 
 /**
  * 企业
@@ -36,6 +37,7 @@ const updateRecruiterInfo = CommonRecruiterRequest =>{return jsonPost('recruiter
  * 文件
  */
 const fileUpload = (file)=>{return filePost('file/upload',file)}
+const fileDelete = (key)=>{return get('file/delete',key)}
 
 /**
  * 职位分类
@@ -51,6 +53,7 @@ export default {
     regist,
     login,
     logout,
+    userUpdate,
     companyCertificate,
     getCompanyInfoByRecruiterId,
     companyUpdate,
@@ -59,5 +62,6 @@ export default {
     getRecruiters,
     updateRecruiterInfo,
     fileUpload,
+    fileDelete,
     getAllCategory,
 }

@@ -55,19 +55,33 @@
         <!-- 对话框 -->
         <el-dialog title="个人信息" :visible.sync="dialogMyInfoVisible" :width="dialogWidth">
             <el-form :model="form">
+                <el-form-item label="手机:" :label-width="formLabelWidth">
+                    {{form.phone}}
+                </el-form-item>
+                <el-form-item label="邮箱:" :label-width="formLabelWidth">
+                    {{form.email}}
+                </el-form-item>
                 <el-form-item label="昵称" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off"></el-input>
+                    <el-input v-model="form.nickName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域" :label-width="formLabelWidth">
-                <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
+                <el-form-item label="个人头像" :label-width="formLabelWidth">
+                    <el-upload
+                        class="avatar-uploader"
+                        action="http://localhost:8888/file/upload"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        >
+                        <img v-if="form.img" :src="form.img" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
                 </el-form-item>
+                <el-form-item v-show="false"><el-input v-model="form.img" type="hidden"></el-input></el-form-item>
+
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogMyInfoVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogMyInfoVisible = false ;myInfo">确 定</el-button>
+                <el-button type="primary" @click="myInfo">确 定</el-button>
             </div>
         </el-dialog>
     </el-menu>
@@ -103,17 +117,15 @@ import api from '../axios/api';
         token:'',
         dialogMyInfoVisible: false,
         form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          nickName: '',
+          img:'',
+          phone:'',
+          email:'',
+          id:'',
         },
+        fileList: [{name:'',url:''}],
         dialogWidth:"500px",
-        formLabelWidth: '120px',
+        formLabelWidth: '80px',
       };
     },
     mounted(){
@@ -131,6 +143,11 @@ import api from '../axios/api';
                 this.userImg = user.headImg;
                 this.role = user.role;
                 this.token = user.token;
+                //信息填充
+                this.form.phone = user.phone;
+                this.form.email = user.email;
+                this.form.id = user.id;
+                this.fileList[0].url = user.email.img;
             }
         }    
     },
@@ -148,8 +165,34 @@ import api from '../axios/api';
       companyInfo(){
           this.$router.push("/company/info");
       },
+      // eslint-disable-next-line no-unused-vars
+      handleAvatarSuccess(res, file) {
+        console.log(res);
+          if(res.success){
+              this.form.img = res.data
+          }
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
       myInfo(){
           console.log("信息提交")
+          api.userUpdate(this.form).then(res=>{
+              if(res.success){
+                //todo 重新登陆  
+                this.dialogMyInfoVisible = false 
+              }
+          })  
+          
       }
     }
   }
@@ -228,4 +271,28 @@ import api from '../axios/api';
     display: inline-block;
     margin-right: 15px;
 }
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 130px;
+    height: 130px;
+    line-height: 130px;
+    text-align: center;
+  }
+  .avatar {
+    width: 130px;
+    height: 130px;
+    display: block;
+  }
 </style>

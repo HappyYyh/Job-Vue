@@ -225,7 +225,7 @@ export default {
         selectedOptions: [],
         activeName: '0',
         canReview:false,//能否显示审核模块
-        pageSize:1,//每页的数据条数
+        pageSize:10,//每页的数据条数
         currentPage:1,//默认开始页面
         total:null,//总记录数
       }
@@ -310,8 +310,14 @@ export default {
         });
         }
       },
+      // eslint-disable-next-line no-unused-vars
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        var url = this.form.img;
+        api.fileDelete({url}).then(res=>{
+          if(res.success){
+            this.form.img = '';
+          }
+        })
       },
       handlePreview(file) {
         console.log(file);

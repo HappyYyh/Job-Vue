@@ -168,8 +168,14 @@ export default {
 
     },
     methods: {
+      // eslint-disable-next-line no-unused-vars
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        var url = this.form.img;
+        api.fileDelete({url}).then(res=>{
+          if(res.success){
+            this.form.img = '';
+          }
+        })
       },
       handlePreview(file) {
         console.log(file);
