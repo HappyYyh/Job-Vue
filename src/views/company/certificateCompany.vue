@@ -6,7 +6,6 @@
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>企业认证</span>
-                    <el-button style="float: right; padding: 3px 0" type="text">查看模版</el-button>
                 </div>
                 <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                     <el-form-item label="企业名称" prop="companyName">
@@ -33,7 +32,7 @@
                         <el-input type="textarea" :rows="2" placeholder="请输入企业简介" v-model="form.introduce"></el-input>
                     </el-form-item>
                     <el-form-item label="所属地区">
-                         <el-cascader :options="options" :props="props" v-model="selectedOptions" @change="handleChange" separator="-"></el-cascader>
+                         <el-cascader :options="options" :props="props" v-model="selectedOptions" @change="handleChange"></el-cascader>
                          <el-input v-show="false"  v-model="form.belongPlace"></el-input>
                     </el-form-item>
                     <el-form-item label="注册资金" prop="registeredCapital">
@@ -59,7 +58,7 @@
                       </el-collapse-item>
                     </el-collapse>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">立即认证</el-button>
+                        <el-button type="primary" @click="onSubmit('form')">立即认证</el-button>
                         <el-button @click="resetForm('form')">重置</el-button>
                     </el-form-item>
                 </el-form>
@@ -138,34 +137,6 @@ export default {
       this.industryCategory = this.$store.state.industryCategory
       this.financingStatus = this.$store.state.financingStatus
       this.staffNum = this.$store.state.staffNum
-      //转换
-      // api.getAllCategory().then(res=>{
-      //   console.log(res.data)
-      //   let categorys = res.data;
-      //   let props = []
-      //   categorys.forEach((first,index) => {
-      //     props.push({
-      //       value:first.firstName,
-      //       lable:first.firstId,
-      //       children:[]
-      //     })
-      //     first.jobSecondCategoryResponseList.forEach((second,ind)=>{
-      //       props[index].children.push({
-      //         value:second.secondName,
-      //         lable:second.secondId,
-      //         children:[]
-      //       })
-      //       second.jobThirdCategoryResponseList.forEach((third)=>{
-      //         props[index].children[ind].children.push({
-      //           value:third.thirdName,
-      //         })
-      //       })
-      //     })
-          
-      //   });
-      //   console.log(props)
-      // })
-
     },
     methods: {
       // eslint-disable-next-line no-unused-vars
@@ -195,28 +166,38 @@ export default {
           }
       },
       handleChange(value) {
-        this.form.belongPlace = value.join("-");
+        this.form.belongPlace = value.join("/");
         console.log(this.form.belongPlace)
       },
-      onSubmit() {
-        let user = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
-        this.form.recruiterId = user.id;
-        console.log(this.form)
-        api.companyCertificate(this.form)
-           .then(res=>{
-             if(res.success){
-               this.$notify({
-                  title: '成功',
-                  message: '企业认证成功',
-                  type: 'success'
-              });
-             }else{
-               this.$notify.error({
-                  title: '认证失败',
-                  message: res.message,
-              });
-             }
-           })
+      onSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let user = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+            this.form.recruiterId = user.id;
+            console.log(this.form)
+            api.companyCertificate(this.form)
+              .then(res=>{
+                if(res.success){
+                  this.$notify({
+                      title: '成功',
+                      message: '企业认证成功',
+                      type: 'success'
+                  });
+                }else{
+                  this.$notify.error({
+                      title: '认证失败',
+                      message: res.message,
+                  });
+                }
+              })
+          } else {
+            this.$message({
+                type:'error',
+                message:'请完成表单校验'
+            })
+            return false;
+         }
+        });
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

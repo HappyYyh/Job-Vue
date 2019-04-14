@@ -162,7 +162,7 @@ export default new Vuex.Store({
       value:7,
       name:"不需要融资"
     }],
-  staffNum:[
+    staffNum:[
     {
       value:0,
       name:"少于15人"
@@ -187,7 +187,44 @@ export default new Vuex.Store({
       value:5,
       name:"2000人以上"
     },
-  ]
+  ],
+    workEducation:[
+      {
+      value:0,
+      label:'大专'
+      },
+      {
+      value:1,
+      label:'本科'
+      },
+      {
+      value:2,
+      label:'硕士'
+      },
+      {
+      value:3,
+      label:'博士'
+       },
+       {
+      value:4,
+      label:'不限'
+      },
+    ]
+    ,
+    welfare:[
+      "五险一金",
+      "领导好",
+      "专业培训",
+      "额外补贴",
+      "双休福利多",
+      "团队氛围好",
+      "扁平管理",
+      "晋升空间大",
+
+      "行业独角兽",
+      "大平台",
+      
+    ],
   },
   mutations: {
 

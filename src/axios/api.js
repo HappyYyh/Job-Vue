@@ -34,6 +34,11 @@ const getRecruiters = RecruiterListRequest =>{return jsonPost('recruiter/getRecr
 const updateRecruiterInfo = CommonRecruiterRequest =>{return jsonPost('recruiter/updateRecruiterInfo',CommonRecruiterRequest)}
 
 /**
+ * 职位
+ */
+const addJob = addJobRequest =>{return jsonPost('job/add',addJobRequest)}
+
+/**
  * 文件
  */
 const fileUpload = (file)=>{return filePost('file/upload',file)}
@@ -61,6 +66,7 @@ export default {
     bindCompany,
     getRecruiters,
     updateRecruiterInfo,
+    addJob,
     fileUpload,
     fileDelete,
     getAllCategory,

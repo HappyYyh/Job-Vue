@@ -45,7 +45,7 @@
     <!-- 招聘者 -->
     <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
     <el-menu-item index="6" v-show="role===1" class="recruiter">简历查看</el-menu-item>
-    <el-menu-item index="7" v-show="role===1" class="recruiter">新增职位</el-menu-item>
+    <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
     <el-submenu index="8" v-show="role===1" class="recruiter">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
         <el-menu-item index="8-1" v-show="role===1" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
@@ -146,6 +146,8 @@ import api from '../axios/api';
                 //信息填充
                 this.form.phone = user.phone;
                 this.form.email = user.email;
+                this.form.nickName = user.nickName;
+                this.form.img = user.headImg;
                 this.form.id = user.id;
                 this.fileList[0].url = user.email.img;
             }
@@ -161,6 +163,9 @@ import api from '../axios/api';
             localStorage.removeItem("userInfo");
             window.location.href="/";
         })
+      },
+      toJob(){
+          this.$router.push("/job/addJob");
       },
       companyInfo(){
           this.$router.push("/company/info");
