@@ -9,7 +9,9 @@
                 </div>
                 <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                     <el-form-item label="企业名称" prop="companyName">
-                        <el-input v-model="form.companyName"></el-input>
+                        <el-col :span="10">
+                          <el-input v-model="form.companyName"></el-input>
+                        </el-col>
                     </el-form-item>
                     <el-form-item label="企业logo">
                         <el-upload
@@ -36,7 +38,9 @@
                          <el-input v-show="false"  v-model="form.belongPlace"></el-input>
                     </el-form-item>
                     <el-form-item label="注册资金" prop="registeredCapital">
+                      <el-col :span="10">
                         <el-input v-model.number="form.registeredCapital"><template slot="append">万</template></el-input>
+                      </el-col>
                     </el-form-item>
                     <el-collapse v-model="activeName" accordion>
                       <el-collapse-item title="标签信息" name="1">
@@ -183,6 +187,7 @@ export default {
                       message: '企业认证成功',
                       type: 'success'
                   });
+                  this.$router.push("/company/info")
                 }else{
                   this.$notify.error({
                       title: '认证失败',

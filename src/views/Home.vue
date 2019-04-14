@@ -165,7 +165,7 @@ import api from '../axios/api';
         })
       },
       toJob(){
-          this.$router.push("/job/addJob");
+          this.$router.push("/job/recruitersJob");
       },
       companyInfo(){
           this.$router.push("/company/info");

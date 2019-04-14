@@ -205,7 +205,7 @@ export default {
             api.addJob(this.form)
                 .then(res=>{
                     if(res.success){
-                        alert("success")
+                        this.$router.push("/job/recruitersJob")
                     }
                 })
           } else {

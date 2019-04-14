@@ -37,6 +37,7 @@ const updateRecruiterInfo = CommonRecruiterRequest =>{return jsonPost('recruiter
  * 职位
  */
 const addJob = addJobRequest =>{return jsonPost('job/add',addJobRequest)}
+const recruitersJobList = QueryJobRequest =>{return jsonPost('job/getJobList',QueryJobRequest)}
 
 /**
  * 文件
@@ -67,6 +68,7 @@ export default {
     getRecruiters,
     updateRecruiterInfo,
     addJob,
+    recruitersJobList,
     fileUpload,
     fileDelete,
     getAllCategory,
