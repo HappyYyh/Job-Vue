@@ -5,7 +5,8 @@
         <el-col :span="20" :offset="2">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
-                    <span>发布职位</span>
+                    <span v-show="form.id != null">修改职位</span>
+                    <span v-show="form.id === undefined">发布职位</span>
                 </div>
                 <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                     <el-form-item label="职位名称" prop="jobName">
@@ -24,6 +25,12 @@
                     <el-form-item label="学历要求">
                         <el-select v-model="form.workEducation" class="selectClass" placeholder="请选择学历要求">
                             <el-option v-for="(item,index) in workEducation" :key="index" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="工作经验">
+                        <el-select v-model="form.workExperience" class="selectClass" placeholder="请选择经验要求">
+                            <el-option v-for="(item,index) in workExperience" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -64,8 +71,11 @@
                         <el-input type="textarea" :rows="4" placeholder="请输入工作要求" v-model="form.jobRequirement"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('form')">立即发布</el-button>
-                        <el-button @click="resetForm('form')">重置</el-button>
+                        <div v-show="form.id === undefined">
+                          <el-button type="primary" @click="onSubmit('form')">立即发布</el-button>
+                          <el-button @click="resetForm('form')">重置</el-button>
+                        </div>
+                        <el-button type="primary" v-show="form.id != null" @click="update('form')">修改信息</el-button>
                     </el-form-item>
                 </el-form>
             </el-card> 
@@ -78,19 +88,23 @@ import api from '@/axios/api.js'
 export default {
     data() {
       return {
-        workEducation:[],  
+        workEducation:[], 
+        workExperience:[], 
         form: {
+          id:this.$route.params.id,
           jobName:'',
           category: '',
           recruiterId:'',
           workPlace:'',
           workEducation:'',
+          workExperience:'',
           salaryStart:'',
           salaryEnd:'',
           welfare:'',
           status:'',
           jobDuty:'',
-          jobRequirement:''
+          jobRequirement:'',
+          jobId:''
         },
         dynamicTags: ['五险一金', '领导nice', '额外补贴'],
         inputVisible: false,
@@ -126,10 +140,16 @@ export default {
     },
     created () {
       this.workEducation = this.$store.state.workEducation
+      this.workExperience = this.$store.state.workExperience
     },
     mounted(){
       this.queryCategory();
       this.queryWorkPlace();
+      
+      if(this.form.id != null){
+        //this.sleep(3000)
+        this.getJobDetail()
+      }
     },
     methods: {
       //查询职位级联  
@@ -191,6 +211,14 @@ export default {
         this.options2 = options;
       })
       },
+      getJobDetail(){
+        api.getJobDetail({id:this.form.id})
+          .then(res=>{
+            this.dynamicTags = res.data.welfare.split("/")
+            this.form = res.data
+            console.log(res.data)
+          })
+      },
       handleWorkPlaceChange(value) {
         this.form.workPlace = value.join("/");
         console.log(this.form.workPlace)
@@ -216,7 +244,6 @@ export default {
             return false;
          }
         });
-        
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -239,8 +266,36 @@ export default {
         }
         this.inputVisible = false;
         this.newTag = '';
+      },
+    //   sleep(n) {
+    //     var start = new Date().getTime();
+    //     while (true) {
+    //         if (new Date().getTime() - start > n) {
+    //             break;
+    //         }
+    //     }
+    //  },
+      update(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.form.jobId = this.form.id
+            this.form.welfare = this.dynamicTags.join("/");
+            console.log(this.form)
+            api.updateJob(this.form)
+                .then(res=>{
+                    if(res.success){
+                        this.$router.push("/job/recruitersJob")
+                    }
+                })
+          } else {
+            this.$message({
+                type:'error',
+                message:'请完成表单校验'
+            })
+            return false;
+         }
+        })
       }
-      
     }
 }
 </script>

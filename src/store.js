@@ -209,22 +209,37 @@ export default new Vuex.Store({
       value:4,
       label:'不限'
       },
-    ]
-    ,
-    welfare:[
-      "五险一金",
-      "领导好",
-      "专业培训",
-      "额外补贴",
-      "双休福利多",
-      "团队氛围好",
-      "扁平管理",
-      "晋升空间大",
-
-      "行业独角兽",
-      "大平台",
-      
     ],
+    workExperience:[
+      {
+      value:0,
+      label:'经验不限'
+      },
+      {
+      value:1,
+      label:'应届毕业生'
+      },
+      {
+      value:2,
+      label:'1年以内'
+      },
+      {
+      value:3,
+      label:'1~3年'
+       },
+       {
+      value:4,
+      label:'3～5年'
+      },
+      {
+      value:5,
+      label:'5～10年'
+        },
+        {
+      value:6,
+      label:'10年以上'
+      }
+    ]
   },
   mutations: {
 
