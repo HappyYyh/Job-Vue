@@ -34,6 +34,21 @@ export default new Router({
           name:'info',
           component: () => import('./views/company/Info.vue')
         },
+        {
+          path:'/job/addJob',
+          name:'addJob',
+          component: () => import('./views/job/addJob.vue')
+        },
+        {
+          path:'/job/recruitersJob',
+          name:'recruitersJob',
+          component: () => import('./views/job/recruitersJob.vue')
+        },
+        {
+          path:'/resume/addResume',
+          name:'addResume',
+          component: () => import('./views/resume/addResume.vue')
+        },
       ]
     },
     {

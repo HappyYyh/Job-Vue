@@ -72,7 +72,7 @@ export default {
         console.log(this.$store.state.currentUser)
     },
     methods:{
-        querySearch(queryString, cb) {
+      querySearch(queryString, cb) {
         var allCompanyName = this.allCompanyName;
         var results = queryString ? allCompanyName.filter(this.createFilter(queryString)) : allCompanyName;
         // 调用 callback 返回建议列表的数据

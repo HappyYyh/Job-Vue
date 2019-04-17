@@ -34,7 +34,7 @@
                   <el-input type="textarea" :rows="2" placeholder="请输入企业简介" v-model="form.introduce"></el-input>
               </el-form-item>
               <el-form-item label="所属地区">
-                    <el-cascader :options="options" :props="props" v-model="selectedOptions" @change="handleChange" separator="-"></el-cascader>
+                    <el-cascader :options="options" :props="props" v-model="selectedOptions" @change="handleChange"></el-cascader>
                     <el-input v-show="false"  v-model="form.belongPlace"></el-input>
               </el-form-item>
               <el-form-item label="注册资金" prop="registeredCapital">
@@ -66,7 +66,7 @@
                 </el-collapse-item>
               </el-collapse>
               <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('form')">修改</el-button>
               </el-form-item>
           </el-form>
         </el-card> 
@@ -225,7 +225,7 @@ export default {
         selectedOptions: [],
         activeName: '0',
         canReview:false,//能否显示审核模块
-        pageSize:1,//每页的数据条数
+        pageSize:10,//每页的数据条数
         currentPage:1,//默认开始页面
         total:null,//总记录数
       }
@@ -276,7 +276,7 @@ export default {
           this.showInfo=false;
           this.form = this.Info;
           this.fileList[0].url = this.Info.img;
-          this.selectedOptions = this.form.belongPlace.split("-");
+          this.selectedOptions = this.form.belongPlace.split("/");
           console.log(this.form)
           api.getAllRegions().then(res=>{
             let regions =res.data;
@@ -310,8 +310,14 @@ export default {
         });
         }
       },
+      // eslint-disable-next-line no-unused-vars
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        var url = this.form.img;
+        api.fileDelete({url}).then(res=>{
+          if(res.success){
+            this.form.img = '';
+          }
+        })
       },
       handlePreview(file) {
         console.log(file);
@@ -331,28 +337,38 @@ export default {
           }
       },
       handleChange(value) {
-        this.form.belongPlace = value.join("-");
+        this.form.belongPlace = value.join("/");
         console.log(this.form.belongPlace)
       },
-      onSubmit() {
-        console.log(this.form)
-        api.companyUpdate(this.form)
-           .then(res=>{
-             if(res.success){
-               this.$notify({
-                  title: '成功',
-                  message: '企业信息修改成功',
-                  type: 'success'
-              });
-                this.canUpdate = false;
-                this.showInfo = true;
-             }else{
-               this.$notify.error({
-                  title: '修改失败',
-                  message: res.message,
-              });
-             }
-           })
+      onSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            console.log(this.form)
+            api.companyUpdate(this.form)
+              .then(res=>{
+                if(res.success){
+                  this.$notify({
+                      title: '成功',
+                      message: '企业信息修改成功',
+                      type: 'success'
+                  });
+                    this.canUpdate = false;
+                    this.showInfo = true;
+                }else{
+                  this.$notify.error({
+                      title: '修改失败',
+                      message: res.message,
+                  });
+                }
+              })
+          } else {
+            this.$message({
+                type:'error',
+                message:'请完成表单校验'
+            })
+            return false;
+         }
+        });
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
