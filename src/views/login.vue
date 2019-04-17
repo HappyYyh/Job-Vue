@@ -208,7 +208,7 @@ export default {
                     message = "请输入正确的密码!"
                     isAlert = true;
                 }
-                if(phoneAndEmail ==='' || (!phoneReg.test(phoneAndEmail) && !mailReg.test(phoneAndEmail))){
+                if(phoneAndEmail ==='' || phoneAndEmail.length!=11  || (!phoneReg.test(phoneAndEmail) && !mailReg.test(phoneAndEmail))){
                     message = "请输入正确手机或者邮箱!"
                     isAlert = true;
                 }

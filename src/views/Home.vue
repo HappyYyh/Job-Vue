@@ -35,12 +35,13 @@
     </el-menu-item>
     <!-- 求职者 -->
     <el-menu-item index="5" v-show="role===0" class="seeker seeker-first">消息</el-menu-item>
-    <el-menu-item index="6" v-show="role===0" class="seeker">简历</el-menu-item>
-    <el-submenu index="7" v-show="role===0" class="seeker">
-        <template slot="title">{{userName}}<img :src="userImg" alt="" class="headImg"></template>
-        <el-menu-item index="7-1" v-show="role===0">选项1</el-menu-item>
-        <el-menu-item index="7-2" v-show="role===0">选项2</el-menu-item>
-        <el-menu-item index="7-3" v-show="role===0">选项3</el-menu-item>
+    <el-menu-item index="6" v-show="role===0" @click="toResume"  class="seeker">我的简历</el-menu-item>
+    <el-menu-item index="7" v-show="role===0" class="seeker">我的投递</el-menu-item>
+    <el-submenu index="8" v-show="role===0" class="seeker">
+        <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
+        <el-menu-item index="8-1" v-show="role===0" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
+        <el-menu-item index="8-2" v-show="role===0">我的订阅</el-menu-item>
+        <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
     </el-submenu>
     <!-- 招聘者 -->
     <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
@@ -193,11 +194,22 @@ import api from '../axios/api';
           console.log("信息提交")
           api.userUpdate(this.form).then(res=>{
               if(res.success){
-                //todo 重新登陆  
                 this.dialogMyInfoVisible = false 
+                this.$message({
+                    showClose: true,
+                    message: '个人信息已修改，重新登录后生效!',
+                    type: 'info'
+                })
+                //todo 重新登陆 
+                api.logout({token:this.token}).then(()=>{
+                    localStorage.removeItem("userInfo");
+                    this.$router.push("/login");
+                })
               }
           })  
-          
+      },
+      toResume(){
+          this.$router.push("/resume/addResume")
       }
     }
   }
@@ -224,6 +236,9 @@ import api from '../axios/api';
 }
 .seeker{
     padding: 0 10px;
+}
+.seeker-first{
+    margin-left: 400px;
 }
 .recruiter{
     padding: 0 10px;
