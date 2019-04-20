@@ -42,6 +42,11 @@ const getJobDetail = (id) =>{return get('job/detail',id)}
 const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequest)}
 
 /**
+ * 简历
+ */
+const addBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/addBase',ResumeBaseRequest)}
+
+/**
  * 文件
  */
 const fileUpload = (file)=>{return filePost('file/upload',file)}
@@ -72,6 +77,7 @@ export default {
     addJob,
     recruitersJobList,
     getJobDetail,
+    addBaseResume,
     updateJob,
     fileUpload,
     fileDelete,

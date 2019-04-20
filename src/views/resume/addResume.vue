@@ -3,33 +3,43 @@
     <el-row>
         <el-col :span="20" :offset="2">
             <el-card class="box-card">
-                <span class="review">简历预览</span>
+                <span class="review" v-show="baseShow.id!=null">简历预览</span>
                 <!-- 基本信息 -->
-                <div>
-                    <div class="userBaseShow" v-show="userBaseShow" style="height:140px">
-                        <div class="userInfo">
-                            <h2 class="name">{{baseShow.name}}</h2>
-                            <div class="info-labels">
-                                <p class="contact">
-                                    <span>{{baseShow.phone}}</span>
-                                    <em class="vline"></em>
-                                    <span>{{baseShow.email}}</span>
-                                </p>
-                                <p class="job">
-                                    <span>{{baseShow.birthDay}}</span>
-                                    <em class="vline"></em>
-                                    <span>{{baseShow.city}}</span>
-                                </p>
+                <div class="clear">
+                    <div v-show="baseShow.id===null">
+                        <a href="#" class="link-add" @click="userBaseShow =false">
+                            <i class="el-icon-circle-plus-outline"></i>
+                            <span>添加</span>
+                        </a>
+                        <h3 class="title">基本信息</h3>
+                    </div>
+                    <div v-show="baseShow.id!=null">
+                        <div class="userBaseShow" v-show="userBaseShow" style="height:140px">
+                            <div class="userInfo">
+                                <h2 class="name">{{baseShow.name}}</h2>
+                                <div class="info-labels">
+                                    <p class="contact">
+                                        <span>{{baseShow.phone}}</span>
+                                        <em class="vline"></em>
+                                        <span>{{baseShow.email}}</span>
+                                    </p>
+                                    <p class="job">
+                                        <span>{{baseShow.birthDay}}</span>
+                                        <em class="vline"></em>
+                                        <span>{{baseShow.city}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="img">
+                                <img src="http://image.yangyhao.top/images/jpg/15553839067507580.jpg" alt="">
+                                <a href="#" @click="userBaseShow = false" class="userInfo-upd">
+                                    <i class="el-icon-circle-plus-outline"></i>
+                                    <span>编辑</span>
+                                </a>
                             </div>
                         </div>
-                        <div class="img">
-                            <img src="http://image.yangyhao.top/images/jpg/15553839067507580.jpg" alt="">
-                            <a href="#" @click="userBaseShow = false" class="userInfo-upd">
-                                <i class="el-icon-circle-plus-outline"></i>
-                                <span>编辑</span>
-                            </a>
-                        </div>
                     </div>
+                    
                     <div v-show="!userBaseShow" class="userBaseUpd upd">
                         <h3 class="title">基础信息编辑</h3>
                         <el-form ref="baseForm" :model="baseForm" label-width="80px">
@@ -87,12 +97,12 @@
                 <div class="clear">
                     <div v-show="introduceShow">
                         <!-- 如果没有信息则显示添加 -->
-                        <!-- <a href="" class="link-add">
+                        <a href="#" class="link-add" @click="introduceShow = false"  v-show="baseShow.id===null">
                             <i class="el-icon-circle-plus-outline"></i>
                             <span>添加</span>
-                        </a> -->
+                        </a>
                         <h3 class="title">个人介绍</h3>
-                        <div class="introduce">
+                        <div class="introduce" v-show="baseShow.id!==null">
                             <div class="left">
                                     <p class="text">
                                     {{baseShow.introduce}}
@@ -127,10 +137,38 @@
                 <!-- 求职期望 -->
                 <div class="clear">
                     <div v-show="expJobShow">
+                        <!-- 如果没有信息则显示添加 -->
+                        <a href="#" class="link-add" @click="expJobShow = false"  v-show="baseShow.id===null">
+                            <i class="el-icon-circle-plus-outline"></i>
+                            <span>添加</span>
+                        </a>
                         <h3 class="title">求职期望</h3>
-                        <div class="introduce">
+                        <div class="introduce" v-show="baseShow.id!==null">
                             <div class="left">
-                                   
+                                <el-row>
+                                    <el-col :span="18" :offset="2">
+                                        {{baseShow.expJob}}
+                                        <em class="vline"></em>
+                                        {{baseShow.expStartSalary}}K-{{baseShow.expEndSalary}}K
+                                        <em class="vline"></em>
+                                        {{baseShow.expCity}}
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="18" :offset="2">
+                                        <span>
+                                            <span v-for="(item,index) in expJobTypeOptions" :key="index" v-show="item.value==baseShow.expJobType">{{item.name}}</span>
+                                        </span>
+                                        <em class="vline"></em>
+                                        <span>
+                                            <span v-for="(item,ind) in expNowStatusOptions" :key="ind" v-show="item.value==baseShow.expNowStatus">{{item.name}}</span>
+                                        </span>
+                                        <em class="vline"></em>
+                                        <span>
+                                            <span v-for="(item,id) in expComeTimeOptions" :key="id" v-show="item.value==baseShow.expComeTime">{{item.name}}</span>
+                                        </span>
+                                    </el-col>
+                                </el-row>
                             </div>
                             <div class="right">
                                 <a href="#" class="link-edit" @click="expJobShow = false">
@@ -144,12 +182,59 @@
                         <hr class="updIntroduceTitle">
                         <h3 class="title ">编辑求职期望</h3>
                         <el-form ref="baseForm" :model="baseForm" label-width="80px">
-                            <el-form-item label="简介">
-                                <el-input type="textarea" :rows="2" v-model="baseForm.introduce"></el-input>
-                            </el-form-item>
+                            <el-row>
+                                <el-col :span="10" :offset="1">
+                                    <el-form-item label="期望职位">
+                                      <el-input v-model="baseForm.expJob"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="10" :offset="1">
+                                    <el-form-item label="薪资要求">
+                                    <el-col :span="10">
+                                        <el-input v-model="baseForm.expStartSalary"></el-input>
+                                    </el-col>
+                                    <el-col :span="4" style="text-align: center">
+                                        -
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <el-input v-model="baseForm.expEndSalary"></el-input>
+                                    </el-col>
+                                 </el-form-item>
+                                </el-col>    
+                            </el-row>
+                            <el-row>
+                                <el-col :span="10" :offset="1">
+                                    <el-form-item label="期望城市">
+                                        <el-input v-model="baseForm.expCity"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="10" :offset="1">
+                                        <el-form-item label="期望类型">
+                                        <el-select v-model="baseForm.expJobType" placeholder="请选择">
+                                            <el-option v-for="item in expJobTypeOptions" :key="item.value" :value="item.value" :label="item.name"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="10" :offset="1">
+                                    <el-form-item label="当前状态">
+                                        <el-select v-model="baseForm.expNowStatus" placeholder="请选择">
+                                            <el-option v-for="item in expNowStatusOptions" :key="item.value" :value="item.value" :label="item.name"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="10" :offset="1">
+                                    <el-form-item label="到岗时间">
+                                        <el-select v-model="baseForm.expComeTime" placeholder="请选择">
+                                            <el-option v-for="item in expComeTimeOptions" :key="item.value" :value="item.value" :label="item.name"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
                             <el-row>
                                 <el-col :span="4" :offset="14">
-                                    <el-button style="width:100%" @click="introduceShow=true">取消</el-button>
+                                    <el-button style="width:100%" @click="expJobShow=true">取消</el-button>
                                 </el-col>
                                 <el-col :span="4" >
                                     <el-button style="width:100%">确认</el-button>
@@ -160,25 +245,27 @@
                 </div>
                 <!-- 教育信息 -->
                 <div class="clear">
-                    <div class="item-primary">
-                        <a href="" class="link-add">
-                            <i class="el-icon-circle-plus-outline"></i>
-                            <span>添加</span>
-                        </a>
-                       <h3 class="title">教育信息</h3>
-                    </div>
+                    <a href="" class="link-add">
+                        <i class="el-icon-circle-plus-outline"></i>
+                        <span>添加</span>
+                    </a>
+                    <h3 class="title">教育信息</h3>
                 </div>
                 <!-- 工作经验 -->
                 <div class="clear">
-                    <div class="item-primary">
-                        <h3 class="title">工作经验</h3>
-                    </div>
+                    <a href="" class="link-add">
+                        <i class="el-icon-circle-plus-outline"></i>
+                        <span>添加</span>
+                    </a>
+                    <h3 class="title">工作经验</h3>
                 </div>
                 <!-- 项目经历 -->
                 <div class="clear">
-                    <div class="item-primary">
-                        <h3 class="title">项目经历</h3>
-                    </div>
+                     <a href="" class="link-add">
+                        <i class="el-icon-circle-plus-outline"></i>
+                        <span>添加</span>
+                    </a>
+                    <h3 class="title">项目经历</h3>
                 </div>
             </el-card>
         </el-col>
@@ -193,20 +280,21 @@ export default {
             introduceShow:true,
             expJobShow:true,
             baseShow:{
+                id:null,
                 name:'杨永昊',
                 birthDay:'1997-03-27',
                 sex:'0',
                 city:'南京',
                 phone:'17314981254',
                 email:'863044052@qq.com',
-                introduce:'实习工作半年，了解互联网公司的技术栈，逻辑清晰，热爱学习新技能，渴望加入技术规模完整的团队。',
-                expJob:'Java',
-                expJobType:'0',
-                expCity:'南京',
-                expStartSalary:'8',
-                expEndSalary:'10',
-                expNowStatus:'1',
-                expComeTime:'3'
+                introduce:'',
+                expJob:'',
+                expJobType:'',
+                expCity:'',
+                expStartSalary:'',
+                expEndSalary:'',
+                expNowStatus:'',
+                expComeTime:''
             },
             baseForm:{
                 userId:'',
@@ -224,7 +312,10 @@ export default {
                 expEndSalary:'',
                 expNowStatus:'',
                 expComeTime:''
-            }
+            },
+            expJobTypeOptions:[{value:0,name:'全职'},{value:1,name:'兼职'},{value:2,name:'实习'}],
+            expNowStatusOptions:[{value:0,name:'积极找工作'},{value:1,name:'随便看看'},{value:2,name:'暂时不换工作'}],
+            expComeTimeOptions:[{value:0,name:'随时到岗'},{value:1,name:'两周以内'},{value:2,name:'两周到一个月'},{value:3,name:'一到三个月'},{value:4,name:'三个月以上'}],
         }
     }
 }
@@ -304,7 +395,7 @@ export default {
 .info-labels  span{
     font-size: 14px;
 }
-.info-labels  .vline{
+.vline{
     margin: 0 28px;
     display: inline-block;
     width: 1px;
@@ -336,7 +427,7 @@ export default {
 .link-edit{
     float: right;
     height: 25px;
-    margin: 20px 5px 0 0;
+    margin: 10px 5px 0 0;
     line-height: 25px;
     color: #00c2b3;
     text-align: center;
@@ -347,6 +438,7 @@ export default {
     vertical-align: middle;
 }
 .title{
+    width: 86%;
     border-top: 1px #f2f3f3 solid;
     color: #24272e;
     font-size: 18px;
