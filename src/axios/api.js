@@ -45,6 +45,8 @@ const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequ
  * 简历
  */
 const addBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/addBase',ResumeBaseRequest)}
+const editBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/editBase',ResumeBaseRequest)}
+const myResume = (userId) =>{return get('resume/getResume',userId)}
 
 /**
  * 文件
@@ -78,6 +80,8 @@ export default {
     recruitersJobList,
     getJobDetail,
     addBaseResume,
+    editBaseResume,
+    myResume,
     updateJob,
     fileUpload,
     fileDelete,

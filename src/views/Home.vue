@@ -210,7 +210,6 @@ import api from '../axios/api';
       },
       toResume(){
           this.$router.push("/resume/addResume");
-          //this.$router.push("/resume/addResume")
       }
     }
   }
