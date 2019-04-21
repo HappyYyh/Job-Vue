@@ -3,7 +3,106 @@
     <el-row>
         <el-col :span="20" :offset="2">
             <el-card class="box-card">
-                <span class="review" v-show="baseShow.id!=null">简历预览</span>
+                <el-button class="review" v-show="baseShow.id!=null" type="text" @click="showReview = true">简历预览</el-button>
+                <!-- 预览简历对话框 -->
+                <el-dialog  :visible.sync="showReview"  width="50%" top="0" center>
+                    <div class="container">
+                        <!-- 基础信息 -->
+                        <div class="basis">
+                            <img :src="img" class="basis-img" alt="">
+                            <span class="name">{{baseShow.name}}</span>
+                            <p>
+                                {{baseShow.birthDay}}
+                                <span class="devide">|</span>
+                                {{baseShow.sex===0?'男':'女'}}
+                                <span class="devide">|</span>
+                                {{baseShow.city}}
+                            </p>
+                            <p>
+                                {{baseShow.phone}}
+                                <span class="devide">|</span>
+                                {{baseShow.email}}
+                            </p>
+                        </div>
+                        <!-- 简介 -->
+                        <div class="clear sec">
+                            <h3 class="sec-title">个人简介</h3>
+                            <p class="sec-content">{{baseShow.introduce}}</p>
+                        </div>
+                        <!-- 求职期望 -->
+                        <div class="clear sec expect-pos">
+                            <h3 class="sec-title">求职期望</h3>
+                            <div class="pos-slted">
+                                {{baseShow.expJob}}
+                                <span class="devide">|</span>
+                                {{baseShow.expJobType===0?'全职':baseShow.expJobType===1?'兼职':'实习'}}
+                                <span class="devide">|</span>
+                                {{baseShow.expCity}}
+                                <span class="devide">|</span>
+                                {{baseShow.expStartSalary}}K-{{baseShow.expEndSalary}}K
+                                <span class="devide">|</span>
+                                {{baseShow.expNowStatus===0?'积极找工作':baseShow.expNowStatus===1?'随便看看':'暂时不换工作'}}
+                                <span class="devide">|</span>
+                                {{baseShow.expComeTime===0?'随时到岗':baseShow.expComeTime===1?'两周以内':baseShow.expComeTime===2?'两周到一个月':baseShow.expComeTime===3?'一到三个月':'三个月以上'}}
+                            </div>
+                        </div>
+                        <!-- 教育经历 -->
+                        <div class="sec">
+                            <h3 class="sec-title">教育经历</h3>
+                            <div class="sec-content" v-for="(item,ind) in resumeEducationResponseList" :key="ind">
+                                <span class="from">{{item.universityName}}</span>
+                                <div class="major">
+                                    <span class="time">{{item.startYear}}-{{item.endYear}}</span>
+                                    {{item.professionalName}}
+                                    <span class="devide">|</span>
+                                    {{item.education===0?'大专':item.education===1?'本科':item.education===2?'硕士':'博士'}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 工作经历 -->
+                        <div class="sec">
+                            <h3 class="sec-title">工作经历</h3>
+                            <div class="sec-content" v-for="(item,ind) in resumeExperienceResponseList" :key="ind">
+                                <span class="from">{{item.companyName}}</span>
+                                <div class="major">
+                                    <span class="time">{{item.startTime}}-{{item.endTime}}</span>
+                                    {{item.department}}
+                                    <span class="devide">|</span>
+                                    {{item.position}}
+                                    <span class="devide">|</span>
+                                    {{item.job}}
+                                </div>
+                                <div>
+                                    <p class="detail" v-for="(detail,ind) in item.detailList" :key="ind">{{detail}}</p>
+                                    <!-- <span style="margin-left:20px">
+                                        {{item.detail}}
+                                    </span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 项目经历 -->
+                        <div class="sec">
+                            <h3 class="sec-title">项目经历</h3>
+                            <div class="sec-content" v-for="(item,ind) in resumeProjectResponseList" :key="ind">
+                                <span class="from">{{item.projectName}}</span>
+                                <div class="major">
+                                    <span class="time">{{item.startTime}}-{{item.endTime}}</span>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="detail" v-for="(description,ind) in item.descriptionList" :key="ind">{{description}}</p>
+                                    </div>
+                                    <div>
+                                         <p class="detail" v-for="(result,ind) in item.resultList" :key="ind">{{result}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="showReview = false">下载</el-button>
+                    </span>
+                </el-dialog>
                 <!-- 基本信息 -->
                 <div class="clear">
                     <div v-show="baseShow.id===null && firstShow">
@@ -32,7 +131,7 @@
                                 </div>
                             </div>
                             <div class="img">
-                                <img src="http://image.yangyhao.top/images/jpg/15553839067507580.jpg" alt="">
+                                <img :src="img" alt="">
                                 <a href="javascript:void(0);" @click="userBaseShow = false;baseForm={...baseShow}" class="userInfo-upd">
                                     <i class="el-icon-circle-plus-outline"></i>
                                     <span>编辑</span>
@@ -540,6 +639,7 @@ import api from '../../axios/api';
 export default {
     data(){
         return{
+            showReview:false,
             //用于控制显示
             firstShow:true,
             userBaseShow:true,
@@ -552,6 +652,7 @@ export default {
             editEduBtnShow:null,
             editExperienceBtnShow:null,
             editProjectBtnShow:null,
+            img:'',
             //基础信息显示
             baseShow:{
                 id:null,
@@ -660,8 +761,8 @@ export default {
                 result:'',
             },
             resumeEducationResponseList:[],
-            resumeExperienceResponseList:[],
-            resumeProjectResponseList:[],
+            resumeExperienceResponseList:[{detailList:[]}],
+            resumeProjectResponseList:[{descriptionList:[],resultList:[]}],
             //下拉列表的选项
             expJobTypeOptions:[{value:0,name:'全职'},{value:1,name:'兼职'},{value:2,name:'实习'}],
             expNowStatusOptions:[{value:0,name:'积极找工作'},{value:1,name:'随便看看'},{value:2,name:'暂时不换工作'}],
@@ -687,6 +788,7 @@ export default {
     created(){
         let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
         this.userId  = userInfo.id;
+        this.img = userInfo.headImg;
     },
     mounted(){
         this.myResume();
@@ -702,6 +804,14 @@ export default {
                 this.resumeEducationResponseList = res.data.resumeEducationResponseList; 
                 this.resumeExperienceResponseList = res.data.resumeExperienceResponseList;
                 this.resumeProjectResponseList = res.data.resumeProjectResponseList;
+                //将文本分割换行
+                this.resumeExperienceResponseList.forEach((item)=>{
+                    item.detailList = item.detail.replace(/(\r\n|\n|\r)/gm, "<br/>").split("<br/>");
+                })
+                this.resumeProjectResponseList.forEach((item)=>{
+                    item.descriptionList = item.description.replace(/(\r\n|\n|\r)/gm, "<br/>").split("<br/>");
+                    item.resultList = item.result.replace(/(\r\n|\n|\r)/gm, "<br/>").split("<br/>");
+                })
             })
         },
         queryCity(){
@@ -851,6 +961,102 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+//dialog
+.container{
+    background-color: rgb(255, 255, 255);
+    min-height: 100%;
+    padding: 45px 50px;
+}
+.dialog-footer{
+    z-index: 2;
+    position: fixed;
+    bottom: 0px;
+    left: 25%;
+    width: 50%;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px -5px 8px 0px;
+    padding: 11px 0px;
+}
+.basis{
+    padding-bottom: 28px;
+}
+.basis-img{
+    float: right;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(247, 247, 247);
+    border-radius: 50%;
+}
+.basis p{
+    font-size: 12px;
+    line-height: 30px;
+    margin-right: 100px;
+}
+.basis .name{
+    font-size: 25px;
+    line-height: 25px;
+    color: rgb(32, 35, 41);
+    margin-bottom: 19px;
+}
+.devide{
+    color: rgb(185, 185, 185);
+    font-size: 13px;
+    margin: 0px 15px;
+}
+.sec{
+    margin-bottom: 31px;
+}
+.sec p {
+    font-size: 12px;
+    line-height: 25px;
+    color: rgb(141, 146, 161);
+}
+.expect-pos {
+    font-size: 12px;
+}
+.expect-pos .pos-slted {
+    line-height: 18px;
+    padding-top: 2px;
+}
+.sec-title::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 3px;
+    height: 100%;
+    background-color: rgb(83, 202, 195);
+}
+.sec .sec-title{
+    position: relative;
+    font-size: 17px;
+    line-height: 17px;
+    color: rgb(32, 35, 41);
+    font-weight: 400;
+    padding-left: 13px;
+}
+.sec .sec-content {
+    padding-left: 13px;
+    margin-top: 14px;
+}
+.sec .from {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 21px;
+}
+.sec .major {
+    font-size: 13px;
+    line-height: 20px;
+    margin: 10px 0px 9px;
+}
+.sec .time {
+    font-size: 11px;
+    color: rgb(141, 146, 161);
+    float: right;
+    margin-left: 10px;
+}
+//主页面
 .box-card{
     width: 60%;
     margin-left: 20%;
