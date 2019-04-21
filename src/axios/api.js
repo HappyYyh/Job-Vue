@@ -44,8 +44,12 @@ const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequ
 /**
  * 简历
  */
-const addBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/addBase',ResumeBaseRequest)}
-const editBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/editBase',ResumeBaseRequest)}
+//const addBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/addBase',ResumeBaseRequest)}
+const submitBase = (ResumeBaseRequest) =>{return jsonPost('resume/submitBase',ResumeBaseRequest)}
+const submitEducation = (ResumeEducationRequest) =>{return jsonPost('resume/submitEducation',ResumeEducationRequest)}
+const submitExperience = (ResumeExperienceRequest) =>{return jsonPost('resume/submitExperience',ResumeExperienceRequest)}
+const submitProject = (ResumeProjectRequest) =>{return jsonPost('resume/submitProject',ResumeProjectRequest)}
+const deleteResume = (ResumeDeleteRequest) =>{return jsonPost('resume/deleteResume',ResumeDeleteRequest)}
 const myResume = (userId) =>{return get('resume/getResume',userId)}
 
 /**
@@ -79,8 +83,11 @@ export default {
     addJob,
     recruitersJobList,
     getJobDetail,
-    addBaseResume,
-    editBaseResume,
+    submitBase,
+    submitEducation, 
+    submitExperience,
+    submitProject,
+    deleteResume,
     myResume,
     updateJob,
     fileUpload,
