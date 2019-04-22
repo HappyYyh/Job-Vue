@@ -75,7 +75,10 @@
                           <el-button type="primary" @click="onSubmit('form')">立即发布</el-button>
                           <el-button @click="resetForm('form')">重置</el-button>
                         </div>
-                        <el-button type="primary" v-show="form.id != null" @click="update('form')">修改信息</el-button>
+                        <el-button type="primary" v-show="form.id != null" @click="update('form')">修改</el-button>
+                        <router-link to="/job/recruitersJob">
+                          <el-button v-show="form.id != null">取消</el-button>
+                        </router-link>
                     </el-form-item>
                 </el-form>
             </el-card> 

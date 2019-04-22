@@ -3,10 +3,10 @@
     <el-row>
         <el-col :span="20" :offset="2">
             <el-card class="box-card">
-                <el-button class="review" v-show="baseShow.id!=null" type="text" @click="showReview = true">简历预览</el-button>
+                <el-button class="review" v-show="baseShow.id!=null" type="text" @click="showReview = true;htmlTitle=baseShow.name+'的简历'">简历预览</el-button>
                 <!-- 预览简历对话框 -->
                 <el-dialog  :visible.sync="showReview"  width="50%" top="0" center>
-                    <div class="container">
+                    <div class="container" id="pdfDom">
                         <!-- 基础信息 -->
                         <div class="basis">
                             <img :src="img" class="basis-img" alt="">
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <span slot="footer" class="dialog-footer">
-                        <el-button type="primary" @click="showReview = false">下载</el-button>
+                        <el-button type="primary" @click="showReview = false;getPdf()">下载</el-button>
                     </span>
                 </el-dialog>
                 <!-- 基本信息 -->
@@ -639,6 +639,7 @@ import api from '../../axios/api';
 export default {
     data(){
         return{
+            htmlTitle:'',
             showReview:false,
             //用于控制显示
             firstShow:true,
@@ -793,6 +794,7 @@ export default {
     mounted(){
         this.myResume();
         this.queryCity();
+        
     },
     methods:{
         myResume(){
@@ -954,7 +956,12 @@ export default {
                     message: '已取消删除'
                 });          
             });
-      }
+        },
+        // getPdf(){
+        //     this.showReview = false;
+        //     this.htmlTitle = this.baseShow.name+"的简历";
+        //     this.getPdf('resumeId',this.htmlTitle);
+        // }
         
     }
 }
