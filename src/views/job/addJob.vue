@@ -150,7 +150,7 @@ export default {
       this.queryWorkPlace();
       
       if(this.form.id != null){
-        //this.sleep(3000)
+        
         this.getJobDetail()
       }
     },
@@ -219,6 +219,10 @@ export default {
           .then(res=>{
             this.dynamicTags = res.data.welfare.split("/")
             this.form = res.data
+            let category = this.form.category;
+            let workPlace =  this.form.workPlace;
+            this.selectedOptions1 = category.split("/");
+            this.selectedOptions2 =workPlace.split("/");
             console.log(res.data)
           })
       },
