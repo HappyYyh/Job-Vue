@@ -3,7 +3,7 @@
   <el-header>
     <!-- 顶部导航栏 -->
     <el-menu
-    :default-active="activeIndex2"
+    :default-active="activeIndex"
     class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
@@ -20,8 +20,15 @@
             <a href="#">首页</a>
         </router-link>
     </el-menu-item>
-    <el-menu-item index="3">职位</el-menu-item>
-    <el-menu-item index="4"><a  target="_blank">公司</a></el-menu-item>
+    <el-menu-item index="3">
+        
+            <a href="javascript:void(0);">职位</a>
+    </el-menu-item>
+    <el-menu-item index="4">
+        <router-link to="/company/list">
+            <a href="javascript:void(0);">公司</a>
+        </router-link>
+    </el-menu-item>
     <!-- 未登陆 -->
     <el-menu-item index="5" v-show="!isLogin" class="not-login login-btn">
         <router-link to="/login">
@@ -108,8 +115,7 @@ import api from '../axios/api';
     data() {
       return {
         isHover:false,
-        activeIndex: '1',
-        activeIndex2: '2',
+        activeIndex: '0',
         select: '',
         isLogin:false,
         userName:'',

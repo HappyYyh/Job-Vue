@@ -31,8 +31,13 @@ export default new Router({
         },
         {
           path:'/company/info',
-          name:'info',
+          name:'companyInfo',
           component: () => import('./views/company/Info.vue')
+        },
+        {
+          path:'/company/list',
+          name:'companyInfoList',
+          component: () => import('./views/company/list.vue')
         },
         {
           path:'/job/addJob',

@@ -54,7 +54,7 @@
     <!-- 职位栏 -->
         <div class="hot-job">
            <div class="sub-div" v-for="(item,index) in hotJob" :key="index">
-               <a href="#" class="job-info">
+               <a href="javascript:void(0);" class="job-info">
                    <p>
                        高级架构师
                        <span class="salary">25-35k</span>
@@ -67,7 +67,7 @@
                        本科
                    </p>
                </a>
-               <a href="#" class="user-info">
+               <a href="javascript:void(0);" class="user-info">
                     <p style="margin-top:7px">
                         <img src="http://image.yangyhao.top/%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F.jpg" alt="">
                         <span class="user-text">
@@ -83,20 +83,41 @@
     <!-- 公司栏 -->
         <div class="hot-company">
             <div class="company-div" v-for="(item,index) in hotCompany" :key="index">
-                <a href="#" class="company-info">
-                    <img src="https://img.bosszhipin.com/beijin/mcs/chatphoto/20160720/ed49d80596791760285e5d6e7d7785b0687d53309a83a89b4e1257a27ee9c74d.jpg?x-oss-process=image/resize,w_100,limit_0" >
+                <a href="javascript:void(0);" class="company-info">
+                    <img :src="item.img" >
                     <div class="company-text">
-                        <h4>金证股份</h4>
-                        <p>
-                            已上市
-                        <span class="vline"></span>
-                            计算机软件
+                        <h4>{{item.name}}</h4>
+                        <p >
+                            <span v-if="item.financingStatus===0">未融资</span>
+                            <span v-if="item.financingStatus===1">天使轮</span>
+                            <span v-if="item.financingStatus===2">A轮</span>
+                            <span v-if="item.financingStatus===3">B轮</span>
+                            <span v-if="item.financingStatus===4">C轮</span>
+                            <span v-if="item.financingStatus===5">D轮及以上</span>
+                            <span v-if="item.financingStatus===6">上市公司</span>
+                            <span v-if="item.financingStatus===7">不需要融资</span>
+                          <span class="vline"></span>
+                          <span>
+                            <span v-for="(option,ind) in industryCategory" :key="ind" v-show="option.value===item.industryCategory">
+                              {{option.name}}
+                            </span>
+                          </span>
                         </p>
                     </div>
                 </a>
-                <a href="" class="about-info">
-                    
+                <a href="javascript:void(0);" class="about-info">
+                    <p>
+                      <span style="float:left">
+                        <span style="color: #00c2b3;">{{item.jobNum}}</span>个在招职位
+                      </span>
+                      <span style="float:right">
+                        <span style="color: #00c2b3;">{{item.recruiterNum}}</span>位招聘者
+                      </span>
+                    </p>
                 </a>
+            </div>
+            <div class="more-tab">
+              <el-button style="width:300px" href="javascript:void(0);">查看更多</el-button>
             </div>
         </div>
     </div>
@@ -110,29 +131,33 @@ import api from '../axios/api';
   export default {
     data() {
       return {
-        isHover:false,
-        activeIndex: '1',
-        activeIndex2: '2',
         input5: '',
         select: '',
-        firstJobId: '',
         jobCategory:[],
         secondList: [],
         showRight: '',
         hotJob:[1,2,3,4,5,6],
-        hotCompany:[1,2,3,4,5,6,7,8,9,10,11,12],
+        hotCompany:[],
+        industryCategory:[],
+        financingStatus:[],
       };
     },
-    mounted(){
+    created(){
+      //查询职位选项
       api.getAllCategory()
-            .then(res =>{
-                console.log(res.data);
-                this.jobCategory= res.data;
-                this.secondList = res.data.map((item)=>item.jobSecondCategoryResponseList);
-                console.log('secondList',this.secondList)
-            })
+        .then(res =>{
+            this.jobCategory= res.data;
+            this.secondList = res.data.map((item)=>item.jobSecondCategoryResponseList);
+        })
+      //数据回显
+      this.industryCategory = this.$store.state.industryCategory;
+      this.financingStatus = this.$store.state.financingStatus
     },
-
+    mounted(){
+      //查询公司信息
+      this.queryCompany();
+      
+    },
     methods: {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
@@ -142,7 +167,16 @@ import api from '../axios/api';
       },
       handelOut(){
         this.showRight = '';
-      }
+      },
+      queryCompany(){
+        api.queryCompany({
+          pageNo:0,
+          pageSize:12
+        }).then(res=>{
+          this.hotCompany = res.data.list
+          console.log(res.data)
+        })
+      },
     }
   }
 </script>
@@ -399,4 +433,14 @@ import api from '../axios/api';
     font-size: 12px;
     display: block;
 }
+.about-info p {
+  width: 205px;
+  margin: 0 auto;
+}
+.more-tab{
+  text-align: center;
+  margin-top: 458px;
+}
+
+
 </style>

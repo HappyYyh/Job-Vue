@@ -25,6 +25,7 @@ const companyCertificate = CommonCompanyRequest=>{return jsonPost('company/certi
 const getCompanyInfoByRecruiterId = (recruiterId) =>{return get('company/info',recruiterId)}
 const companyUpdate = UpdateCompanyRequest=>{return jsonPost('company/update',UpdateCompanyRequest)}
 const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
+const queryCompany = QueryCompanyRequest =>{return jsonPost('company/query',QueryCompanyRequest)}
 
 /**
  * 招聘者
@@ -44,7 +45,6 @@ const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequ
 /**
  * 简历
  */
-//const addBaseResume = (ResumeBaseRequest) =>{return jsonPost('resume/addBase',ResumeBaseRequest)}
 const submitBase = (ResumeBaseRequest) =>{return jsonPost('resume/submitBase',ResumeBaseRequest)}
 const submitEducation = (ResumeEducationRequest) =>{return jsonPost('resume/submitEducation',ResumeEducationRequest)}
 const submitExperience = (ResumeExperienceRequest) =>{return jsonPost('resume/submitExperience',ResumeExperienceRequest)}
@@ -77,6 +77,7 @@ export default {
     getCompanyInfoByRecruiterId,
     companyUpdate,
     getAllCompanyName,
+    queryCompany,
     bindCompany,
     getRecruiters,
     updateRecruiterInfo,
