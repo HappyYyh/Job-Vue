@@ -26,6 +26,8 @@ const getCompanyInfoByRecruiterId = (recruiterId) =>{return get('company/info',r
 const companyUpdate = UpdateCompanyRequest=>{return jsonPost('company/update',UpdateCompanyRequest)}
 const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
 const queryCompany = QueryCompanyRequest =>{return jsonPost('company/query',QueryCompanyRequest)}
+const queryCompanyDetail = (id) =>{return get('company/detail',id)}
+const getCompanyJobs = QueryCompanyJobsRequest =>{return jsonPost('companygetCompanyJobList',QueryCompanyJobsRequest)}
 
 /**
  * 招聘者
@@ -79,6 +81,8 @@ export default {
     companyUpdate,
     getAllCompanyName,
     queryCompany,
+    queryCompanyDetail,
+    getCompanyJobs,
     bindCompany,
     getRecruiters,
     updateRecruiterInfo,

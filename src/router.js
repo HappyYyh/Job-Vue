@@ -40,6 +40,11 @@ export default new Router({
           component: () => import('./views/company/list.vue')
         },
         {
+          path:'/company/detail',
+          name:'companyDetail',
+          component: () => import('./views/company/detail.vue')
+        },
+        {
           path:'/job/addJob',
           name:'addJob',
           component: () => import('./views/job/addJob.vue')

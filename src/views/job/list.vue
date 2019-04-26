@@ -96,7 +96,6 @@
                                     <em class="vline"></em>
                                     {{item.workEducation===0?'大专':item.workEducation===1?'本科':item.workEducation===2?'硕士':item.workEducation===3?'博士':'不限'}}
                                 </p>
-                                
                             </el-row>
                         </el-col>
                         <el-col :span="8" class="companyInfo">
