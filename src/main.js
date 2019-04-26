@@ -4,11 +4,13 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import './plugins/element.js'
+import htmlToPdf from '@/components/utils/htmlToPdf'
 
 import api from './axios/axios.js'
 
 Vue.prototype.$axios = axios
 Vue.prototype.$api=api;
+Vue.use(htmlToPdf)
 
 Vue.config.productionTip = false
 

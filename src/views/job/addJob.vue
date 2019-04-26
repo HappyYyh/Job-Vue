@@ -75,7 +75,10 @@
                           <el-button type="primary" @click="onSubmit('form')">立即发布</el-button>
                           <el-button @click="resetForm('form')">重置</el-button>
                         </div>
-                        <el-button type="primary" v-show="form.id != null" @click="update('form')">修改信息</el-button>
+                        <el-button type="primary" v-show="form.id != null" @click="update('form')">修改</el-button>
+                        <router-link to="/job/recruitersJob">
+                          <el-button v-show="form.id != null">取消</el-button>
+                        </router-link>
                     </el-form-item>
                 </el-form>
             </el-card> 
@@ -147,7 +150,7 @@ export default {
       this.queryWorkPlace();
       
       if(this.form.id != null){
-        //this.sleep(3000)
+        
         this.getJobDetail()
       }
     },
@@ -216,6 +219,10 @@ export default {
           .then(res=>{
             this.dynamicTags = res.data.welfare.split("/")
             this.form = res.data
+            let category = this.form.category;
+            let workPlace =  this.form.workPlace;
+            this.selectedOptions1 = category.split("/");
+            this.selectedOptions2 =workPlace.split("/");
             console.log(res.data)
           })
       },

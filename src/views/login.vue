@@ -262,7 +262,7 @@ export default {
                             //如果是求职者
                             if(userInfo.firstLogin === true){
                                 //如果首次登陆
-
+                                this.$router.push("/resume/resumeInfo");
                             }else{
                                 this.$router.push("/");
                             }

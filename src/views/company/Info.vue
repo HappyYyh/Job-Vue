@@ -40,12 +40,6 @@
               <el-form-item label="注册资金" prop="registeredCapital">
                   <el-input v-model.number="form.registeredCapital"><template slot="append">万</template></el-input>
               </el-form-item>
-              <el-form-item label="招聘情况todo">
-                <el-radio-group v-model="form.isStop">
-                  <el-radio-button label="继续"></el-radio-button>
-                  <el-radio-button label="停止"></el-radio-button>
-                </el-radio-group>
-              </el-form-item>
               <el-collapse v-model="activeName" accordion>
                 <el-collapse-item title="标签信息" name="1">
                   <el-form-item label="行业分类">
@@ -138,7 +132,8 @@
                 <el-table-column fixed="right" label="操作" width="100">
                   <template slot-scope="scope">
                     <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
-                    <el-button type="text" @click="agreeBind(scope.row.recruiterId)" v-show="scope.row.status ===0" size="small">绑定</el-button>
+                    <el-button type="text" @click="agreeBind(scope.row.recruiterId)" v-show="scope.row.status ===0" size="small">同意</el-button>
+                    <el-button type="text" @click="disAgreeBind(scope.row.recruiterId)" v-show="scope.row.status ===0" size="small">拒绝</el-button>
                     <div v-show="scope.row.status ===1">
                         <el-button type="text" @click="givePre(scope.row.recruiterId)" v-show="scope.row.canUpdate===0" size="small">给予权限</el-button>
                     </div>
@@ -388,29 +383,23 @@ export default {
           })
       },
       agreeBind(recruiterId){
-        api.updateRecruiterInfo({
-          companyId:this.Info.id,
-          recruiterId,
-          updateType:0
-        // eslint-disable-next-line no-unused-vars
-        }).then(res=>{
-          this.$notify.success({
-              title: '成功',
-              message: '绑定成功',
-          })
-          this.queryRecruiterList(this.currentPage)
-        })
+        this.editBind(recruiterId,0,"绑定成功")
+      },
+      disAgreeBind(recruiterId){
+        this.editBind(recruiterId,2,"拒绝绑定成功")
       },
       givePre(recruiterId){
+        this.editBind(recruiterId,1,"给予权限成功")
+      },
+      editBind(recruiterId,type,text){
         api.updateRecruiterInfo({
           companyId:this.Info.id,
           recruiterId,
-          updateType:1
-        // eslint-disable-next-line no-unused-vars
-        }).then(res=>{
+          updateType:type
+        }).then(()=>{
           this.$notify.success({
               title: '成功',
-              message: '绑定成功',
+              message: text,
           })
           this.queryRecruiterList(this.currentPage)
         })
