@@ -5,6 +5,15 @@
             <el-col :span="16" :offset="4">
                 <el-card class="filter">
                     <el-row class="filter-row">
+                        <el-col :span="2" style="margin-top: 10px;">公司名称:</el-col>
+                        <el-col :span="6">
+                            <el-input placeholder="请输入公司名称" v-model="query.name"></el-input>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-button @click="queryCompany(null,null,null)">搜索</el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row class="filter-row">
                         <el-col :span="2">公司地点:</el-col>
                         <el-col :span="22">
                             <a href="javascript:void(0)" :class="{selected:placeAcitve===ind}" v-for="(item,ind) in hotCity" :key="ind" @click="queryCompany(ind,item,0)">{{item}}</a>
@@ -76,6 +85,18 @@
                     </div>
                 </div>
             </el-col>
+            <!-- 分页 -->
+            <el-col :span="16" :offset="4">
+                <el-card class="pagination">
+                    <el-pagination 
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="query.pageNo"
+                        :page-size="query.pageSize"
+                        layout="prev, pager, next,total"
+                        :total="total">
+                    </el-pagination>
+                </el-card>
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -93,6 +114,7 @@ export default {
            financingStatus:[],
            staffNum:[],
            query:{
+               name:'',
                place:'',
                industryCategory:null,
                financingStatus:null,
@@ -114,6 +136,10 @@ export default {
         this.queryCompany(null,null,null);
     },
     methods:{
+        handleCurrentChange(val) {
+            this.query.pageNo = val;
+            this.queryCompany(null,null,null)
+        },
         queryCompany(index,value,type){
             if(type === 0){
                 if(value==='全国'){
@@ -143,7 +169,8 @@ export default {
             })
             
         }
-    }
+    },
+    
 }
 </script>
 
@@ -236,5 +263,8 @@ export default {
 .about-info p {
   width: 205px;
   margin: 0 auto;
+}
+.pagination{
+    text-align: center
 }
 </style>
