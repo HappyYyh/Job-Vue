@@ -61,7 +61,7 @@ service.interceptors.response.use(
                 type:'warn',
             })
             router.replace({
-                path:'login',
+                path:'/login',
                 //登陆成功后跳回当前页面
                 query:{redirect: router.currentRoute.fullPath}
             })

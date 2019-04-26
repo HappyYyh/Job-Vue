@@ -25,6 +25,7 @@ const companyCertificate = CommonCompanyRequest=>{return jsonPost('company/certi
 const getCompanyInfoByRecruiterId = (recruiterId) =>{return get('company/info',recruiterId)}
 const companyUpdate = UpdateCompanyRequest=>{return jsonPost('company/update',UpdateCompanyRequest)}
 const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
+const queryCompany = QueryCompanyRequest =>{return jsonPost('company/query',QueryCompanyRequest)}
 
 /**
  * 招聘者
@@ -40,6 +41,16 @@ const addJob = addJobRequest =>{return jsonPost('job/add',addJobRequest)}
 const recruitersJobList = QueryJobRequest =>{return jsonPost('job/getJobList',QueryJobRequest)}
 const getJobDetail = (id) =>{return get('job/detail',id)}
 const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequest)}
+
+/**
+ * 简历
+ */
+const submitBase = (ResumeBaseRequest) =>{return jsonPost('resume/submitBase',ResumeBaseRequest)}
+const submitEducation = (ResumeEducationRequest) =>{return jsonPost('resume/submitEducation',ResumeEducationRequest)}
+const submitExperience = (ResumeExperienceRequest) =>{return jsonPost('resume/submitExperience',ResumeExperienceRequest)}
+const submitProject = (ResumeProjectRequest) =>{return jsonPost('resume/submitProject',ResumeProjectRequest)}
+const deleteResume = (ResumeDeleteRequest) =>{return jsonPost('resume/deleteResume',ResumeDeleteRequest)}
+const myResume = (userId) =>{return get('resume/getResume',userId)}
 
 /**
  * 文件
@@ -66,12 +77,19 @@ export default {
     getCompanyInfoByRecruiterId,
     companyUpdate,
     getAllCompanyName,
+    queryCompany,
     bindCompany,
     getRecruiters,
     updateRecruiterInfo,
     addJob,
     recruitersJobList,
     getJobDetail,
+    submitBase,
+    submitEducation, 
+    submitExperience,
+    submitProject,
+    deleteResume,
+    myResume,
     updateJob,
     fileUpload,
     fileDelete,

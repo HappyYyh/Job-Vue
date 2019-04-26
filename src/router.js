@@ -11,7 +11,7 @@ export default new Router({
     {
       path:'/',
       name:'home',
-      component: () => import('./views/home.vue'),
+      component: () => import('./views/Home.vue'),
       redirect:'index',
       children:[
         {
@@ -31,8 +31,13 @@ export default new Router({
         },
         {
           path:'/company/info',
-          name:'info',
+          name:'companyInfo',
           component: () => import('./views/company/Info.vue')
+        },
+        {
+          path:'/company/list',
+          name:'companyInfoList',
+          component: () => import('./views/company/list.vue')
         },
         {
           path:'/job/addJob',
@@ -45,9 +50,9 @@ export default new Router({
           component: () => import('./views/job/recruitersJob.vue')
         },
         {
-          path:'/resume/addResume',
-          name:'addResume',
-          component: () => import('./views/resume/addResume.vue')
+          path:'/resume/resumeInfo',
+          name:'resumeInfo',
+          component: () => import('./views/resume/resumeInfo.vue')
         },
       ]
     },
