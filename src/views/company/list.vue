@@ -3,7 +3,7 @@
         <el-row>
             <!-- 搜索条件 -->
             <el-col :span="16" :offset="4">
-                <el-card class="filter">
+                <el-card class="filter" shadow="never">
                     <el-row class="filter-row">
                         <el-col :span="2" style="margin-top: 10px;">公司名称:</el-col>
                         <el-col :span="6">
@@ -50,7 +50,7 @@
             <el-col :span="16" :offset="4" style="margin-top:15px">
                 <div class="hot-company">
                     <div class="company-div" v-for="(item,index) in companyList" :key="index">
-                        <a href="javascript:void(0);" class="company-info">
+                        <a href="javascript:void(0);" class="company-info" @click="toDetail(item.id)">
                             <img :src="item.img" >
                             <div class="company-text">
                                 <h4>{{item.name}}</h4>
@@ -72,7 +72,7 @@
                                 </p>
                             </div>
                         </a>
-                        <a href="javascript:void(0);" class="about-info">
+                        <a href="javascript:void(0);" class="about-info" @click="toDetail(item.id)">
                             <p>
                             <span style="float:left">
                                 <span style="color: #00c2b3;">{{item.jobNum}}</span>个在招职位
@@ -167,9 +167,17 @@ export default {
                 this.companyList = res.data.list
                 console.log(this.companyList)
             })
-            
+        },
+        toDetail(companyId){
+            this.$router.push({
+                name:'companyDetail',
+                params:{
+                    companyId
+                }
+            })
         }
-    },
+    }
+    
     
 }
 </script>
@@ -180,7 +188,7 @@ export default {
 }
 .filter-row{
     margin-top: 15px;
-    font-size: 15px
+    font-size: 14px
 }
 .filter-row a{
     display: inline-block;

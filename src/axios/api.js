@@ -26,6 +26,8 @@ const getCompanyInfoByRecruiterId = (recruiterId) =>{return get('company/info',r
 const companyUpdate = UpdateCompanyRequest=>{return jsonPost('company/update',UpdateCompanyRequest)}
 const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
 const queryCompany = QueryCompanyRequest =>{return jsonPost('company/query',QueryCompanyRequest)}
+const queryCompanyDetail = (id) =>{return get('company/detail',id)}
+const getCompanyJobs = QueryCompanyJobsRequest =>{return jsonPost('company/getCompanyJobList',QueryCompanyJobsRequest)}
 
 /**
  * 招聘者
@@ -39,8 +41,10 @@ const updateRecruiterInfo = CommonRecruiterRequest =>{return jsonPost('recruiter
  */
 const addJob = addJobRequest =>{return jsonPost('job/add',addJobRequest)}
 const recruitersJobList = QueryJobRequest =>{return jsonPost('job/getJobList',QueryJobRequest)}
-const getJobDetail = (id) =>{return get('job/detail',id)}
+const getRecruiterJobDetail = (id) =>{return get('job/recruiterDetail',id)}
 const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequest)}
+const queryJob = QueryJobRequest =>{return jsonPost('job/list',QueryJobRequest)}
+const getJobDetail = (id) =>{return get('job/detail',id)}
 
 /**
  * 简历
@@ -78,11 +82,14 @@ export default {
     companyUpdate,
     getAllCompanyName,
     queryCompany,
+    queryCompanyDetail,
+    getCompanyJobs,
     bindCompany,
     getRecruiters,
     updateRecruiterInfo,
     addJob,
     recruitersJobList,
+    getRecruiterJobDetail,
     getJobDetail,
     submitBase,
     submitEducation, 
@@ -91,6 +98,7 @@ export default {
     deleteResume,
     myResume,
     updateJob,
+    queryJob,
     fileUpload,
     fileDelete,
     getAllCategory,

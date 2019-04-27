@@ -40,6 +40,11 @@ export default new Router({
           component: () => import('./views/company/list.vue')
         },
         {
+          path:'/company/detail',
+          name:'companyDetail',
+          component: () => import('./views/company/detail.vue')
+        },
+        {
           path:'/job/addJob',
           name:'addJob',
           component: () => import('./views/job/addJob.vue')
@@ -48,6 +53,16 @@ export default new Router({
           path:'/job/recruitersJob',
           name:'recruitersJob',
           component: () => import('./views/job/recruitersJob.vue')
+        },
+        {
+          path:'/job/list',
+          name:'jobInfoList',
+          component: () => import('./views/job/list.vue')
+        },
+        {
+          path:'/job/detail',
+          name:'jobDetail',
+          component: () => import('./views/job/detail.vue')
         },
         {
           path:'/resume/resumeInfo',

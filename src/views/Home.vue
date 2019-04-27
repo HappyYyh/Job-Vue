@@ -16,18 +16,13 @@
         </router-link>
     </el-menu-item>
     <el-menu-item index="2" class="top-bar">
-        <router-link to="/">
-            <a href="#">首页</a>
-        </router-link>
+        <a href="javascript:void(0);" @click="toIndex">首页</a>
     </el-menu-item>
     <el-menu-item index="3">
-        
-            <a href="javascript:void(0);">职位</a>
+        <a href="javascript:void(0);" @click="toJobInfo">职位</a>
     </el-menu-item>
     <el-menu-item index="4">
-        <router-link to="/company/list">
-            <a href="javascript:void(0);">公司</a>
-        </router-link>
+        <a href="javascript:void(0);" @click="toCompanyQuery">公司</a>
     </el-menu-item>
     <!-- 未登陆 -->
     <el-menu-item index="5" v-show="!isLogin" class="not-login login-btn">
@@ -162,18 +157,33 @@ import api from '../axios/api';
     },
 
     methods: {
+        //跳转到首页
+      toIndex(){
+           this.$router.push("/")
+        // window.location.href="/";
+      },
+      toJobInfo(){
+            this.$router.push("/job/list")
+      },
+      //跳转到公司查询页
+      toCompanyQuery(){
+           this.$router.push("/company/list")
+      },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
+      //登出
       logout(){
         api.logout({token:this.token}).then(()=>{
             localStorage.removeItem("userInfo");
             window.location.href="/";
         })
       },
+      //跳转到我的职位页
       toJob(){
           this.$router.push("/job/recruitersJob");
       },
+      //跳转到招聘者公司详情页
       companyInfo(){
           this.$router.push("/company/info");
       },
@@ -196,6 +206,7 @@ import api from '../axios/api';
         }
         return isJPG && isLt2M;
       },
+      //个人信息
       myInfo(){
           console.log("信息提交")
           api.userUpdate(this.form).then(res=>{
@@ -214,6 +225,7 @@ import api from '../axios/api';
               }
           })  
       },
+      //求职者跳转到我的简历页
       toResume(){
           this.$router.push("/resume/resumeInfo");
       }
