@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-row>
+            <!-- 输入框搜索 -->
             <el-col :span="16" :offset="4">
                 <el-row>
                     <el-col :span="6">
@@ -83,47 +84,54 @@
             <el-col :span="16" :offset="4" style="margin-top:15px">
                 <el-card class="jobList">
                     <div v-for="(item,index) in jobList" :key="index" class="job-primary">
+                        <!-- 职位信息 -->
                         <el-col :span="9" class="jobInfo">
-                            <el-row class="name">
-                                <el-col :span="12" class="title">{{item.jobName}}</el-col>
-                                <el-col :span="12" class="red">{{item.salaryStart}}k-{{item.salaryEnd}}k</el-col>
-                            </el-row>
-                            <el-row>
-                                <p>
-                                    {{item.workPlace}}
-                                    <em class="vline"></em>
-                                    {{item.workExperience===0?'经验不限':item.workExperience===1?'应届生':item.workExperience===2?'1年以内':item.workExperience===3?'1~3年':item.workExperience===4?'3～5年':item.workExperience===5?'5～10年':'10年以上'}}
-                                    <em class="vline"></em>
-                                    {{item.workEducation===0?'大专':item.workEducation===1?'本科':item.workEducation===2?'硕士':item.workEducation===3?'博士':'不限'}}
-                                </p>
-                            </el-row>
+                            <a href="javascript:void(0)" @click="toJobDetail(item.id)">
+                                <el-row class="name">
+                                    <el-col :span="12" class="title">{{item.jobName}}</el-col>
+                                    <el-col :span="12" class="red">{{item.salaryStart}}k-{{item.salaryEnd}}k</el-col>
+                                </el-row>
+                                <el-row>
+                                    <p>
+                                        {{item.workPlace}}
+                                        <em class="vline"></em>
+                                        {{item.workExperience===0?'经验不限':item.workExperience===1?'应届生':item.workExperience===2?'1年以内':item.workExperience===3?'1~3年':item.workExperience===4?'3～5年':item.workExperience===5?'5～10年':'10年以上'}}
+                                        <em class="vline"></em>
+                                        {{item.workEducation===0?'大专':item.workEducation===1?'本科':item.workEducation===2?'硕士':item.workEducation===3?'博士':'不限'}}
+                                    </p>
+                                </el-row>
+                            </a>
                         </el-col>
+                        <!-- 公司信息 -->
                         <el-col :span="8" class="companyInfo">
-                            <el-row class="name">
-                                <el-col>{{item.companyName}}</el-col>
-                            </el-row>
-                            <el-row>
-                                <p>
-                                    <span>
-                                        <span v-for="(it,ind) in industryCategory" :key="ind" v-show="it.value === item.industryCategory">
-                                            {{it.name}}
+                            <a href="javascript:void(0)" @click="toCompanyDetail(item.companyId)">
+                                <el-row class="name">
+                                    <el-col>{{item.companyName}}</el-col>
+                                </el-row>
+                                <el-row>
+                                    <p>
+                                        <span>
+                                            <span v-for="(it,ind) in industryCategory" :key="ind" v-show="it.value === item.industryCategory">
+                                                {{it.name}}
+                                            </span>
                                         </span>
-                                    </span>
-                                    <em class="vline"></em>
-                                    <span>  
-                                        <span v-for="(it,ind) in financingStatus" :key="ind" v-show="it.value === item.financingStatus">
-                                            {{it.name}}
+                                        <em class="vline"></em>
+                                        <span>  
+                                            <span v-for="(it,ind) in financingStatus" :key="ind" v-show="it.value === item.financingStatus">
+                                                {{it.name}}
+                                            </span>
                                         </span>
-                                    </span>
-                                    <em class="vline"></em>
-                                        {{item.staffNum===0?'少于15人':item.staffNum===1?'15-50人':item.staffNum===2?'50-150人':item.staffNum===3?'150-500人':item.staffNum===4?'500-2000人':'2000人以上'}}
-                                </p>
-                            </el-row>
+                                        <em class="vline"></em>
+                                            {{item.staffNum===0?'少于15人':item.staffNum===1?'15-50人':item.staffNum===2?'50-150人':item.staffNum===3?'150-500人':item.staffNum===4?'500-2000人':'2000人以上'}}
+                                    </p>
+                                </el-row>
+                            </a>
                         </el-col>
+                        <!-- 招聘者信息 -->
                         <el-col :span="7" class="recruiterInfo">
                             <el-row class="name">
                                 <img :src="item.headImg" >
-                                {{item.nickName}}
+                                {{item.nickName===''?'匿名':item.nickName}}
                                 <em class="vline"></em>
                                 {{item.position}}
                             </el-row>
@@ -300,7 +308,22 @@ export default {
             this.query.salaryEnd = end;
             this.queryJob(null,null,null);
         },
-        
+        toCompanyDetail(companyId){
+            this.$router.push({
+                name:'companyDetail',
+                params:{
+                    companyId
+                }
+            })
+        },
+        toJobDetail(jobId){
+            this.$router.push({
+                name:'jobDetail',
+                params:{
+                    jobId
+                }
+            })
+        },
     },
     
 }

@@ -34,7 +34,6 @@
                             <!-- 福利标签 -->
                             <el-row>
                                 <el-col style="margin-top:15px">
-
                                     <el-tag class="welfare"  v-for="(item,ind) in welfareList" :key="ind" v-show="ind<=7">{{item}}</el-tag>
                                 </el-col>
                             </el-row>
@@ -51,7 +50,6 @@
                             <p>
                                 <i class="el-icon-star-off" style="margin-right:3px"></i>注册资金:
                                 <span>{{companyDetail.registeredCapital}}万</span>
-                                
                             </p>
                             <p>
                                 <i class="el-icon-location-outline" style="margin-right:3px"></i>所处地区:
@@ -75,7 +73,7 @@
                                 </el-col>
                                 <el-col :span="16">
                                     <el-row>
-                                        {{recruiter.nickName}}
+                                        {{recruiter.nickName===''?'匿名':recruiter.nickName}}
                                         <em class="vline"></em>
                                         {{recruiter.position}}
                                     </el-row>
@@ -95,12 +93,14 @@
                             <div class="job-primary clear" v-for="(job,index) in jobList" :key="index">
                                 <div class="info">
                                     <div class="clear">
-                                        <div class="name">
-                                            <a href="javascript:void(0);">{{job.jobName}} [ {{job.workPlace}} ]</a>
-                                        </div>
-                                        <div class="salary">
-                                            {{job.salaryStart}}k - {{job.salaryEnd}}k
-                                        </div>
+                                        <a href="javascript:void(0)" @click="toJobDetail(job.id)">
+                                            <div class="name">
+                                                <a href="javascript:void(0);">{{job.jobName}} [ {{job.workPlace}} ]</a>
+                                            </div>
+                                            <div class="salary">
+                                                {{job.salaryStart}}k - {{job.salaryEnd}}k
+                                            </div>
+                                        </a>
                                     </div>
                                     <div class="clear">
                                         <div class="label">
@@ -204,7 +204,7 @@ export default {
         },
         queryCompanyJobList(){
             api.getCompanyJobs({
-                companyId:this.id,
+                companyId:this.companyId,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize
             }).then(res=>{
@@ -220,7 +220,15 @@ export default {
         // eslint-disable-next-line no-unused-vars
         handleClick(tab, event) {
             this.queryCompanyJobList();
-        }
+        },
+        toJobDetail(jobId){
+            this.$router.push({
+                name:'jobDetail',
+                params:{
+                    jobId
+                }
+            })
+        },
     }
 }
 </script>

@@ -41,9 +41,10 @@ const updateRecruiterInfo = CommonRecruiterRequest =>{return jsonPost('recruiter
  */
 const addJob = addJobRequest =>{return jsonPost('job/add',addJobRequest)}
 const recruitersJobList = QueryJobRequest =>{return jsonPost('job/getJobList',QueryJobRequest)}
-const getJobDetail = (id) =>{return get('job/detail',id)}
+const getRecruiterJobDetail = (id) =>{return get('job/recruiterDetail',id)}
 const updateJob = updateJobRequest =>{return jsonPost('job/update',updateJobRequest)}
 const queryJob = QueryJobRequest =>{return jsonPost('job/list',QueryJobRequest)}
+const getJobDetail = (id) =>{return get('job/detail',id)}
 
 /**
  * 简历
@@ -88,6 +89,7 @@ export default {
     updateRecruiterInfo,
     addJob,
     recruitersJobList,
+    getRecruiterJobDetail,
     getJobDetail,
     submitBase,
     submitEducation, 
