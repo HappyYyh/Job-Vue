@@ -3,7 +3,7 @@
         <el-row>
             <!-- 搜索条件 -->
             <el-col :span="16" :offset="4">
-                <el-card class="filter">
+                <el-card class="filter" shadow="never">
                     <el-row class="filter-row">
                         <el-col :span="2" style="margin-top: 10px;">公司名称:</el-col>
                         <el-col :span="6">
@@ -188,7 +188,7 @@ export default {
 }
 .filter-row{
     margin-top: 15px;
-    font-size: 15px
+    font-size: 14px
 }
 .filter-row a{
     display: inline-block;

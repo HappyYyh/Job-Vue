@@ -27,7 +27,7 @@ const companyUpdate = UpdateCompanyRequest=>{return jsonPost('company/update',Up
 const getAllCompanyName = ()=>{return get('company/getAllCompanyName')}
 const queryCompany = QueryCompanyRequest =>{return jsonPost('company/query',QueryCompanyRequest)}
 const queryCompanyDetail = (id) =>{return get('company/detail',id)}
-const getCompanyJobs = QueryCompanyJobsRequest =>{return jsonPost('companygetCompanyJobList',QueryCompanyJobsRequest)}
+const getCompanyJobs = QueryCompanyJobsRequest =>{return jsonPost('company/getCompanyJobList',QueryCompanyJobsRequest)}
 
 /**
  * 招聘者
