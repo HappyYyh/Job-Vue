@@ -36,7 +36,8 @@
                     </div>
                     <div class="right">
                         <div class="send">
-                            <el-button class="sendbtn">简历投递</el-button>
+                            <el-button class="sendbtn" v-show="isSend===0" @click="jobSend(jobDetail.job.id)">简历投递</el-button>
+                            <el-button class="notSend" v-show="isSend===1" disabled>简历投递</el-button>
                         </div>
                         <div class="resume">
                             <a href="#" class="r1"><i class="el-icon-edit-outline"></i>填写在线简历</a>
@@ -183,6 +184,7 @@ export default {
             staffNum:[],
             jobDutyList:[],
             jobRequirement:[],
+            isSend:null,
         }
     },
     created(){
@@ -209,8 +211,10 @@ export default {
     },
     mounted(){
         this.queryJobDetail();
+        this.jobIsSend();
     },
     methods:{
+        //查询详情
         queryJobDetail(){
             api.getJobDetail({id:this.jobId})
             .then(res=>{
@@ -232,6 +236,49 @@ export default {
                 console.log(this.jobDetail)
             })
         },
+        //判断是否存在
+        jobIsSend(){
+            if(localStorage.getItem('userInfo') != null){
+                let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+                api.isSend({
+                    userId:userInfo.id,
+                    jobId:this.jobId
+                }).then(res=>{
+                    this.isSend = res.data;
+                    console.log(this.isSend)
+                })
+            }
+        },
+        //职位投递
+        jobSend(jobId){
+            if(localStorage.getItem('userInfo') === null){
+                this.$message({
+                    type:'warning',
+                    message:'请先登陆再操作'
+                })
+                //未登陆则先登陆
+                this.$router.replace({
+                    path:'/login',
+                    //登陆成功后跳回当前页面
+                    query:{redirect: this.$router.currentRoute.fullPath}
+                })
+            }else{
+                let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+                api.addJobSend({
+                    userId:userInfo.id,
+                    jobId
+                }).then(res=>{
+                    if(res.success){
+                        this.$notify({
+                            title: '成功',
+                            message: '简历投递成功',
+                            type: 'success'
+                        });
+                        this.$router.push("/job/list")
+                    }
+                })
+            }
+        }
     }
 }
 </script>
@@ -298,6 +345,12 @@ export default {
     color: #fff;
     letter-spacing: 1px;
     background: #5dd5c8;
+}
+.notSend{
+    margin-top: 30px;
+    width: 100%;
+    font-size: 16px;
+    letter-spacing: 1px;
 }
 .resume{
     margin-top: 40px;

@@ -47,6 +47,13 @@ const queryJob = QueryJobRequest =>{return jsonPost('job/list',QueryJobRequest)}
 const getJobDetail = (id) =>{return get('job/detail',id)}
 
 /**
+ * 职位
+ */
+const addJobSend = CommonJobSendRequest =>{return jsonPost('jobSend/add',CommonJobSendRequest)}
+const isSend = CommonJobSendRequest =>{return jsonPost('jobSend/isSend',CommonJobSendRequest)}
+
+
+/**
  * 简历
  */
 const submitBase = (ResumeBaseRequest) =>{return jsonPost('resume/submitBase',ResumeBaseRequest)}
@@ -91,6 +98,8 @@ export default {
     recruitersJobList,
     getRecruiterJobDetail,
     getJobDetail,
+    addJobSend,
+    isSend,
     submitBase,
     submitEducation, 
     submitExperience,
