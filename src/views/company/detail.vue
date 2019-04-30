@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="button">
-                                    <el-button>简历投递</el-button>
+                                    <el-button @click="jobSend(job.id)">简历投递</el-button>
                                 </div>
                             </div>
                         </div>
@@ -190,6 +190,7 @@ export default {
         this.queryCompanyDetail();
     },
     methods:{
+        //查询基本信息
         queryCompanyDetail(){
             api.queryCompanyDetail({id:this.companyId})
             .then(res=>{
@@ -202,6 +203,7 @@ export default {
                 this.companyDetail = res.data
             })
         },
+        //查询公司下职位
         queryCompanyJobList(){
             api.getCompanyJobs({
                 companyId:this.companyId,
@@ -219,8 +221,12 @@ export default {
         },
         // eslint-disable-next-line no-unused-vars
         handleClick(tab, event) {
-            this.queryCompanyJobList();
+            console.log(tab, event);
+            if(tab.index==='1'){
+                this.queryCompanyJobList();
+            }
         },
+        //跳转到职位详情
         toJobDetail(jobId){
             this.$router.push({
                 name:'jobDetail',
@@ -229,6 +235,38 @@ export default {
                 }
             })
         },
+        //职位投递
+        jobSend(jobId){
+            if(localStorage.getItem('userInfo') === null){
+                this.$message({
+                    type:'warning',
+                    message:'请先登陆再操作'
+                })
+                //未登陆则先登陆
+                this.$router.replace({
+                    path:'/login',
+                    //登陆成功后跳回当前页面
+                    query:{redirect: this.$router.currentRoute.fullPath}
+                })
+            }else{
+                let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+                api.addJobSend({
+                    userId:userInfo.id,
+                    jobId
+                }).then(res=>{
+                    if(res.code =='552'){
+                        this.$router.push("/resume/resumeInfo")
+                    }
+                    if(res.success){
+                        this.$notify({
+                            title: '成功',
+                            message: '简历投递成功',
+                            type: 'success'
+                        });
+                    }
+                })
+            }
+        }
     }
 }
 </script>

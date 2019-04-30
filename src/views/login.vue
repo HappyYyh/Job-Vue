@@ -256,7 +256,12 @@ export default {
                                 //如果首次登陆
                                 this.$router.push("/recruiter/firstLogin");
                             }else{
-                                this.$router.push("/");
+                                //返回登陆上一页
+                                if(this.$route.query.redirect){
+                                    this.$router.push({path:decodeURIComponent(this.$route.query.redirect)});
+                                }else{
+                                    this.$router.push("/");
+                                }
                             }
                         }else{
                             //如果是求职者
@@ -264,7 +269,12 @@ export default {
                                 //如果首次登陆
                                 this.$router.push("/resume/resumeInfo");
                             }else{
-                                this.$router.push("/");
+                                //返回登陆上一页
+                                if(this.$route.query.redirect){
+                                    this.$router.push({path:decodeURIComponent(this.$route.query.redirect)});
+                                }else{
+                                    this.$router.push("/");
+                                }
                             }
                         }
                     }
