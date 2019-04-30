@@ -152,6 +152,9 @@ import api from '../axios/api';
                 this.form.img = user.headImg;
                 this.form.id = user.id;
                 this.fileList[0].url = user.email.img;
+
+                //连接webSocket
+                this.initWebSocket();
             }
         }    
     },
@@ -205,7 +208,6 @@ import api from '../axios/api';
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
-
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
         }
@@ -236,6 +238,34 @@ import api from '../axios/api';
       //求职者跳转到我的简历页
       toResume(){
           this.$router.push("/resume/resumeInfo");
+      },
+
+      //webSocket
+      initWebSocket(){ 
+          //初始化weosocket
+        const wsuri = 'ws://localhost:8888/webSocket/'+this.form.id;
+        this.websock = new WebSocket(wsuri);
+        this.websock.onmessage = this.websocketonmessage;
+        this.websock.onopen = this.websocketonopen;
+        this.websock.onerror = this.websocketonerror;
+        this.websock.onclose = this.websocketclose;
+      },
+      websocketonopen(){ 
+        //连接建立之后执行send方法发送数据
+        console.log("webSocket连接简历");
+      },
+      websocketonerror(){
+          //连接建立失败重连
+        this.initWebSocket()
+      },
+      websocketonmessage(e){
+        console.log(JSON.parse(e.data));
+      },
+      websocketsend(Data){//数据发送
+        this.websock.send(Data)
+      },
+      websocketclose(e){  //关闭
+        console.log('断开连接', e)
       }
     }
   }
