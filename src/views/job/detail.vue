@@ -268,6 +268,9 @@ export default {
                     userId:userInfo.id,
                     jobId
                 }).then(res=>{
+                    if(res.code =='552'){
+                        this.$router.push("/resume/resumeInfo")
+                    }
                     if(res.success){
                         this.$notify({
                             title: '成功',
