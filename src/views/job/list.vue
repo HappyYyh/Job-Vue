@@ -8,7 +8,7 @@
                         <el-cascader style="width:100%" :options="options" :props="props" v-model="selectedOptions" @change="handleCategoryChange" placeholder="请选择职位分类"></el-cascader>
                     </el-col>
                     <el-col :span="18">
-                        <el-input placeholder="搜索职位名称" v-model="query.jobName">
+                        <el-input placeholder="搜索职位名称" clearable v-model="query.jobName">
                             <el-button slot="append" type="primary" icon="el-icon-search" @click="queryJob(null,null,null)">搜索</el-button>
                         </el-input>
                     </el-col>

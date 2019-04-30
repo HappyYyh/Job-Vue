@@ -40,7 +40,9 @@
                   <span>{{item.secondName}}</span>
                 </div>
                 <div class="thirdArea">
-                  <span class="thirdName" v-for="jobThird in item.jobThirdCategoryResponseList" :key="jobThird.index">{{jobThird.thirdName}}</span>
+                  <a href="javascript:void(0)" @click="toJobByThirdName(jobThird.thirdName)" v-for="jobThird in item.jobThirdCategoryResponseList" :key="jobThird.index">
+                     <span class="thirdName">{{jobThird.thirdName}}</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -226,6 +228,10 @@ import api from '../axios/api';
             jobName:this.jobName
           }
         })
+      },
+      toJobByThirdName(thirdName){
+        this.category = thirdName
+        this.toJob()
       },
       toCompany(){
         this.$router.push("/company/list")
