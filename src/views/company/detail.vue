@@ -221,7 +221,10 @@ export default {
         },
         // eslint-disable-next-line no-unused-vars
         handleClick(tab, event) {
-            this.queryCompanyJobList();
+            console.log(tab, event);
+            if(tab.index==='1'){
+                this.queryCompanyJobList();
+            }
         },
         //跳转到职位详情
         toJobDetail(jobId){

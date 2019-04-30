@@ -38,7 +38,7 @@
     <!-- 求职者 -->
     <el-menu-item index="5" v-show="role===0" class="seeker seeker-first">消息</el-menu-item>
     <el-menu-item index="6" v-show="role===0" @click="toResume"  class="seeker">我的简历</el-menu-item>
-    <el-menu-item index="7" v-show="role===0" class="seeker">我的投递</el-menu-item>
+    <el-menu-item index="7" v-show="role===0" class="seeker" @click="toSeekerJobSendList">我的投递</el-menu-item>
     <el-submenu index="8" v-show="role===0" class="seeker">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
         <el-menu-item index="8-1" v-show="role===0" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
@@ -162,6 +162,7 @@ import api from '../axios/api';
            this.$router.push("/")
         // window.location.href="/";
       },
+      //跳转到职位查询页
       toJobInfo(){
             this.$router.push("/job/list")
       },
@@ -178,6 +179,10 @@ import api from '../axios/api';
             localStorage.removeItem("userInfo");
             window.location.href="/";
         })
+      },
+      //跳转到求职者的投递列表页
+      toSeekerJobSendList(){
+          this.$router.push("/seeker/jobSend");
       },
       //跳转到我的职位页
       toJob(){

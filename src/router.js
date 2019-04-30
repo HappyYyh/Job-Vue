@@ -69,6 +69,11 @@ export default new Router({
           name:'resumeInfo',
           component: () => import('./views/resume/resumeInfo.vue')
         },
+        {
+          path:'/seeker/jobSend',
+          name:'seekerJobSendRecord',
+          component: () => import('./views/seeker/jobSend')
+        },
       ]
     },
     {

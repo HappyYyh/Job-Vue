@@ -47,10 +47,11 @@ const queryJob = QueryJobRequest =>{return jsonPost('job/list',QueryJobRequest)}
 const getJobDetail = (id) =>{return get('job/detail',id)}
 
 /**
- * 职位
+ * 职位投递
  */
 const addJobSend = CommonJobSendRequest =>{return jsonPost('jobSend/add',CommonJobSendRequest)}
 const isSend = CommonJobSendRequest =>{return jsonPost('jobSend/isSend',CommonJobSendRequest)}
+const seekerJobSendList = SeekerSendListRequest =>{return jsonPost('jobSend/seekerSendList',SeekerSendListRequest)}
 
 
 /**
@@ -100,6 +101,7 @@ export default {
     getJobDetail,
     addJobSend,
     isSend,
+    seekerJobSendList,
     submitBase,
     submitEducation, 
     submitExperience,

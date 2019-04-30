@@ -40,8 +40,8 @@
                             <el-button class="notSend" v-show="isSend===1" disabled>简历投递</el-button>
                         </div>
                         <div class="resume">
-                            <a href="#" class="r1"><i class="el-icon-edit-outline"></i>填写在线简历</a>
-                            <a href="#" class="r2"><i class="el-icon-upload2"></i>上传附件简历</a>
+                            <a href="javascript:void(0)" @click="toMyResume" class="r1"><i class="el-icon-edit-outline"></i>填写在线简历</a>
+                            <a href="javascript:void(0)" @click="toMyResume" class="r2"><i class="el-icon-upload2"></i>上传附件简历</a>
                         </div>
                     </div>
                 </el-card>
@@ -152,7 +152,7 @@
                                     福利待遇:
                                 </div>
                                 <div class="content">
-                                    <p v-for="(item,ind) in companyWelfareList" :key="ind">
+                                    <p v-for="(item,ind) in companyWelfareList" :key="ind" v-show="ind<10">
                                         {{item}}
                                     </p>
                                 </div>
@@ -278,6 +278,9 @@ export default {
                     }
                 })
             }
+        },
+        toMyResume(){
+            this.$router.push("/resume/resumeInfo")
         }
     }
 }
