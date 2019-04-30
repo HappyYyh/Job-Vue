@@ -36,8 +36,8 @@
                     </div>
                     <div class="right">
                         <div class="send">
-                            <el-button class="sendbtn" v-show="isSend===0" @click="jobSend(jobDetail.job.id)">简历投递</el-button>
-                            <el-button class="notSend" v-show="isSend===1" disabled>简历投递</el-button>
+                            <el-button class="sendbtn" v-show="isSend===0 && jobDetail.job.status===1" @click="jobSend(jobDetail.job.id)">简历投递</el-button>
+                            <el-button class="notSend" v-show="isSend===1 || jobDetail.job.status===0" disabled>简历投递</el-button>
                         </div>
                         <div class="resume">
                             <a href="javascript:void(0)" @click="toMyResume" class="r1"><i class="el-icon-edit-outline"></i>填写在线简历</a>

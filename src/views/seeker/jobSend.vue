@@ -3,9 +3,7 @@
         <el-row>
             <el-col :span="12" :offset="6">
                 <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-                    <el-tab-pane label="投递成功" name="first">
-                        
-                    </el-tab-pane>
+                    <el-tab-pane label="投递成功" name="first"></el-tab-pane>
                     <el-tab-pane label="被查看" name="second"></el-tab-pane>
                     <el-tab-pane label="邀请面试" name="third"></el-tab-pane>
                     <el-tab-pane label="不合适" name="fourth"></el-tab-pane>
@@ -63,9 +61,6 @@ export default {
         }
     },
     created(){
-
-    },
-    mounted(){
         if(localStorage.getItem('userInfo') === null){
             this.$message({
                 type:'warning',
@@ -81,6 +76,8 @@ export default {
             let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
             this.userId = userInfo.id
         }
+    },
+    mounted(){
         this.querySend(0)   
     },
     methods: {

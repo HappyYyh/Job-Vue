@@ -794,7 +794,6 @@ export default {
     mounted(){
         this.myResume();
         this.queryCity();
-        
     },
     methods:{
         myResume(){

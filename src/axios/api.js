@@ -52,7 +52,8 @@ const getJobDetail = (id) =>{return get('job/detail',id)}
 const addJobSend = CommonJobSendRequest =>{return jsonPost('jobSend/add',CommonJobSendRequest)}
 const isSend = CommonJobSendRequest =>{return jsonPost('jobSend/isSend',CommonJobSendRequest)}
 const seekerJobSendList = SeekerSendListRequest =>{return jsonPost('jobSend/seekerSendList',SeekerSendListRequest)}
-
+const recruiterGotList = (recruiterId)=>{return get('jobSend/recruiterGotList',recruiterId)}
+const updateSendStatus = (UpdateSendStatusRequest)=>{return jsonPost('jobSend/updateSendStatus',UpdateSendStatusRequest)}
 
 /**
  * 简历
@@ -63,6 +64,7 @@ const submitExperience = (ResumeExperienceRequest) =>{return jsonPost('resume/su
 const submitProject = (ResumeProjectRequest) =>{return jsonPost('resume/submitProject',ResumeProjectRequest)}
 const deleteResume = (ResumeDeleteRequest) =>{return jsonPost('resume/deleteResume',ResumeDeleteRequest)}
 const myResume = (userId) =>{return get('resume/getResume',userId)}
+const recruiterGetResume = (RecruiterReviewResumeRequest) =>{return jsonPost('resume/recruiterGet',RecruiterReviewResumeRequest)}
 
 /**
  * 文件
@@ -102,12 +104,15 @@ export default {
     addJobSend,
     isSend,
     seekerJobSendList,
+    recruiterGotList,
+    updateSendStatus,
     submitBase,
     submitEducation, 
     submitExperience,
     submitProject,
     deleteResume,
     myResume,
+    recruiterGetResume,
     updateJob,
     queryJob,
     fileUpload,

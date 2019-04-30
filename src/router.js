@@ -25,6 +25,11 @@ export default new Router({
           component: () => import('./views/recruiter/recruiterFirstLogin.vue')
         },
         {
+          path:'/recruiter/jobSend',
+          name:'recruiterGodSendList',
+          component: () => import('./views/recruiter/jobSend')
+        },
+        {
           path:'/company/certificate',
           name:'certificateCompany',
           component: () => import('./views/company/certificateCompany.vue')

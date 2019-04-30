@@ -47,7 +47,7 @@
     </el-submenu>
     <!-- 招聘者 -->
     <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
-    <el-menu-item index="6" v-show="role===1" class="recruiter">简历查看</el-menu-item>
+    <el-menu-item index="6" v-show="role===1" class="recruiter" @click="toRecruiterGotList">简历查看</el-menu-item>
     <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
     <el-submenu index="8" v-show="role===1" class="recruiter">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
@@ -187,6 +187,9 @@ import api from '../axios/api';
       //跳转到我的职位页
       toJob(){
           this.$router.push("/job/recruitersJob");
+      },
+      toRecruiterGotList(){
+          this.$router.push('/recruiter/jobSend');
       },
       //跳转到招聘者公司详情页
       companyInfo(){
