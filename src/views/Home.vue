@@ -115,7 +115,7 @@ import api from '../axios/api';
         isLogin:false,
         userName:'',
         userImg:'',
-        role:'',
+        role:null,
         token:'',
         dialogMyInfoVisible: false,
         form: {
@@ -263,10 +263,19 @@ import api from '../axios/api';
       },
       websocketonmessage(e){
         let data = JSON.parse(e.data);
-        let message = data.userName+"【"+data.phone+"】于"+data.time+"投递了您的"+data.jobName+"【"+data.salaryStart+"K-"+data.salaryEnd+"K】职位!"
-        this.$message({
-            type:'info',
-            message
+        let message;
+        let title;
+        if(this.role===0){
+            message = data.companyName+"【"+data.position+"】于"+data.time+"发布了"+data.jobName+"【"+data.salaryStart+"K-"+data.salaryEnd+"K】职位!"
+            title = "职位订阅通知";
+        }else{
+            message = data.userName+"【"+data.phone+"】于"+data.time+"投递了您的"+data.jobName+"【"+data.salaryStart+"K-"+data.salaryEnd+"K】职位!"
+             title = "职位投递通知";
+        }
+        this.$notify.info({
+            title,
+            message,
+            duration: 0
         })
         console.log(message)
       },
