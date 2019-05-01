@@ -42,7 +42,7 @@
     <el-submenu index="8" v-show="role===0" class="seeker">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
         <el-menu-item index="8-1" v-show="role===0" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
-        <el-menu-item index="8-2" v-show="role===0">我的订阅</el-menu-item>
+        <el-menu-item index="8-2" v-show="role===0" @click="mySubScribe">我的订阅</el-menu-item>
         <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
     </el-submenu>
     <!-- 招聘者 -->
@@ -187,6 +187,9 @@ import api from '../axios/api';
       toSeekerJobSendList(){
           this.$router.push("/seeker/jobSend");
       },
+      mySubScribe(){
+          this.$router.push("/seeker/jobSubScribe");
+      },
       //跳转到我的职位页
       toJob(){
           this.$router.push("/job/recruitersJob");
@@ -252,14 +255,20 @@ import api from '../axios/api';
       },
       websocketonopen(){ 
         //连接建立之后执行send方法发送数据
-        console.log("webSocket连接简历");
+        console.log("webSocket连接建立");
       },
       websocketonerror(){
           //连接建立失败重连
         this.initWebSocket()
       },
       websocketonmessage(e){
-        console.log(JSON.parse(e.data));
+        let data = JSON.parse(e.data);
+        let message = data.userName+"【"+data.phone+"】于"+data.time+"投递了您的"+data.jobName+"【"+data.salaryStart+"K-"+data.salaryEnd+"K】职位!"
+        this.$message({
+            type:'info',
+            message
+        })
+        console.log(message)
       },
       websocketsend(Data){//数据发送
         this.websock.send(Data)

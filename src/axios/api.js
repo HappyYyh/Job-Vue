@@ -56,6 +56,14 @@ const recruiterGotList = (recruiterId)=>{return get('jobSend/recruiterGotList',r
 const updateSendStatus = (UpdateSendStatusRequest)=>{return jsonPost('jobSend/updateSendStatus',UpdateSendStatusRequest)}
 
 /**
+ * 职位订阅
+ */
+const addJobSubScribe = (CommonJobSubScribeRequest)=>{return jsonPost('jobSubScribe/add',CommonJobSubScribeRequest)}
+const updateJobSubScribe = (CommonJobSubScribeRequest)=>{return jsonPost('jobSubScribe/update',CommonJobSubScribeRequest)}
+const delJobSubScribe = (id)=>{return get('jobSubScribe/delete',id)}
+const getJobSubScribe = (userId)=>{return get('jobSubScribe/get',userId)}
+
+/**
  * 简历
  */
 const submitBase = (ResumeBaseRequest) =>{return jsonPost('resume/submitBase',ResumeBaseRequest)}
@@ -106,6 +114,10 @@ export default {
     seekerJobSendList,
     recruiterGotList,
     updateSendStatus,
+    addJobSubScribe,
+    updateJobSubScribe,
+    delJobSubScribe,
+    getJobSubScribe,
     submitBase,
     submitEducation, 
     submitExperience,

@@ -22,16 +22,22 @@ export default new Router({
         {
           path:'/recruiter/firstLogin',
           name:'recruiterFirstLogin',
+          // 路由守卫
+          meta: { requireAuth: true ,role:1 },
           component: () => import('./views/recruiter/recruiterFirstLogin.vue')
         },
         {
           path:'/recruiter/jobSend',
           name:'recruiterGodSendList',
+          // 路由守卫
+          meta: { requireAuth: true,role:1 },
           component: () => import('./views/recruiter/jobSend')
         },
         {
           path:'/company/certificate',
           name:'certificateCompany',
+          // 路由守卫
+          meta: { requireAuth: true ,role:1 },
           component: () => import('./views/company/certificateCompany.vue')
         },
         {
@@ -52,11 +58,15 @@ export default new Router({
         {
           path:'/job/addJob',
           name:'addJob',
+          // 路由守卫
+          meta: { requireAuth: true,role:1  },
           component: () => import('./views/job/addJob.vue')
         },
         {
           path:'/job/recruitersJob',
           name:'recruitersJob',
+          // 路由守卫
+          meta: { requireAuth: true ,role:1 },
           component: () => import('./views/job/recruitersJob.vue')
         },
         {
@@ -72,12 +82,23 @@ export default new Router({
         {
           path:'/resume/resumeInfo',
           name:'resumeInfo',
+          // 路由守卫
+          meta: { requireAuth: true ,role:0 },
           component: () => import('./views/resume/resumeInfo.vue')
         },
         {
           path:'/seeker/jobSend',
           name:'seekerJobSendRecord',
+          // 路由守卫
+          meta: { requireAuth: true ,role:0 },
           component: () => import('./views/seeker/jobSend')
+        },
+        {
+          path:'/seeker/jobSubScribe',
+          name:'JobSubScribe',
+          // 路由守卫
+          meta: { requireAuth: true ,role:0 },
+          component: () => import('./views/seeker/jobSubScribe')
         },
       ]
     },
@@ -93,4 +114,5 @@ export default new Router({
     },
     
   ]
+  
 })
