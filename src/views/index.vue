@@ -7,7 +7,7 @@
         <div style="margin-top: 50px;" class="search-input">
           <el-cascader :options="options" style="width:15%" :show-all-levels="false" slot="prepend" :props="props" v-model="selectedOptions" @change="handleCategoryChange" placeholder="请选择职位分类"></el-cascader>
           <el-input placeholder="请输入职位搜索" style="width:85%" v-model="jobName" class="input-with-select" >
-              <el-button slot="append" icon="el-icon-search" @click="toJob"></el-button>
+              <el-button slot="append" icon="el-icon-search" @click="toJobByInput"></el-button>
           </el-input>
         </div>
     <!-- 左侧职业选择框 -->
@@ -53,7 +53,7 @@
         <div class="title-div"><span class="title">热门职位</span></div>
         <div class="hot-job">
           <div class="sub-div" v-for="(item,index) in hotJob" :key="index">
-               <a href="javascript:void(0);" class="job-info">
+               <a href="javascript:void(0);" class="job-info" @click="toJobDetailById(item.id)">
                    <p>
                        {{item.jobName}}
                        <span class="salary">{{item.salaryStart}}-{{item.salaryEnd}}k</span>
@@ -70,7 +70,7 @@
                     <p style="margin-top:7px">
                         <img :src="item.headImg">
                         <span class="user-text">
-                            {{item.nickName}}
+                            {{item.nickName===''?'暂无':item.nickName}}
                             <span class="vline"></span>
                             {{item.position}}
                         </span>
@@ -78,14 +78,14 @@
                </a>
           </div>
           <div class="more-tab">
-              <el-button style="width:300px" href="javascript:void(0);" @click="toJob">查看更多</el-button>
+              <el-button style="width:300px" href="javascript:void(0);" @click="toJobByNullArgs">查看更多</el-button>
             </div> 
         </div>
     <!-- 公司栏 -->
         <div class="title-div" style="margin-top: 100px;"><span class="title">热门企业</span></div>
         <div class="hot-company">
             <div class="company-div" v-for="(item,index) in hotCompany" :key="index">
-                <a href="javascript:void(0);" class="company-info">
+                <a href="javascript:void(0);" class="company-info" @click="toCompanyDetailById(item.id)">
                     <img :src="item.img" >
                     <div class="company-text">
                         <h4>{{item.name}}</h4>
@@ -119,7 +119,7 @@
                 </a>
             </div>
             <div class="more-tab">
-              <el-button style="width:300px" href="javascript:void(0);" @click="toCompany">查看更多</el-button>
+              <el-button style="width:300px" href="javascript:void(0);" @click="toCompanyByNullArgs">查看更多</el-button>
             </div>
         </div>
     </div>
@@ -204,6 +204,7 @@ import api from '../axios/api';
       handleCategoryChange(val){
         this.category = val.join("/");
       },
+      //查询首页公司信息
       queryCompany(){
         api.queryCompany({
           pageNo:1,
@@ -212,6 +213,7 @@ import api from '../axios/api';
           this.hotCompany = res.data.list
         })
       },
+      //查询首页职位信息
       queryJob(){
         api.queryJob({
           pageNo:1,
@@ -220,20 +222,48 @@ import api from '../axios/api';
           this.hotJob = res.data.list
         })
       },
-      toJob(){
+      //跳转到职位页面（根据参数）
+      toJob(category,jobName){
         this.$router.push({
           name:'jobInfoList',
           params:{
-            category:this.category,
-            jobName:this.jobName
+            category,
+            jobName
           }
         })
       },
-      toJobByThirdName(thirdName){
-        this.category = thirdName
-        this.toJob()
+      //输入框查询
+      toJobByInput(){
+        this.toJob(this.category,this.jobName)
       },
-      toCompany(){
+      //查看更多
+      toJobByNullArgs(){
+        this.$router.push('/job/list');
+      },
+      //跳转到职位查询页面（三级分类名称）
+      toJobByThirdName(thirdName){
+        this.toJob(thirdName,'')
+      },
+      //跳转到职位详情页面
+      toJobDetailById(jobId){
+        this.$router.push({
+          name:'jobDetail',
+          params:{
+            jobId
+          }
+        })
+      },
+      //跳转到公司查询页面(名称)
+      toCompanyDetailById(companyId){
+        this.$router.push({
+          name:'companyDetail',
+          params:{
+            companyId
+          }
+        })
+      },
+      //查看更多
+      toCompanyByNullArgs(){
         this.$router.push("/company/list")
       }
     }

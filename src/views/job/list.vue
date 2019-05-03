@@ -212,7 +212,7 @@ export default {
       this.staffNum = this.$store.state.staffNum;
       this.workEducation = this.$store.state.workEducation;
       this.workExperience = this.$store.state.workExperience;
-      //查询职位分裂
+      //查询职位分类
       this.queryJobCategory();
     },
     mounted(){

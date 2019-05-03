@@ -46,7 +46,7 @@
         <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
     </el-submenu>
     <!-- 招聘者 -->
-    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
+    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first" @click="testMsg">消息</el-menu-item>
     <el-menu-item index="6" v-show="role===1" class="recruiter" @click="toRecruiterGotList">简历查看</el-menu-item>
     <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
     <el-submenu index="8" v-show="role===1" class="recruiter">
@@ -242,7 +242,26 @@ import api from '../axios/api';
       toResume(){
           this.$router.push("/resume/resumeInfo");
       },
-
+      testMsg(){
+          let message = "昊天科技【认证者】5月2号发布了WebSocket【8k-15k】职位!"
+          let name = "WebSocket";
+        //   /job/list?jobName="+name+"
+          let html = "<a href='javascript:void(0)' @click.native='goTojob("+name+")'>"+message+"</a>"
+          this.$notify.info({
+            title:'通知',
+            message:html,
+            duration: 0,
+            dangerouslyUseHTMLString:true
+        })
+      },
+       goTojob(name){
+          this.$router.push({
+          name:'jobInfoList',
+          params:{
+            jobName:name
+          }
+         })
+       },
       //webSocket
       initWebSocket(){ 
           //初始化weosocket
@@ -275,7 +294,8 @@ import api from '../axios/api';
         this.$notify.info({
             title,
             message,
-            duration: 0
+            duration: 0,
+            dangerouslyUseHTMLString:true
         })
         console.log(message)
       },

@@ -13,7 +13,7 @@ const service =axios.create({
 service.interceptors.request.use(
     config =>{
         let userInfo = localStorage.getItem('userInfo');
-        if(userInfo){
+        if(userInfo!=null){
             var data  = JSON.parse(userInfo);
             if (new Date().getTime() - data.time > 15*24*60*60*1000) {
                 console.log(userInfo+'已过期');

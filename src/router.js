@@ -7,6 +7,14 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
+  //页面跳转后置顶
+  scrollBehavior(to,from,saveTop){
+    if(saveTop){
+      return saveTop;
+    }else{
+      return {x:0,y:0}
+    }
+  },
   routes: [
     {
       path:'/',
