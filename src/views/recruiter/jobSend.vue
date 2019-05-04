@@ -159,21 +159,8 @@ export default {
         }
     },
     created(){
-        if(localStorage.getItem('userInfo') === null){
-            this.$message({
-                type:'warning',
-                message:'请先登陆再操作'
-            })
-            //未登陆则先登陆
-            this.$router.replace({
-                path:'/login',
-                //登陆成功后跳回当前页面
-                query:{redirect: this.$router.currentRoute.fullPath}
-            })
-        }else{
-            let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
-            this.recruiterId = userInfo.id
-        }
+        let userInfo = JSON.parse(JSON.parse(localStorage.getItem('userInfo')).user);
+        this.recruiterId = userInfo.id
     },
     mounted(){
         this.queryRecruiterGodList();
