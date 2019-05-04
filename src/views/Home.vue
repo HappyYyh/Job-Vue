@@ -42,11 +42,11 @@
     <el-submenu index="8" v-show="role===0" class="seeker">
         <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
         <el-menu-item index="8-1" v-show="role===0" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
-        <el-menu-item index="8-2" v-show="role===0">我的订阅</el-menu-item>
+        <el-menu-item index="8-2" v-show="role===0" @click="mySubScribe">我的订阅</el-menu-item>
         <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
     </el-submenu>
     <!-- 招聘者 -->
-    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first">消息</el-menu-item>
+    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first" @click="testMsg">消息</el-menu-item>
     <el-menu-item index="6" v-show="role===1" class="recruiter" @click="toRecruiterGotList">简历查看</el-menu-item>
     <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
     <el-submenu index="8" v-show="role===1" class="recruiter">
@@ -115,7 +115,7 @@ import api from '../axios/api';
         isLogin:false,
         userName:'',
         userImg:'',
-        role:'',
+        role:null,
         token:'',
         dialogMyInfoVisible: false,
         form: {
@@ -152,6 +152,9 @@ import api from '../axios/api';
                 this.form.img = user.headImg;
                 this.form.id = user.id;
                 this.fileList[0].url = user.email.img;
+
+                //连接webSocket
+                this.initWebSocket();
             }
         }    
     },
@@ -184,6 +187,9 @@ import api from '../axios/api';
       toSeekerJobSendList(){
           this.$router.push("/seeker/jobSend");
       },
+      mySubScribe(){
+          this.$router.push("/seeker/jobSubScribe");
+      },
       //跳转到我的职位页
       toJob(){
           this.$router.push("/job/recruitersJob");
@@ -205,7 +211,6 @@ import api from '../axios/api';
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
-
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
         }
@@ -236,6 +241,69 @@ import api from '../axios/api';
       //求职者跳转到我的简历页
       toResume(){
           this.$router.push("/resume/resumeInfo");
+      },
+      testMsg(){
+          let message = "昊天科技【认证者】5月2号发布了WebSocket【8k-15k】职位!"
+          let name = "WebSocket";
+        //   /job/list?jobName="+name+"
+          let html = "<a href='javascript:void(0)' @click.native='goTojob("+name+")'>"+message+"</a>"
+          this.$notify.info({
+            title:'通知',
+            message:html,
+            duration: 0,
+            dangerouslyUseHTMLString:true
+        })
+      },
+       goTojob(name){
+          this.$router.push({
+          name:'jobInfoList',
+          params:{
+            jobName:name
+          }
+         })
+       },
+      //webSocket
+      initWebSocket(){ 
+          //初始化weosocket
+        const wsuri = 'ws://localhost:8888/webSocket/'+this.form.id;
+        this.websock = new WebSocket(wsuri);
+        this.websock.onmessage = this.websocketonmessage;
+        this.websock.onopen = this.websocketonopen;
+        this.websock.onerror = this.websocketonerror;
+        this.websock.onclose = this.websocketclose;
+      },
+      websocketonopen(){ 
+        //连接建立之后执行send方法发送数据
+        console.log("webSocket连接建立");
+      },
+      websocketonerror(){
+          //连接建立失败重连
+        this.initWebSocket()
+      },
+      websocketonmessage(e){
+        let data = JSON.parse(e.data);
+        let message;
+        let title;
+        if(this.role===0){
+            message = data.companyName+"【"+data.position+"】于"+data.time+"发布了"+data.jobName+"【"+data.salaryStart+"K-"+data.salaryEnd+"K】职位!"
+            title = "职位订阅通知";
+        }else{
+            message = data.userName+"【"+data.phone+"】于"+data.time+"投递了您的"+data.jobName+"【"+data.salaryStart+"K-"+data.salaryEnd+"K】职位!"
+             title = "职位投递通知";
+        }
+        this.$notify.info({
+            title,
+            message,
+            duration: 0,
+            dangerouslyUseHTMLString:true
+        })
+        console.log(message)
+      },
+      websocketsend(Data){//数据发送
+        this.websock.send(Data)
+      },
+      websocketclose(e){  //关闭
+        console.log('断开连接', e)
       }
     }
   }
