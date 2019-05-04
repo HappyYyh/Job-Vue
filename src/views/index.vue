@@ -17,15 +17,34 @@
               <div class="active">
                 <a href="#" class="firstCategory">{{jobFirst.firstName}}</a>
                 <span>
-                  <a href="#" class="hotCategory">Java</a>
-                  <a href="#" class="hotCategory">Web</a>
-                  <a href="#" class="hotCategory">PHP</a>
+                  <span v-for="(item,ind) in leftHotJob" :key="ind" >
+                    <span v-if="index===item.id">
+                      <a @click="toJobByJobName(name)" v-for="(name,i) in item.item" :key="i"  class="hotCategory" href="javascript:void(0)" >
+                        {{name}}
+                      </a>
+                    </span>
+                  </span>
                 </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
+            <!-- <div v-for="(jobFirst,index) in jobCategory" :key="jobFirst.firstId" @mouseover.prevent="handelOver(index)" @mouseout="handelOut" v-show="index>=12 && showMoreFirst">
+              <div class="active">
+                <a href="#" class="firstCategory">{{jobFirst.firstName}}</a>
+                <span>
+                  <span v-for="(item,ind) in leftHotJob" :key="ind" >
+                    <span v-if="index===item.id">
+                      <a @click="toJobByJobName(name)" v-for="(name,i) in item.item" :key="i"  class="hotCategory" href="javascript:void(0)" >
+                        {{name}}
+                      </a>
+                    </span>
+                  </span>
+                </span>
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </div> -->
             <div class="showMore">
-                <span>查看更多职位</span>
+                <a href="javascript:void(0)" @click="showMoreFirst = true">查看更多职位</a>
             </div>
           </div>
           <!-- 右侧图片 -->
@@ -135,7 +154,11 @@ import api from '../axios/api';
       return {
         jobName: '',
         category:'',
+        showMoreFirst:false,
         jobCategory:[],
+        leftHotJob:[{id:0,item:['CEO/总裁/总经理']},{id:1,item:['Java','PHP','Web前端']},{id:2,item:['产品经理','产品总监']},{id:3,item:['UI设计师','平面设计师']},
+                    {id:4,item:['新媒体运营','产品运营']},{id:5,item:['市场营销','市场推广']},{id:6,item:['人事/hr','行政']},{id:7,item:['销售专员','销售经理']},
+                    {id:8,item:['文案','广告创意','编辑']},{id:9,item:['投资经理','投资总监']},{id:10,item:['汽车销售','汽车维修']},{id:11,item:['课程设计','教务管理']}],
         secondList: [],
         options:[],
         props:{
@@ -243,6 +266,10 @@ import api from '../axios/api';
       //跳转到职位查询页面（三级分类名称）
       toJobByThirdName(thirdName){
         this.toJob(thirdName,'')
+      },
+       //跳转到职位查询页面（职位名称）
+      toJobByJobName(jobName){
+        this.toJob('',jobName)
       },
       //跳转到职位详情页面
       toJobDetailById(jobId){
