@@ -9,7 +9,8 @@
                     </el-col>
                     <el-col :span="18">
                         <el-input placeholder="搜索职位名称" clearable v-model="query.jobName">
-                            <el-button slot="append" type="primary" icon="el-icon-search" @click="queryJob(null,null,null)">搜索</el-button>
+                            <el-button slot="append" style="border-right: 1px solid #c0c4cc;border-radius: 0;" icon="el-icon-search" @click="queryJob(null,null,null)">搜索</el-button>
+                            <el-button slot="append" icon="el-icon-refresh" @click="resetQuery">重置</el-button>
                         </el-input>
                     </el-col>
                 </el-row>
@@ -62,8 +63,13 @@
                         <el-col :span="2">行业类型:</el-col>
                         <el-col :span="22">
                             <a href="javascript:void(0)" :class="{selected:industryCategoryAcitve===null}" @click="queryJob(null,null,6)">不限</a>
-                            <a href="javascript:void(0)" :class="{selected:industryCategoryAcitve===ind}" v-for="(item,ind) in industryCategory" :key="ind" v-show="ind<9" @click="queryJob(ind,item.value,6)">{{item.name}}</a>
-                            <a href="javascript:void(0)" :class="{selected:industryCategoryAcitve==='more'}" class="findMore" @mousemove="showMore=true">查看更多</a>
+                            <span>
+                                <a href="javascript:void(0)" :class="{selected:industryCategoryAcitve===ind}" v-for="(item,ind) in industryCategory" :key="ind" v-show="ind<9"  @click="queryJob(ind,item.value,6)">{{item.name}}</a>
+                            </span>
+                            <span>
+                                <a href="javascript:void(0)" :class="{selected:industryCategoryAcitve===ind}" v-for="(item,ind) in industryCategory" :key="ind" v-show="showMore && ind>=9" @click="queryJob(ind,item.value,6)">{{item.name}}</a>
+                            </span>
+                            <a href="javascript:void(0)" :class="{selected:industryCategoryAcitve==='more'}" class="findMore" @click="showMore = !showMore">{{showMore===false?'查看更多':'收起'}}</a>
                             <input v-show="false" v-model="query.industryCategory"/>
                         </el-col>
                     </el-row>
@@ -266,6 +272,11 @@ export default {
         handleCategoryChange(val){
             this.query.category = val.join("/");
         },
+        //清空搜素条件
+        resetQuery(){
+            window.location.href = "/job/list"
+        },
+        //查询
         queryJob(index,value,type){
             if(type === 0){
                 this.query.city = value;
@@ -285,17 +296,16 @@ export default {
             }
             if(type === 4){
                 this.financingStatusAcitve = index;
-                this.query.industryCategory = value;
+                this.query.financingStatus = value;
             }
             if(type === 5){
                 this.staffNumAcitve= index;
-                this.query.financingStatus = value;
+                this.query.staffNum = value;
             }
             if(type === 6){
                 this.industryCategoryAcitve = index;
-                this.query.staffNum = value;
+                this.query.industryCategory = value;
             }
-            console.log(this.query)
             api.queryJob(this.query)
             .then(res=>{
                 this.jobList = res.data.list;
