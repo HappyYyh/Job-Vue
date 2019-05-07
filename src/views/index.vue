@@ -49,7 +49,32 @@
           </div>
           <!-- 右侧图片 -->
           <div class="rightImg">
-              <img src="http://image.yangyhao.top/images/jpg/3.jpg">
+            <table>
+              <tbody>
+                <tr>
+                  <td colspan="2" rowspan="1"><img src="http://image.yangyhao.top/image/jpeg/job-index/1.jpg"></td>
+                  <td colspan="1" rowspan="2"><img src="http://image.yangyhao.top/image/jpeg/job-index/3.jpg"></td>
+                </tr>
+                <tr>
+                  <td colspan="2" rowspan="1"><img src="http://image.yangyhao.top/image/jpeg/job-index/2.jpeg"></td>
+                </tr>
+                <tr>
+                  <td><img src="http://image.yangyhao.top/image/jpeg/job-index/8.jpg"></td>
+                  <td><img src="http://image.yangyhao.top/image/jpeg/job-index/9.jpg"></td>
+                  <td><img src="http://image.yangyhao.top/image/jpeg/job-index/10.jpg"></td>
+                </tr>
+                <!-- <tr>
+                  <td colspan="2" rowspan="1"><img src="http://image.yangyhao.top/image/jpeg/job-index/4.jpeg"></td>
+                  <td><img src="http://image.yangyhao.top/image/jpeg/job-index/5.jpg"></td>
+                </tr> -->
+                <tr>
+                  <td colspan="2" rowspan="1"><img src="http://image.yangyhao.top/image/jpeg/job-index/6.jpg"></td>
+                  <td><img src="http://image.yangyhao.top/image/jpeg/job-index/7.jpg"></td>
+                </tr>
+              </tbody>
+              
+            </table>
+              <!-- <img src="http://image.yangyhao.top/images/jpg/3.jpg"> -->
           </div>
           <!-- 右侧隐藏区域 -->
           <div class="rightWrap" @mouseover="handelOver(index)" @mouseout="handelOut"  v-for="(jobSecond, index) in secondList" :key="index" v-show="index<12 && index === showRight">
@@ -358,9 +383,23 @@ import api from '../axios/api';
   left: 340px;
   top: 0;
 }
+table{
+  border-collapse: collapse
+}
+.rightImg tr{
+  min-height: 114px;
+  height: 114px;
+  display: block;
+}
+.rightImg td{
+  padding-right: 2px;
+    padding-bottom: 2px;
+    width: auto;
+    vertical-align: top;
+}
 .rightImg img{
-    width: 700px;
-    height: 480px;
+     width: 100%;
+     height: 100%;
 }
 .secondArea{
   width: 25%;
