@@ -8,7 +8,7 @@
                     </div>
                     <!-- 左侧 -->
                     <div class="left">
-                        <el-collapse v-show="leftShow" v-model="activeNames" @change="handleChange">
+                        <el-collapse accordion v-show="leftShow" v-model="activeNames" @change="handleChange">
                             <el-collapse-item class="item" v-for="(item,ind) in RecruiterGotList" :key="ind" :name="ind">
                                 <template slot="title">
                                      <span class="name">{{item.jobName}} </span>
@@ -16,14 +16,14 @@
                                 </template>
                                 <div class="seeker" :class="{select:firstSelected===ind && secondSelected===index}" v-for="(it,index) in item.seekerInfoResponseList" :key="index">
                                     <el-row>
-                                        <el-col :span="12" class="userName">
-                                        {{it.userName}} 
-                                        <i class="el-icon-mobile-phone"></i>
-                                        {{it.phone}}
-                                    </el-col>
-                                    <el-col :span="6" :offset="6">
-                                        <a href="javascript:void(0)" class="queryResume" @click="getResume(ind,index,it.userId,item.jobId)">查看简历</a>
-                                    </el-col>
+                                        <el-col :span="16" class="userName">
+                                            {{it.userName}} 
+                                            <i class="el-icon-mobile-phone"></i>
+                                            {{it.phone}}
+                                        </el-col>
+                                        <el-col :span="6" :offset="2">
+                                            <a href="javascript:void(0)" class="queryResume" @click="getResume(ind,index,it.userId,item.jobId)">查看简历</a>
+                                        </el-col>
                                     </el-row>
                                     
                                 </div>

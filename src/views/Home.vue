@@ -36,7 +36,7 @@
         </router-link>
     </el-menu-item>
     <!-- 求职者 -->
-    <el-menu-item index="5" v-show="role===0" class="seeker seeker-first">消息</el-menu-item>
+    <el-menu-item index="5" v-show="role===0" class="seeker seeker-first" @click="testMsg">消息</el-menu-item>
     <el-menu-item index="6" v-show="role===0" @click="toResume"  class="seeker">我的简历</el-menu-item>
     <el-menu-item index="7" v-show="role===0" class="seeker" @click="toSeekerJobSendList">我的投递</el-menu-item>
     <el-submenu index="8" v-show="role===0" class="seeker">
@@ -46,7 +46,7 @@
         <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
     </el-submenu>
     <!-- 招聘者 -->
-    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first" @click="testMsg">消息</el-menu-item>
+    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first" >简历市场</el-menu-item>
     <el-menu-item index="6" v-show="role===1" class="recruiter" @click="toRecruiterGotList">简历查看</el-menu-item>
     <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
     <el-submenu index="8" v-show="role===1" class="recruiter">
