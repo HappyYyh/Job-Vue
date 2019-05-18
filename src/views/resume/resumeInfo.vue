@@ -1,8 +1,9 @@
 <template>
 <div>
     <el-row>
-        <el-col :span="20" :offset="2">
-            <el-card class="box-card">
+        <el-col :span="20" :offset="2" style="margin-top:20px;">
+            <!-- 简历部分 -->
+            <el-card class="resumeInfo">
                 <el-button class="review" v-show="baseShow.id!=null" type="text" @click="showReview = true;htmlTitle=baseShow.name+'的简历'">简历预览</el-button>
                 <!-- 预览简历对话框 -->
                 <el-dialog  :visible.sync="showReview"  width="50%" top="0" center>
@@ -99,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <span slot="footer" class="dialog-footer">
+                    <span slot="footer" class="download-resume-footer">
                         <el-button type="primary" @click="showReview = false;getPdf()">下载</el-button>
                     </span>
                 </el-dialog>
@@ -630,6 +631,51 @@
                     </div>
                 </div>
             </el-card>
+            <!-- 三方简历部分 -->
+            <el-card class="resumeControl" >
+                <div slot="header" class="clearfix">
+                    <span class="title">附件简历</span>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click="otherResumeDialog = true">新增</el-button>
+                </div>
+                <div class="otherResume">
+                    <span class="resumeName">杨永昊-Java开发.pdf</span>
+                    <i class="el-icon-delete"></i>
+                    <i class="el-icon-download"></i>
+                </div>
+            </el-card>
+            <!-- 三方文件上传对话框 -->
+            <el-dialog title="三方简历上传" :visible.sync="otherResumeDialog" width="30%" center>
+                <el-upload
+                    class="upload-demo"
+                    action="http://localhost:8888/file/upload"
+                    :on-remove="handleRemove"
+                    :before-remove="beforeRemove"
+                    :limit="1"
+                    :file-list="fileList"
+                    :on-exceed="handleExceed"
+                    :on-success="getUrl"
+                    >
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传doc/docx/pdf文件，且不超过2M</div>
+                </el-upload>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="cancleUpload">取 消</el-button>
+                    <el-button type="primary" @click="confirmUpload">确 定</el-button>
+                </span>
+            </el-dialog>
+            <!-- 对外公开部分 -->
+            <el-card class="resumeControl Privacy">
+                <div slot="header" class="clearfix">
+                    <span class="title">隐私设置</span>
+                    <el-button style="float: right; padding: 3px 0" type="text">设置</el-button>
+                </div>
+                <div class="item">
+                    公开情况:  <span>{{baseShow.isPublic===0?'尚未公开':'对外公开'}}</span>
+                </div>
+                <div class="item">
+                    屏蔽公司:  <span>已屏蔽{{baseShow.shieldCompanyCount}}个</span>
+                </div>
+            </el-card>
         </el-col>
     </el-row>    
 </div>
@@ -641,6 +687,8 @@ export default {
         return{
             htmlTitle:'',
             showReview:false,
+            //对话框
+            otherResumeDialog:false,
             //用于控制显示
             firstShow:true,
             userBaseShow:true,
@@ -761,6 +809,8 @@ export default {
                 description:'',
                 result:'',
             },
+            fileList: [],
+            otherResumeForm:{name:'',url:''},
             resumeEducationResponseList:[],
             resumeExperienceResponseList:[{detailList:[]}],
             resumeProjectResponseList:[{descriptionList:[],resultList:[]}],
@@ -956,12 +1006,62 @@ export default {
                 });          
             });
         },
-        // getPdf(){
-        //     this.showReview = false;
-        //     this.htmlTitle = this.baseShow.name+"的简历";
-        //     this.getPdf('resumeId',this.htmlTitle);
-        // }
-        
+        cancleUpload(){
+            if(this.otherResumeForm.url != '' || this.otherResumeForm.name != ''){
+                //取消的时候删除文件
+                this.deleteUrl();
+            }
+            this.otherResumeDialog = false;
+        },
+        confirmUpload(){
+            console.log(this.otherResumeForm)
+            if(this.otherResumeForm.url === '' || this.otherResumeForm.name === ''){
+                this.$message({
+                    type:'error',
+                    message:'暂无文件'
+                })
+            }else{
+                api.addOtherResume({
+                    userId:this.userId,
+                    url:this.otherResumeForm.url,
+                    name:this.otherResumeForm.name
+                }).then(res=>{
+                    if(res.success){
+                        window.location.href="/resume/resumeInfo"
+                    }
+                })
+                this.otherResumeDialog = false;
+            }
+            
+        },
+        deleteUrl(){
+            var url = this.otherResumeForm.url;
+            api.fileDelete({url}).then(res=>{
+                if(res.success){
+                    this.otherResumeForm.url = '';
+                    this.otherResumeForm.name = '';
+                }
+            })
+        },
+        // eslint-disable-next-line no-unused-vars
+        handleRemove(file, fileList) {
+            this.deleteUrl()
+        },
+        handleExceed(files, fileList) {
+            this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        },
+        beforeRemove(file, fileList) {
+            console.log(fileList);  
+            return this.$confirm(`确定移除 ${ file.name }？`);
+        },
+        // eslint-disable-next-line no-unused-vars
+        getUrl(response, file, fileList){
+            console.log(response);
+            if(response.success){
+                this.otherResumeForm.url = response.data
+                this.otherResumeForm.name = file.name
+            }
+        },
     }
 }
 </script>
@@ -973,7 +1073,7 @@ export default {
     min-height: 100%;
     padding: 45px 50px;
 }
-.dialog-footer{
+.download-resume-footer{
     z-index: 2;
     position: fixed;
     bottom: 0px;
@@ -1063,9 +1163,46 @@ export default {
     margin-left: 10px;
 }
 //主页面
-.box-card{
+//右侧简历控制
+.resumeControl{
+    width: 20%;
+    margin-left: 77%;
+    padding: 0 18px!important;
+}
+
+.resumeControl .title{
+    color: #414a60;
+    font-size: 14px;
+    padding: 18px 0 10px 0;
+    font-weight: 400;
+}
+//三分简历
+.otherResume span{
+    font-size: 15px;
+    font-weight: 300;
+}
+.otherResume i{
+    margin-left: 10px;
+}
+
+// 隐私设置
+.Privacy{
+    margin-top: 40px;
+}
+.Privacy .item{
+    font-size: 14px;
+    margin-bottom: 10px
+}
+.Privacy .item span{
+    float: right;
+    font-size: 13px;
+    color: #9fa3af;
+}
+//左侧简历信息
+.resumeInfo{
     width: 60%;
-    margin-left: 20%;
+    margin-left: 15%;
+    float: left;
 }
 .clear{
     clear: both;
