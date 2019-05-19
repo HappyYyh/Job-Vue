@@ -638,9 +638,23 @@
                     <el-button style="float: right; padding: 3px 0" type="text" @click="addOtherResume">新增</el-button>
                 </div>
                 <div class="otherResume" v-for="(other,index) in otherResumeList" :key="index">
-                    <span class="resumeName">{{other.name}}</span>
+                    <a href="javascript:void(0)" @click="showOtherResumeInfo(other.id,other.name,other.updateTime)" ><span class="resumeName">{{other.name}}</span></a>
                     <a href="javascript:void(0)" @click="deleteOtherResume(other.url,other.id)"><i class="el-icon-delete"></i></a>
-                    <a @click="downloadOtherResume(other.url,other.name)"><i class="el-icon-download"></i></a>
+                    <a href="javascript:void(0)" @click="downloadOtherResume(other.url,other.name)"><i class="el-icon-download"></i></a>
+                </div>
+                <div class="otherResumeInfo" v-show="showOtherResume">
+                    <p>
+                        <a href="javascript:void(0)" @click="editOtherResumeName">
+                            <i class="el-icon-edit"></i>
+                        </a>
+                        简历名称：<span>{{otherResumeInfo.name}}</span>
+                        <!-- <el-input v-model="otherResumeInfo.name"></el-input> -->
+                    </p>
+                    <p>修改时间：<span>{{otherResumeInfo.time}}</span></p>
+                    <p>
+                        <el-button @click="showOtherResume = false" size="small">取 消</el-button>
+                        <el-button type="primary" size="small">确 定</el-button>
+                    </p>
                 </div>
             </el-card>
             <!-- 三方文件上传对话框 -->
@@ -809,9 +823,12 @@ export default {
                 description:'',
                 result:'',
             },
-            otherResumeList:{},
             fileList: [],
+            //三方简历信息
+            otherResumeList:{},
             otherResumeForm:{name:'',url:''},
+            otherResumeInfo:{id:null,name:'',time:''},
+            showOtherResume:false,
             resumeEducationResponseList:[],
             resumeExperienceResponseList:[{detailList:[]}],
             resumeProjectResponseList:[{descriptionList:[],resultList:[]}],
@@ -1019,6 +1036,7 @@ export default {
             }
             console.log(this.otherResumeList)
         },
+        //取消
         cancleUpload(){
             if(this.otherResumeForm.url != '' || this.otherResumeForm.name != ''){
                 //取消的时候删除文件
@@ -1026,6 +1044,7 @@ export default {
             }
             this.otherResumeDialog = false;
         },
+        //确认
         confirmUpload(){
             console.log(this.otherResumeForm)
             if(this.otherResumeForm.url === '' || this.otherResumeForm.name === ''){
@@ -1046,6 +1065,13 @@ export default {
                 this.otherResumeDialog = false;
             }
             
+        },
+        //查看
+        showOtherResumeInfo(id,name,time){
+            this.otherResumeInfo.id = id;
+            this.otherResumeInfo.name = name;
+            this.otherResumeInfo.time = time;
+            this.showOtherResume = true;
         },
         //删除
         deleteOtherResume(url,id){
@@ -1245,6 +1271,10 @@ export default {
 }
 .otherResume i{
     margin-left: 10px;
+}
+.otherResumeInfo{
+    font-size: 12px;
+    border-top: 1px #f2f3f3 solid
 }
 
 // 隐私设置
