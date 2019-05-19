@@ -635,12 +635,12 @@
             <el-card class="resumeControl" >
                 <div slot="header" class="clearfix">
                     <span class="title">附件简历</span>
-                    <el-button style="float: right; padding: 3px 0" type="text" @click="otherResumeDialog = true">新增</el-button>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click="addOtherResume">新增</el-button>
                 </div>
-                <div class="otherResume">
-                    <span class="resumeName">杨永昊-Java开发.pdf</span>
-                    <i class="el-icon-delete"></i>
-                    <i class="el-icon-download"></i>
+                <div class="otherResume" v-for="(other,index) in otherResumeList" :key="index">
+                    <span class="resumeName">{{other.name}}</span>
+                    <a href="javascript:void(0)" @click="deleteOtherResume(other.url,other.id)"><i class="el-icon-delete"></i></a>
+                    <a @click="downloadOtherResume(other.url,other.name)"><i class="el-icon-download"></i></a>
                 </div>
             </el-card>
             <!-- 三方文件上传对话框 -->
@@ -809,6 +809,7 @@ export default {
                 description:'',
                 result:'',
             },
+            otherResumeList:{},
             fileList: [],
             otherResumeForm:{name:'',url:''},
             resumeEducationResponseList:[],
@@ -855,6 +856,7 @@ export default {
                 this.resumeEducationResponseList = res.data.resumeEducationResponseList; 
                 this.resumeExperienceResponseList = res.data.resumeExperienceResponseList;
                 this.resumeProjectResponseList = res.data.resumeProjectResponseList;
+                this.otherResumeList = res.data.resumeOtherResponseList;
                 //将文本分割换行
                 this.resumeExperienceResponseList.forEach((item)=>{
                     item.detailList = item.detail.replace(/(\r\n|\n|\r)/gm, "<br/>").split("<br/>");
@@ -1006,6 +1008,17 @@ export default {
                 });          
             });
         },
+        addOtherResume(){
+            if(this.otherResumeList.length < 3){
+                this.otherResumeDialog = true;
+            }else{
+                this.$message({
+                    type:'warning',
+                    message:'每个用户最多只能上传三份简历'
+                })
+            }
+            console.log(this.otherResumeList)
+        },
         cancleUpload(){
             if(this.otherResumeForm.url != '' || this.otherResumeForm.name != ''){
                 //取消的时候删除文件
@@ -1033,6 +1046,45 @@ export default {
                 this.otherResumeDialog = false;
             }
             
+        },
+        //删除
+        deleteOtherResume(url,id){
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                api.fileDelete({url}).then(res=>{
+                    if(res.success){
+                        api.deleteOtherResume({id})
+                        .then(()=>{
+                                window.location.href="/resume/resumeInfo"
+                        })
+                    }
+                }) 
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });          
+            });
+        },
+        //文件下载
+        downloadOtherResume(url,name){
+            // console.log(name)
+            // window.location.href = url;
+            const blob = new Blob([url])
+            if (window.navigator.msSaveOrOpenBlob) {
+                // 兼容IE10
+                navigator.msSaveBlob(blob, name)
+            } else {
+                //  chrome/firefox
+                let aTag = document.createElement('a')
+                aTag.download = name
+                aTag.href = URL.createObjectURL(blob)
+                aTag.click()
+                URL.revokeObjectURL(aTag.href)
+            }
         },
         deleteUrl(){
             var url = this.otherResumeForm.url;
@@ -1176,10 +1228,20 @@ export default {
     padding: 18px 0 10px 0;
     font-weight: 400;
 }
-//三分简历
+//三方简历
+.otherResume{
+    margin-bottom: 10px
+}
 .otherResume span{
     font-size: 15px;
     font-weight: 300;
+    float: left;
+    overflow: hidden; 
+    //超出部分以。。。显示
+    text-overflow: ellipsis; 
+    white-space:nowrap;
+    width:140px;
+    display:block;
 }
 .otherResume i{
     margin-left: 10px;

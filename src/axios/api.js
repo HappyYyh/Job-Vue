@@ -74,6 +74,7 @@ const deleteResume = (ResumeDeleteRequest) =>{return jsonPost('resume/deleteResu
 const myResume = (userId) =>{return get('resume/getResume',userId)}
 const recruiterGetResume = (RecruiterReviewResumeRequest) =>{return jsonPost('resume/recruiterGet',RecruiterReviewResumeRequest)}
 const addOtherResume = (AddOtherResumeRequest)=>{return jsonPost('resume/addOtherResume',AddOtherResumeRequest)}
+const deleteOtherResume = (id)=>{return get('resume/deleteOtherResume',id)}
 
 /**
  * 文件
@@ -127,6 +128,7 @@ export default {
     myResume,
     recruiterGetResume,
     addOtherResume,
+    deleteOtherResume,
     updateJob,
     queryJob,
     fileUpload,
