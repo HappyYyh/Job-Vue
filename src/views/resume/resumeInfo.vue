@@ -644,16 +644,17 @@
                 </div>
                 <div class="otherResumeInfo" v-show="showOtherResume">
                     <p>
-                        <a href="javascript:void(0)" @click="editOtherResumeName">
-                            <i class="el-icon-edit"></i>
-                        </a>
-                        简历名称：<span>{{otherResumeInfo.name}}</span>
-                        <!-- <el-input v-model="otherResumeInfo.name"></el-input> -->
+                        简历名称：<span v-show="showOtherResumeName">{{otherResumeInfo.name}}</span>
+                        <el-input v-model="otherResumeInfo.name" v-show="!showOtherResumeName"></el-input>
                     </p>
-                    <p>修改时间：<span>{{otherResumeInfo.time}}</span></p>
-                    <p>
-                        <el-button @click="showOtherResume = false" size="small">取 消</el-button>
-                        <el-button type="primary" size="small">确 定</el-button>
+                    <p v-show="showOtherResumeName"> 修改时间：<span>{{otherResumeInfo.time}}</span></p>
+                    <p v-show="showOtherResumeName">
+                        <el-button @click="showOtherResume = false" size="small">收 起</el-button>
+                        <el-button type="primary" @click="showOtherResumeName = false" size="small">修 改</el-button>
+                    </p>
+                    <p v-show="!showOtherResumeName">
+                        <el-button @click="showOtherResumeName = true" size="small">取 消</el-button>
+                        <el-button type="success"  @click="updateOtherResume" size="small">确 认</el-button>
                     </p>
                 </div>
             </el-card>
@@ -715,6 +716,7 @@ export default {
             editEduBtnShow:null,
             editExperienceBtnShow:null,
             editProjectBtnShow:null,
+            showOtherResumeName:true,
             img:'',
             //基础信息显示
             baseShow:{
@@ -1094,6 +1096,16 @@ export default {
                     message: '已取消删除'
                 });          
             });
+        },
+        updateOtherResume(){
+            api.updateOtherResume({
+                id:this.otherResumeInfo.id,
+                name:this.otherResumeInfo.name
+            }).then(res=>{
+                if(res.success){
+                    this.showOtherResumeName = true;
+                }
+            })
         },
         //文件下载
         downloadOtherResume(url,name){
