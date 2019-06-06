@@ -1027,6 +1027,7 @@ export default {
                 });          
             });
         },
+        //新增
         addOtherResume(){
             if(this.otherResumeList.length < 3){
                 this.otherResumeDialog = true;
@@ -1097,6 +1098,7 @@ export default {
                 });          
             });
         },
+        //修改名称
         updateOtherResume(){
             api.updateOtherResume({
                 id:this.otherResumeInfo.id,
@@ -1124,6 +1126,7 @@ export default {
                 URL.revokeObjectURL(aTag.href)
             }
         },
+        //删除
         deleteUrl(){
             var url = this.otherResumeForm.url;
             api.fileDelete({url}).then(res=>{
