@@ -1,4 +1,4 @@
-// module.exports = {
-//     // 基本路径
-//     publicPath: './',
-//   }
+module.exports = {
+    // 基本路径
+    publicPath: '/',
+  }

@@ -265,7 +265,7 @@ import api from '../axios/api';
       //webSocket
       initWebSocket(){ 
           //初始化weosocket
-        const wsuri = 'ws://localhost:8888/webSocket/'+this.form.id;
+        const wsuri = 'ws://120.79.252.252:8888/webSocket/'+this.form.id;
         this.websock = new WebSocket(wsuri);
         this.websock.onmessage = this.websocketonmessage;
         this.websock.onopen = this.websocketonopen;
