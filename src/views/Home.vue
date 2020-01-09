@@ -10,51 +10,51 @@
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b">
-    <el-menu-item index="1">
-        <router-link to="/">
-            <a href="#"><img class="logo" src="@/assets/logo.png"/></a>
-        </router-link>
-    </el-menu-item>
-    <el-menu-item index="2" class="top-bar">
-        <a href="javascript:void(0);" @click="toIndex">首页</a>
-    </el-menu-item>
-    <el-menu-item index="3">
-        <a href="javascript:void(0);" @click="toJobInfo">职位</a>
-    </el-menu-item>
-    <el-menu-item index="4">
-        <a href="javascript:void(0);" @click="toCompanyQuery">公司</a>
-    </el-menu-item>
-    <!-- 未登陆 -->
-    <el-menu-item index="5" v-show="!isLogin" class="not-login login-btn">
-        <router-link to="/login">
-            <el-button size="small"  type="primary" round>登陆</el-button> 
-        </router-link>
-    </el-menu-item>
-    <el-menu-item index="6" v-show="!isLogin" class="not-login">
-        <router-link to="/regist">
+        <el-menu-item :span="4" index="1">
+            <router-link to="/">
+                <a href="#"><img class="logo" src="@/assets/logo.png"/></a>
+            </router-link>
+        </el-menu-item>
+        <el-menu-item index="2" class="top-bar">
+            <a href="javascript:void(0);" @click="toIndex">首页</a>
+        </el-menu-item>
+        <el-menu-item index="3">
+            <a href="javascript:void(0);" @click="toJobInfo">职位</a>
+        </el-menu-item>
+        <el-menu-item index="4">
+            <a href="javascript:void(0);" @click="toCompanyQuery">公司</a>
+        </el-menu-item>
+        <!-- 未登陆 -->
+        <el-menu-item index="5" v-show="!isLogin" class="not-login login-btn">
+            <router-link to="/login">
+                <el-button size="small"  type="primary" round>登陆</el-button>
+            </router-link>
+        </el-menu-item>
+        <el-menu-item index="6" v-show="!isLogin" class="not-login">
+            <router-link to="/regist">
                 <el-button size="small"  type="primary" round>注册</el-button>
-        </router-link>
-    </el-menu-item>
-    <!-- 求职者 -->
-    <el-menu-item index="5" v-show="role===0" class="seeker seeker-first">消息</el-menu-item>
-    <el-menu-item index="6" v-show="role===0" @click="toResume"  class="seeker">我的简历</el-menu-item>
-    <el-menu-item index="7" v-show="role===0" class="seeker" @click="toSeekerJobSendList">我的投递</el-menu-item>
-    <el-submenu index="8" v-show="role===0" class="seeker">
-        <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
-        <el-menu-item index="8-1" v-show="role===0" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
-        <el-menu-item index="8-2" v-show="role===0" @click="mySubScribe">我的订阅</el-menu-item>
-        <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
-    </el-submenu>
-    <!-- 招聘者 -->
-    <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first" @click="testMsg">消息</el-menu-item>
-    <el-menu-item index="6" v-show="role===1" class="recruiter" @click="toRecruiterGotList">简历查看</el-menu-item>
-    <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
-    <el-submenu index="8" v-show="role===1" class="recruiter">
-        <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
-        <el-menu-item index="8-1" v-show="role===1" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
-        <el-menu-item index="8-2" v-show="role===1" @click="companyInfo">公司信息</el-menu-item>
-        <el-menu-item index="8-3" v-show="role===1" @click="logout">登出账号</el-menu-item>
-    </el-submenu>
+            </router-link>
+        </el-menu-item>
+        <!-- 求职者 -->
+        <el-menu-item index="5" v-show="role===0" class="seeker seeker-first">消息</el-menu-item>
+        <el-menu-item index="6" v-show="role===0" @click="toResume"  class="seeker">我的简历</el-menu-item>
+        <el-menu-item index="7" v-show="role===0" class="seeker" @click="toSeekerJobSendList">我的投递</el-menu-item>
+        <el-submenu index="8" v-show="role===0" class="seeker">
+            <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
+            <el-menu-item index="8-1" v-show="role===0" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
+            <el-menu-item index="8-2" v-show="role===0" @click="mySubScribe">我的订阅</el-menu-item>
+            <el-menu-item index="8-3" v-show="role===0" @click="logout">退出登录</el-menu-item>
+        </el-submenu>
+        <!-- 招聘者 -->
+        <el-menu-item index="5" v-show="role===1" class="recruiter recruiter-first" @click="testMsg">消息</el-menu-item>
+        <el-menu-item index="6" v-show="role===1" class="recruiter" @click="toRecruiterGotList">简历查看</el-menu-item>
+        <el-menu-item index="7" v-show="role===1" class="recruiter" @click="toJob">我的职位</el-menu-item>
+        <el-submenu index="8" v-show="role===1" class="recruiter">
+            <template slot="title">{{userName}}&nbsp;&nbsp;&nbsp;<img :src="userImg" alt="" class="headImg"></template>
+            <el-menu-item index="8-1" v-show="role===1" @click="dialogMyInfoVisible = true">个人中心</el-menu-item>
+            <el-menu-item index="8-2" v-show="role===1" @click="companyInfo">公司信息</el-menu-item>
+            <el-menu-item index="8-3" v-show="role===1" @click="logout">登出账号</el-menu-item>
+        </el-submenu>
         <!-- 对话框 -->
         <el-dialog title="个人信息" :visible.sync="dialogMyInfoVisible" :width="dialogWidth">
             <el-form :model="form">
@@ -315,34 +315,34 @@ import api from '../axios/api';
 }
 // 导航栏
 .el-menu-demo{
-    padding: 0 80px
+    padding: 0 5vw
 }
 .logo{
     height: 50px;
-    margin-left: 150px;
-    margin-right: 50px
+    margin-left: 10vw;
+    margin-right: 5vw
 }
 .not-login{
     padding: 0 5px;
 }
 .login-btn{
-    margin-left: 500px;
+    margin-left: 34vw;
 }
 .seeker{
-    padding: 0 10px;
+    padding: 0 0.6vw;
 }
 .seeker-first{
-    margin-left: 400px;
+    margin-left: 22vw;
 }
 .recruiter{
     padding: 0 10px;
 }
 .recruiter-first{
-    margin-left: 400px;
+    margin-left: 22vw;
 }
 .headImg{
-    width: 26px;
-    height: 26px;
+    width: 1.7vw;
+    height: 1.7vw;
     border-radius: 100%;
     vertical-align: middle;
     border: none;
@@ -351,11 +351,11 @@ import api from '../axios/api';
     text-align: center;
 }
 .yes-login span{
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 .top-bar-btn a{
-    margin: 0 0 5px 5px;
+    margin: 0 0 0.3vw 0.3vw;
 }
 
 //内容

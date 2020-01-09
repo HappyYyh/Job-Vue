@@ -5,7 +5,7 @@ import { Message} from 'element-ui';
 
 
 const service =axios.create({
-    baseURL : 'http://120.79.252.252:8888',
+    baseURL : 'http://localhost:8888',
     timeout : 10000,
     withCredentials:true,
 })
